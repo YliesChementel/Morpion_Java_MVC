@@ -2,15 +2,15 @@ package pack_morpion;
 	
 
 import javafx.application.Application;
+import javafx.concurrent.Task;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
@@ -18,16 +18,14 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
-
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.util.HashMap;
 
-import javafx.animation.*;
+import ai.Coup;
+import ai.MultiLayerPerceptron;
+import ai.SigmoidalTransferFunction;
+import ai.Test;
 
 
 
@@ -126,7 +124,7 @@ public class Main extends Application {
 		        }
 		        else{
 		        	System.out.println("existe pas");
-		        	Scene sceneLoad = LoadScene();
+		        	Scene sceneLoad = LoadScene(config.hiddenLayerSize,config.learningRate,config.numberOfhiddenLayers);
 		        	primaryStage.setScene(sceneLoad);
 		        	File newFile = new File(file);
 		            try {
@@ -153,13 +151,70 @@ public class Main extends Application {
 		 return scene;
 	}
 	
-	public Scene LoadScene() { //https://blog.ronanlefichant.fr/2022/10/javafx-task-progressbar.html?showComment=1670222972563
+	public Scene LoadScene(int h, double lr ,int l) { //https://blog.ronanlefichant.fr/2022/10/javafx-task-progressbar.html?showComment=1670222972563
 		 BorderPane root = new BorderPane();
+		 ProgressBar progressBar = new ProgressBar();
+		 progressBar.setProgress(0);
+		 TextField textField = new TextField();
+		 root.setBottom(pressStartButton( h, lr , l, progressBar, textField));
+		 root.setCenter(progressBar);
+		 root.setTop(textField);
 		 Scene scene = new Scene(root, 500, 500);
 		 scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		 return scene;
 	}
 	
+	public Button pressStartButton(int h, double lr ,int l,ProgressBar progressBar, TextField textField) {
+		Button pressStart = new Button("Start");
+		pressStart.setOnAction(e -> {
+			HashMap<Integer, Coup> mapTrain = Test.loadCoupsFromFile("./resources/train_dev_test/train.txt");
+			int size = 9; 
+            double epochs = 10000;
+			int[] layers = new int[l+2];
+			layers[0] = size ;
+			for (int i = 0; i < l; i++) {
+				layers[i+1] = h ;
+			}
+			layers[layers.length-1] = size ;
+			double error = 0.0 ;
+			MultiLayerPerceptron net = new MultiLayerPerceptron(layers, lr, new SigmoidalTransferFunction());
+            Task<MultiLayerPerceptron> task = new Task<MultiLayerPerceptron>() {
+                @Override
+				protected
+                MultiLayerPerceptron call() throws InterruptedException {
+                	for(int i = 0; i < epochs; i++){
+                		updateProgress(i, epochs);
+        				Coup c = null ;
+        				while ( c == null )
+        					c = mapTrain.get((int)(Math.round(Math.random() * mapTrain.size())));
+        				
+        				updateMessage("Learning !");
+        				//error += net.backPropagate(c.in, c.out);
+
+        				if ( i % 10000 == 0) {
+        					updateMessage("Error at step "+i+" is "+ (error/(double)i));
+        				}
+        			}
+					return net;
+                }
+            };
+            progressBar.progressProperty().bind(task.progressProperty());
+            textField.textProperty().bind(task.messageProperty());
+            new Thread(task).start();
+            task.setOnSucceeded(workerStateEvent -> {
+                System.out.println("Task succeeded!");
+                MultiLayerPerceptron result = task.getValue();
+                System.out.println(result);
+            });
+
+            task.setOnFailed(workerStateEvent -> {
+                System.out.println("Task failed!");
+                task.getException().printStackTrace();
+            });
+        });
+		return pressStart;
+		
+	}
 	
 	@Override
 	public void start(Stage primaryStage) {
