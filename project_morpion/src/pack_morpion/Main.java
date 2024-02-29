@@ -124,14 +124,8 @@ public class Main extends Application {
 		        }
 		        else{
 		        	System.out.println("existe pas");
-		        	Scene sceneLoad = LoadScene(config.hiddenLayerSize,config.learningRate,config.numberOfhiddenLayers);
+		        	Scene sceneLoad = LoadScene(config.hiddenLayerSize,config.learningRate,config.numberOfhiddenLayers,file);
 		        	primaryStage.setScene(sceneLoad);
-		        	File newFile = new File(file);
-		            try {
-						boolean success = newFile.createNewFile();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
 		        }
 		    });
 				
@@ -151,12 +145,12 @@ public class Main extends Application {
 		 return scene;
 	}
 	
-	public Scene LoadScene(int h, double lr ,int l) { //https://blog.ronanlefichant.fr/2022/10/javafx-task-progressbar.html?showComment=1670222972563
+	public Scene LoadScene(int h, double lr ,int l, String file) { //https://blog.ronanlefichant.fr/2022/10/javafx-task-progressbar.html?showComment=1670222972563
 		 BorderPane root = new BorderPane();
 		 ProgressBar progressBar = new ProgressBar();
 		 progressBar.setProgress(0);
 		 TextField textField = new TextField();
-		 root.setBottom(pressStartButton( h, lr , l, progressBar, textField));
+		 root.setBottom(pressStartButton( h, lr , l, progressBar, textField,file));
 		 root.setCenter(progressBar);
 		 root.setTop(textField);
 		 Scene scene = new Scene(root, 500, 500);
@@ -164,7 +158,7 @@ public class Main extends Application {
 		 return scene;
 	}
 	
-	public Button pressStartButton(int h, double lr ,int l,ProgressBar progressBar, TextField textField) {
+	public Button pressStartButton(int h, double lr ,int l,ProgressBar progressBar, TextField textField, String file) {
 		Button pressStart = new Button("Start");
 		pressStart.setOnAction(e -> {
 			HashMap<Integer, Coup> mapTrain = Test.loadCoupsFromFile("./resources/train_dev_test/train.txt");
@@ -205,6 +199,12 @@ public class Main extends Application {
                 System.out.println("Task succeeded!");
                 MultiLayerPerceptron result = task.getValue();
                 System.out.println(result);
+                File newFile = new File(file);
+	            try {
+					boolean success = newFile.createNewFile();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
             });
 
             task.setOnFailed(workerStateEvent -> {
