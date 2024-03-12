@@ -163,7 +163,7 @@ public class Main extends Application {
 		pressStart.setOnAction(e -> {
 			HashMap<Integer, Coup> mapTrain = Test.loadCoupsFromFile("./resources/train_dev_test/train.txt");
 			int size = 9; 
-            double epochs = 100000;
+            double epochs = 10000;
 			int[] layers = new int[l+2];
 			layers[0] = size ;
 			for (int i = 0; i < l; i++) {
@@ -173,24 +173,27 @@ public class Main extends Application {
 			MultiLayerPerceptron net = new MultiLayerPerceptron(layers, lr, new SigmoidalTransferFunction());
             Task<Double> task = new Task<Double>() {
             	double error = 0.0 ;
+            	double bestError = 10000.0;
                 @Override
-				protected
-                Double call() throws InterruptedException {
+				protected Double call() throws InterruptedException {
                 	for(int i = 0; i < epochs; i++){
-                		updateProgress(i, epochs);
         				Coup c = null ;
         				while ( c == null )
         					c = mapTrain.get((int)(Math.round(Math.random() * mapTrain.size())));
         				
-        				updateMessage("Learning !");
-        				error += net.backPropagate(c.in, c.out);
-
-        				if ( i % 10000 == 0) {
-        					updateMessage("Error at step "+i+" is "+ (error/(double)i));
-        				}
+        				//updateMessage("Learning !");
+        				double e = net.backPropagate(c.in, c.out);
+    					if(bestError > e) {
+    						bestError=e/(double)i;
+    						updateMessage("Error at step "+i+" is "+bestError);
+    					}
+    					
+    					error +=e;
         				updateProgress(i, epochs);
+        				
         			}
                 	net.save(file);
+                	updateMessage("Learning completed!");
 					return error;
                 }
             };
@@ -199,6 +202,7 @@ public class Main extends Application {
             new Thread(task).start();
             task.setOnSucceeded(workerStateEvent -> {
                 System.out.println("Task succeeded!");
+                
                 File newFile = new File(file);
 	            try {
 					boolean success = newFile.createNewFile();
