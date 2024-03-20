@@ -2,26 +2,30 @@ package pack_morpion;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.geometry.Pos;
 
 public class Game extends Application{
 
-	private int[][] matrix = new int[2][2];
+	private int[][] matrix = new int[3][3];
 	
 	private int nbJoueur=1;
 	
+	private int buttonCount = 0;
+	
 	public void initMatrix(int[][] matrix) {
-		for(int i =0;i<matrix.length; i++) {
-			for(int j =0;i<matrix[j].length; j++) {
+		for(int i =0;i<3; i++) {
+			for(int j =0;j<3; j++) {
 				matrix[i][j]=0;
-				System.out.print(matrix[i][j]);
 			}
-			System.out.println();
 		}
 	}
 	
@@ -53,17 +57,55 @@ public class Game extends Application{
 		return false;
 	}
 	
-	public Button buttonCases(Game game) {
+	public void EndGameStackPane(Stage primaryStage, int nbJoueur) {
+	    StackPane endScreen = new StackPane();
+	    endScreen.setMaxSize(550, 400);
+	    Label labelVictory;
+	    System.out.println(buttonCount);
+	    if (nbJoueur == 0) {
+	    	labelVictory = new Label("Égalité");
+	    }
+	    else {
+	    	labelVictory = new Label("Victoire du joueur : " + nbJoueur);
+	    }
+	    Button replayButton = new Button("Rejouer");
+	    Button exitButton = new Button("Quitter");
+	    replayButton.setOnAction(event -> {
+	    	this.start(primaryStage);
+	        primaryStage.show();
+	    });
+	    exitButton.setOnAction(event -> {
+	        primaryStage.close(); 
+	    });
+	 	HBox hbox = new HBox(10, replayButton, exitButton);
+	 	hbox.setAlignment(Pos.CENTER);
+	    VBox vbox=new VBox(10, labelVictory,hbox);
+	    vbox.setAlignment(Pos.CENTER);
+	    endScreen.getChildren().add(vbox);
+	    StackPane.setAlignment(hbox, Pos.CENTER);
+	    Scene endScene = new Scene(endScreen, 550, 400);
+	    primaryStage.setScene(endScene);
+	    primaryStage.show();
+	}
+	
+	public Button buttonCases(Stage primaryStage,Game game) {
 		Button button = new Button();
+		button.setPrefWidth(100); 
+	    button.setPrefHeight(100);
+	    button.setFocusTraversable(false);
+	    button.setFont(Font.font(45));
 		button.setOnAction( e -> {
-			Node source = (Node) e.getSource();
-			GridPane parentGrid = (GridPane) source.getParent();
-			int i = parentGrid.getRowIndex(button);
-			int j = parentGrid.getColumnIndex(button);
+			int i = GridPane.getRowIndex(button);
+			int j = GridPane.getColumnIndex(button);
 			matrix[i][j]=nbJoueur;
+			this.buttonCount++;
+			System.out.println(buttonCount);
 			if(game.victory(matrix, nbJoueur)){
-				System.out.println("Victoire du joueur : "+nbJoueur);
+				game.EndGameStackPane(primaryStage,nbJoueur);
 			}
+			if (this.buttonCount == 9) {
+	             game.EndGameStackPane(primaryStage, 0); 
+	        }
 			 
 			if(nbJoueur==1) {
 				button.setText("X");
@@ -73,6 +115,8 @@ public class Game extends Application{
 				button.setText("O");
 				nbJoueur=1;
 			}	
+			button.setDisable(true);
+			button.setStyle("-fx-opacity: 1;");
 		});
 		return button;
 	}
@@ -81,26 +125,19 @@ public class Game extends Application{
 	public void start(Stage primaryStage) {
 		try {
 			BorderPane root = new BorderPane();
-			Scene scene = new Scene(root,500,500);
 			Game game = new Game();
 			game.initMatrix(matrix);
-			HBox hbox = new HBox();
 			GridPane grid = new GridPane();
-			grid.setHgap(40);
-			Button button = buttonCases(game);
-			grid.add( buttonCases(game), 0, 0);
-		
-			grid.add( buttonCases(game), 0, 1);
-			grid.add( buttonCases(game), 0, 2);
-			grid.add( buttonCases(game), 1, 0);
-			grid.add( buttonCases(game), 1, 1);
-			grid.add( buttonCases(game), 1, 2);
-			grid.add( buttonCases(game), 2, 0);
-			grid.add( buttonCases(game), 2, 1);
-			grid.add( buttonCases(game), 2, 2);
-			hbox.getChildren().addAll(grid);
-			root.setCenter(hbox);
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			grid.setHgap(1);
+	        grid.setVgap(1);
+			for (int i = 0; i < 3; i++) {
+	            for (int j = 0; j < 3; j++) {
+	                Button button = buttonCases(primaryStage,game);
+	                grid.add(button, i, j);
+	            }
+	        }
+		    root.setCenter(grid);
+		    Scene scene = new Scene(root,500,500);
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch(Exception e) {
