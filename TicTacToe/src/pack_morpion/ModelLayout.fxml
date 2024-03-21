@@ -11,7 +11,7 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="pack_morpion.ModelController">
+            fx:controller="pack_morpion.ModelViewController">
 
     <VBox spacing="10" alignment="BOTTOM_CENTER" fx:id="filesContainer">
         

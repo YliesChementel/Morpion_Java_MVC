@@ -2,7 +2,6 @@ package pack_morpion;
 
 import java.io.File;
 import java.io.IOException;
-
 import ai.Config;
 import ai.ConfigFileLoader;
 import javafx.fxml.FXML;
@@ -12,9 +11,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+
 
 public class VersusController {
 	@FXML
@@ -38,7 +39,6 @@ public class VersusController {
     @FXML
     private RadioButton radioD;
     
-
     
     public VersusController() {
     }
@@ -58,10 +58,6 @@ public class VersusController {
         
     }
     
-    
-	
-    
-
     private void handleHommeVsAi() {
     	RadioButton button = (RadioButton) grid.getChildren().stream()
                 .filter(node -> node instanceof RadioButton && ((RadioButton) node).isSelected())
@@ -107,6 +103,13 @@ public class VersusController {
     }
 
     private void handleHommeVsHomme() {
-        // Ajoutez ici le code pour gérer le bouton "H VS H"
+    	try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("GameLayout.fxml"));
+            Parent root = loader.load();
+            hbox.getChildren().clear();
+            hbox.getChildren().add(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

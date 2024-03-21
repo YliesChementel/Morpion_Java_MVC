@@ -10,6 +10,7 @@
 <HBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="pack_morpion.VersusController"
+      fx:id="hbox"
       spacing="10" alignment="CENTER">
     
     <children>
