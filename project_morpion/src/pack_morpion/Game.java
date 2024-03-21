@@ -2,6 +2,8 @@ package pack_morpion;
 
 import ai.MultiLayerPerceptron;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -24,7 +26,9 @@ public class Game extends Application{
 	
 	private MultiLayerPerceptron net;
 	
-	private double[] listMatrix= {0,0,0,0,0,0,0,0,0}; 
+	public double[] listMatrix= {0,0,0,0,0,0,0,0,0}; 
+	
+	private boolean turnAI = false;
 	
 	public Game() {
 		this.net=MultiLayerPerceptron.load("resources/models/model_128_4_1.0E-4.srf");
@@ -40,16 +44,37 @@ public class Game extends Application{
 	}
 	
 	public void affiche(double[] list) {
-		for(int i =0;i<8; i++) {
+		for(int i =0;i<9; i++) {
 			System.out.println(list[i]);
+		}
+	}
+	
+	public void afficheMatrix() {
+		for(int i =0;i<3; i++) {
+			for(int j =0;j<3; j++) {
+				System.out.print(this.matrix[i][j]+" ");
+			}
+			System.out.println();
+		}
+	}
+	
+	public void initList(double[] list) {
+		for(int i =0;i<9; i++) {
+			list[i]=0;
 		}
 	}
 	
 	public int findBestOutcome(double[] list) {
 		int indice=0;
 		double max=list[0];
-		for(int i =1;i<8; i++) {
-			if(list[i]>max && listMatrix[i]==0) {
+		int j=0;
+		while(listMatrix[j]!=0.0) {
+			j++;
+			indice=j;
+			max=list[j];
+		}
+		for(int i=j;i<9; i++) {
+			if(list[i]>max && listMatrix[i]==0.0) {
 				indice=i;
 				max=list[i];
 			}
@@ -90,7 +115,6 @@ public class Game extends Application{
 	    StackPane endScreen = new StackPane();
 	    endScreen.setMaxSize(550, 400);
 	    Label labelVictory;
-	    System.out.println(buttonCount);
 	    if (nbJoueur == 0) {
 	    	labelVictory = new Label("Égalité");
 	    }
@@ -100,6 +124,9 @@ public class Game extends Application{
 	    Button replayButton = new Button("Rejouer");
 	    Button exitButton = new Button("Quitter");
 	    replayButton.setOnAction(event -> {
+	    	initList(this.listMatrix);
+	    	this.buttonCount=0;
+	    	this.turnAI=false;
 	    	this.start(primaryStage);
 	        primaryStage.show();
 	    });
@@ -117,7 +144,25 @@ public class Game extends Application{
 	    primaryStage.show();
 	}
 	
-	public Button buttonCases(Stage primaryStage,Game game) {
+	public void playAi(Stage primaryStage,GridPane gridPane) {
+		double[] coup = net.forwardPropagation(this.listMatrix);
+		int BestOutcome = findBestOutcome(coup);
+		int row = BestOutcome / 3;
+		int col = BestOutcome % 3;
+		Button tmpButton = null;
+		for (Node node : gridPane.getChildren()) {
+	        if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == col) {
+	        	tmpButton = (Button) node;
+	            break;
+	        }
+	    }
+		
+		Button AiPlayButton = tmpButton;
+	    Platform.runLater(() ->  AiPlayButton.fire());
+		
+	}
+	
+	public Button buttonCases(Stage primaryStage,GridPane grid) {
 		Button button = new Button();
 		button.setPrefWidth(100); 
 	    button.setPrefHeight(100);
@@ -126,26 +171,26 @@ public class Game extends Application{
 		button.setOnAction( e -> {
 			int i = GridPane.getRowIndex(button);
 			int j = GridPane.getColumnIndex(button);
+			turnAI = !turnAI;
 			matrix[i][j]=nbJoueur;
 			if(i==0) {
-				listMatrix[j]=nbJoueur;
+				this.listMatrix[j]=nbJoueur;
 			}
 			else if(i==1){
-				listMatrix[j+2]=nbJoueur;
+				this.listMatrix[j+3]=nbJoueur;
 			}
 			else {
-				listMatrix[j+4]=nbJoueur;
+				this.listMatrix[j+6]=nbJoueur;
 			}
-			double[] coup = net.forwardPropagation(listMatrix);
-			this.affiche(coup);
-			this.affiche(listMatrix);
-			System.out.println(this.findBestOutcome(coup));
 			this.buttonCount++;
-			if(game.victory(matrix, nbJoueur)){
-				game.EndGameStackPane(primaryStage,nbJoueur);
+			if(turnAI && buttonCount!=9) {
+				this.playAi(primaryStage, grid);
 			}
-			if (this.buttonCount == 9) {
-	             game.EndGameStackPane(primaryStage, 0); 
+			if(this.victory(matrix, nbJoueur)){
+				this.EndGameStackPane(primaryStage,nbJoueur);
+			}
+			else if(this.buttonCount == 9) {
+				this.EndGameStackPane(primaryStage, 0); 
 	        }
 			 
 			if(nbJoueur==1) {
@@ -173,7 +218,7 @@ public class Game extends Application{
 	        grid.setVgap(1);
 			for (int i = 0; i < 3; i++) {
 	            for (int j = 0; j < 3; j++) {
-	                Button button = buttonCases(primaryStage,game);
+	                Button button = buttonCases(primaryStage,grid);
 	                grid.add(button, i, j);
 	            }
 	        }
