@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ToolBar xmlns="http://javafx.com/javafx"
+         xmlns:fx="http://javafx.com/fxml"
+         fx:controller="pack_morpion.ToolbarController"
+         prefHeight="40.0" prefWidth="600.0">
+    <items>
+    	<MenuBar >
+	        <Menu text="Menu">
+	            <items>
+	                <MenuItem fx:id="settingsItem" text="Settings"/>
+	                <MenuItem fx:id="modelsItem" text="Models"/>
+	            </items>
+	        </Menu>
+        </MenuBar>
+    </items>
+</ToolBar>
+
