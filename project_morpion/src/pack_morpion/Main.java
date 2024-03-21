@@ -172,29 +172,36 @@ public class Main extends Application {
 			layers[layers.length-1] = size ;
 			MultiLayerPerceptron net = new MultiLayerPerceptron(layers, lr, new SigmoidalTransferFunction());
             Task<Double> task = new Task<Double>() {
-            	double error = 0.0 ;
+            	
             	double bestError = 10000.0;
+            	int batch =200;
                 @Override
 				protected Double call() throws InterruptedException {
+                	
                 	for(int i = 0; i < epochs; i++){
-        				Coup c = null ;
-        				while ( c == null )
-        					c = mapTrain.get((int)(Math.round(Math.random() * mapTrain.size())));
+                		
+                		double error = 0.0 ;
+                		for (int j = 0; j < batch; j++) {
+                			Coup c = null ;
+            				while ( c == null )
+            					c = mapTrain.get((int)(Math.round(Math.random() * mapTrain.size())));
+            				
+            				//updateMessage("Learning !");
+            				error += net.backPropagate(c.in, c.out);
+						}
+                		error/=batch;
         				
-        				//updateMessage("Learning !");
-        				double e = net.backPropagate(c.in, c.out);
-    					if(bestError > e) {
-    						bestError=e/(double)i;
+    					if(bestError > error) {
+    						bestError=error/(double)i;
     						updateMessage("Error at step "+i+" is "+bestError);
     					}
-    					
-    					error +=e;
+
         				updateProgress(i, epochs);
         				
         			}
                 	net.save(file);
                 	updateMessage("Learning completed!");
-					return error;
+					return -1.0;
                 }
             };
             progressBar.progressProperty().bind(task.progressProperty());

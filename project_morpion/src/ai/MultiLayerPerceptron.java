@@ -25,7 +25,6 @@ public class MultiLayerPerceptron implements Cloneable, Serializable {
 		int i, j, k;
 		double new_value;
 		double output[] = new double[fLayers[fLayers.length - 1].Length];
-		
 		for(i = 0; i < fLayers[0].Length; i++)
 			fLayers[0].Neurons[i].value = input[i];
 		

@@ -1,5 +1,6 @@
 package pack_morpion;
 
+import ai.MultiLayerPerceptron;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -15,21 +16,49 @@ import javafx.geometry.Pos;
 
 public class Game extends Application{
 
-	private int[][] matrix = new int[3][3];
+	private double[][] matrix = new double[3][3];
 	
 	private int nbJoueur=1;
 	
 	private int buttonCount = 0;
 	
-	public void initMatrix(int[][] matrix) {
+	private MultiLayerPerceptron net;
+	
+	private double[] listMatrix= {0,0,0,0,0,0,0,0,0}; 
+	
+	public Game() {
+		this.net=MultiLayerPerceptron.load("resources/models/model_128_4_1.0E-4.srf");
+		this.initMatrix(matrix);
+	}
+
+	public void initMatrix(double[][] matrix2) {
 		for(int i =0;i<3; i++) {
 			for(int j =0;j<3; j++) {
-				matrix[i][j]=0;
+				matrix2[i][j]=0;
 			}
 		}
 	}
 	
-	public boolean victory(int[][] matrix,int numJoueur) {
+	public void affiche(double[] list) {
+		for(int i =0;i<8; i++) {
+			System.out.println(list[i]);
+		}
+	}
+	
+	public int findBestOutcome(double[] list) {
+		int indice=0;
+		double max=list[0];
+		for(int i =1;i<8; i++) {
+			if(list[i]>max && listMatrix[i]==0) {
+				indice=i;
+				max=list[i];
+			}
+		}
+		return indice;
+	}
+	
+	
+	public boolean victory(double[][] matrix,int numJoueur) {
 		if(matrix[0][0]==numJoueur && matrix[1][1]==numJoueur && matrix[2][2]==numJoueur) {
 			return true;
 		}
@@ -98,8 +127,20 @@ public class Game extends Application{
 			int i = GridPane.getRowIndex(button);
 			int j = GridPane.getColumnIndex(button);
 			matrix[i][j]=nbJoueur;
+			if(i==0) {
+				listMatrix[j]=nbJoueur;
+			}
+			else if(i==1){
+				listMatrix[j+2]=nbJoueur;
+			}
+			else {
+				listMatrix[j+4]=nbJoueur;
+			}
+			double[] coup = net.forwardPropagation(listMatrix);
+			this.affiche(coup);
+			this.affiche(listMatrix);
+			System.out.println(this.findBestOutcome(coup));
 			this.buttonCount++;
-			System.out.println(buttonCount);
 			if(game.victory(matrix, nbJoueur)){
 				game.EndGameStackPane(primaryStage,nbJoueur);
 			}
