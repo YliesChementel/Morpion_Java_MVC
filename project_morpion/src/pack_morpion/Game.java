@@ -124,7 +124,7 @@ public class Game extends Application{
 	    Button replayButton = new Button("Rejouer");
 	    Button exitButton = new Button("Quitter");
 	    replayButton.setOnAction(event -> {
-	    	initList(this.listMatrix);
+	    	this.initList(this.listMatrix);
 	    	this.buttonCount=0;
 	    	this.turnAI=false;
 	    	this.start(primaryStage);
@@ -146,6 +146,9 @@ public class Game extends Application{
 	
 	public void playAi(Stage primaryStage,GridPane gridPane) {
 		double[] coup = net.forwardPropagation(this.listMatrix);
+		this.affiche(this.listMatrix);
+		System.out.println();
+		this.affiche(coup);
 		int BestOutcome = findBestOutcome(coup);
 		int row = BestOutcome / 3;
 		int col = BestOutcome % 3;
