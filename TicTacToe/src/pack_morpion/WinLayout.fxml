@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.Button?>
+<?import pack_morpion.WinController?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1">
-	<!-- TODO Add Nodes -->
+<AnchorPane xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml"
+          fx:controller="pack_morpion.WinController">
+	<children>
+        <Label fx:id="messageLabel" layoutX="233.0" layoutY="70.0" text="Félicitations, vous avez gagné!" />
+        <Button fx:id="rejouerButton" layoutX="233.0" layoutY="150.0" mnemonicParsing="false" onAction="#rejouer" text="Rejouer" />
+        <Button layoutX="233.0" layoutY="200.0" mnemonicParsing="false" onAction="#retour" text="Retour" fx:id="retourButton" />
+    </children>
 </AnchorPane>
-

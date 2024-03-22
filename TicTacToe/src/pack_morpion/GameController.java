@@ -1,7 +1,14 @@
 package pack_morpion;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
+
+import java.io.IOException;
+
 import javafx.event.ActionEvent;
 
 public class GameController {
@@ -24,6 +31,9 @@ public class GameController {
     private Button btn8;
     @FXML
     private Button btn9;
+    
+    @FXML
+    private GridPane contentGridPane;
 
     private boolean joueurX = true; 
 
@@ -49,13 +59,62 @@ public class GameController {
             
             if (verifierGagnant("X")) {
             	
-                System.out.println("Le joueur X a gagné !");
-                
+            	afficherFenetreVictoire("X");
             } else if (verifierGagnant("O")) {
-                System.out.println("Le joueur O a gagné !");
+            	afficherFenetreVictoire("O");
             } else if (partieNulle()) {
-                System.out.println("Partie nulle !");
+            	afficherFenetreNull();
             }
+        }
+    }
+    
+    protected void afficherVersusLayout() {
+        try {
+        	FXMLLoader loader = new FXMLLoader(getClass().getResource("VersusLayout.fxml"));
+            Parent root = loader.load();
+            VersusController versusController = loader.getController();
+            contentGridPane.getChildren().setAll(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    
+    private void afficherFenetreNull() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("NullLayout.fxml"));
+            Parent root = loader.load();
+            
+            NullController nullController = loader.getController();
+            nullController.setGameController(this);
+                                
+            Stage stage = new Stage();
+            nullController.setStage(stage);
+            stage.setScene(new Scene(root));
+            stage.setTitle("Nulle");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void afficherFenetreVictoire(String joueur) {
+        try {
+        	FXMLLoader loader = new FXMLLoader(getClass().getResource("WinLayout.fxml"));
+            Parent root = loader.load();
+            WinController winController = loader.getController();
+            winController.setGameController(this);
+            
+            
+            winController.afficherVictoire(joueur);
+            
+            Stage stage = new Stage();
+            winController.setStage(stage);
+            stage.setScene(new Scene(root));
+            stage.setTitle("Félicitations !");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
