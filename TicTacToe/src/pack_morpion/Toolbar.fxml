@@ -6,16 +6,16 @@
 <ToolBar xmlns="http://javafx.com/javafx"
          xmlns:fx="http://javafx.com/fxml"
          fx:controller="pack_morpion.ToolbarController"
-         prefHeight="40.0" prefWidth="600.0">
+         prefHeight="40.0" prefWidth="600.0"
+         styleClass="MenuBar">
     <items>
-    	<MenuBar >
-	        <Menu text="Menu">
+    	<MenuBar styleClass="Menu">
+	        <Menu text="Menu" styleClass="MenuButtons">
 	            <items>
-	                <MenuItem fx:id="settingsItem" text="Settings"/>
-	                <MenuItem fx:id="modelsItem" text="Models"/>
+	                <MenuItem fx:id="settingsItem" text="Settings" styleClass="MenuButtons"/>
+	                <MenuItem fx:id="modelsItem" text="Models" styleClass="MenuButtons"/>
 	            </items>
 	        </Menu>
         </MenuBar>
     </items>
 </ToolBar>
-

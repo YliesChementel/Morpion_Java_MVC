@@ -2,3 +2,56 @@
     -fx-background-image: url("https://image.freepik.com/vecteurs-libre/paysage-vert-ciel-bleu_74689-139.jpg");
     -fx-background-size: cover; 
 }
+
+.MenuBar {
+	-fx-background-color: transparent;
+}
+
+.Menu {
+	-fx-background-color: #a9e6f9;
+	-fx-effect: dropshadow( gaussian , rgba(0,0,0,0.7) , 10,0,0,1 );
+	-fx-border-color : black;
+}
+
+.MenuButtons {
+	-fx-focus-color: red;
+	-fx-background-color: #a9e6f9;
+}
+
+.PlayButton {
+	-fx-background-color: #a9e6f9;
+	-fx-border-color : black;
+	-fx-font-weight : bold;
+}
+
+.Settings {
+    -fx-background-image: url("file:///../rss/images/Settings_Background.jpeg");
+    -fx-background-size: cover;  
+}
+
+.TextFieldSettings {
+	-fx-background-color: #87cefa;
+	-fx-border-color : black;
+	-fx-font-weight : bold;
+}
+
+.LabelSettings {
+	-fx-text-fill: white;
+	-fx-font-weight : bold;
+}
+
+.ButtonSettings {
+	-fx-background-color: #87cefa;
+	-fx-border-color : black;
+	-fx-font-weight : bold;
+    -fx-spacing: 10;
+}
+
+.Cases {
+	-fx-opacity : 0.8;
+	-fx-border-color : black;
+	-fx-border-radius: 10;
+	-fx-border-width :3;
+	-fx-background-color: #a9e6f9;
+	-fx-background-radius: 10;
+}

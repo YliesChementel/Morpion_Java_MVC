@@ -11,7 +11,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
@@ -70,35 +69,59 @@ public class VersusController {
             Config config = configLoad.get(button.getText());
             String modelName = "model_" + config.hiddenLayerSize + "_" + config.numberOfhiddenLayers + "_"
                     + config.learningRate + ".srf";
-            System.out.println(modelName);
 
             String repertoire = ".\\rss\\models\\";
 
             String file = repertoire + modelName;
-            System.out.println(file);
+   
             File tempFile = new File(file);
             boolean exists = tempFile.exists();
             if (!exists) {
-            	System.out.println("N'existe pas");
-            	try {
+              	try {
 	            	FXMLLoader loader = new FXMLLoader(getClass().getResource("ChargementLayout.fxml"));
 	                Parent root = loader.load();
-	                System.out.println(file);
 	                ModelController controller = loader.getController();
 	                controller.setParameters(config.hiddenLayerSize, config.learningRate, config.numberOfhiddenLayers, file);
-	                //ModelController controller = new ModelController(config.hiddenLayerSize, config.learningRate, config.numberOfhiddenLayers, file);
-	                //loader.setController(controller);
-	                controller.initializeComponents();
+	                controller.initializeModel();
 	                Scene scene = new Scene(root);
 	                Stage stage = new Stage();
 	                stage.setScene(scene);
 	                stage.setTitle("Loading");
 	                stage.show();
+	                
+	                stage.setOnHidden(event -> {
+	                    try {
+	                        FXMLLoader loader2 = new FXMLLoader(getClass().getResource("GameAiLayout.fxml"));
+	                        Parent root2 = loader2.load();
+	                        
+	                        GameAiController gameAiController = loader2.getController();
+	                        gameAiController.setAiModelPath(file);
+	                        
+	                        hbox.getChildren().clear();
+	                        hbox.getChildren().add(root2);
+	                    } catch (IOException e) {
+	                        e.printStackTrace();
+	                    }
+	                });
+	                
             	} catch (IOException e) {
             		e.printStackTrace();
-            
             	}
            }
+            else {
+            	try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("GameAiLayout.fxml"));
+                    Parent root = loader.load();
+                    
+                    GameAiController gameAiController = loader.getController();
+                    gameAiController.setAiModelPath(file);
+                    
+                    hbox.getChildren().clear();
+                    hbox.getChildren().add(root);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
        }
     }
 

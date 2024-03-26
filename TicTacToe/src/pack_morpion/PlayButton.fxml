@@ -5,10 +5,10 @@
 
 <StackPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
-           fx:controller="pack_morpion.PlayButtonController"
+            fx:controller="pack_morpion.PlayButtonController"
            prefWidth="600" prefHeight="400" fx:id="stackPane">
 
     <!-- Bouton Play -->
-    <Button fx:id="playButton" text="Play" style="-fx-font-size: 24;" onAction="#handlePlayButtonClicked" />
+    <Button fx:id="playButton" text="Play" style="-fx-font-size: 24;" onAction="#handlePlayButtonClicked" styleClass="PlayButton"/>
 
 </StackPane>

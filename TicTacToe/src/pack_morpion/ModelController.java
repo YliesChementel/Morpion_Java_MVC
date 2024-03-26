@@ -10,10 +10,11 @@ import ai.SigmoidalTransferFunction;
 import ai.Test;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 
 
@@ -24,11 +25,12 @@ public class ModelController {
     @FXML
     private TextField textField;
     
-    @FXML
-    private Button startButton;
     
     @FXML
     private VBox filesContainer;
+    
+    @FXML
+    private BorderPane borderPane;
 	
     private String file;
     private int h;
@@ -50,12 +52,10 @@ public class ModelController {
     	
     }
 
+    
+    
     @FXML
-    public void initializeComponents() {
-        startButton.setOnAction(event -> handleStartButton());
-    }
-    @FXML
-    private void handleStartButton() {
+    protected void initializeModel() {
     	
     	HashMap<Integer, Coup> mapTrain = Test.loadCoupsFromFile(".\\rss\\train_dev_test\\train.txt");
 		int size = 9; 
@@ -110,6 +110,8 @@ public class ModelController {
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
+            Stage stage = (Stage) progressBar.getScene().getWindow();
+            stage.close();          
         });
 
         task.setOnFailed(workerStateEvent -> {

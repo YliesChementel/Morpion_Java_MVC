@@ -17,7 +17,9 @@ public class WinController {
     @FXML
     private Button retourButton;
     
-    private GameController gameController; 
+    private GameController gameController;
+    
+    private GameAiController gameAiController; 
     
     private Stage stage;
     
@@ -27,6 +29,10 @@ public class WinController {
         
     public void setGameController(GameController gameController) {
         this.gameController = gameController;
+    }
+    
+    public void setGameAiController(GameAiController gameAiController) {
+        this.gameAiController = gameAiController;
     }
     
 
@@ -41,11 +47,17 @@ public class WinController {
             if (gameController != null) { 
                 gameController.afficherVersusLayout();
             }
+            else if(gameAiController != null) {
+            	gameAiController.afficherVersusLayout();
+            }
         }
     }
     
     public void afficherVictoire(String joueur) {
         messageLabel.setText("Félicitations, joueur " + joueur + " a gagné !");
+    }
+    public void afficherVictoireAi(String joueur) {
+        messageLabel.setText("Félicitations, " + joueur + " a gagné !");
     }
 
     @FXML

@@ -2,6 +2,7 @@ package pack_morpion;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 
 public class LostController {
@@ -13,8 +14,21 @@ public class LostController {
     @FXML
     private Button retourButton;
     
+    private GameAiController gameAiController; 
+    
+    private Stage stage;
+    
     public LostController() {
     	
+    }
+    
+    public void setGameAiController(GameAiController gameAiController) {
+        this.gameAiController = gameAiController;
+    }
+    
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
     
     @FXML
@@ -24,6 +38,11 @@ public class LostController {
 
     @FXML
     private void retour(ActionEvent event) {
-        // Code pour retourner à la vue précédente
+    	if (stage != null) {
+            stage.close(); 
+            if(gameAiController != null) {
+            	gameAiController.afficherVersusLayout();
+            }
+        }
     }
 }
