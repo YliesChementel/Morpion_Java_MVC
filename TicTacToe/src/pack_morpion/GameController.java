@@ -5,10 +5,16 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 
+import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 
 public class GameController {
@@ -38,6 +44,9 @@ public class GameController {
     private boolean joueurX = true; 
 
     private String[][] tableauJeu = new String[3][3];
+    
+    @FXML
+    private StackPane stackpane;
 
     
     @FXML
@@ -73,7 +82,22 @@ public class GameController {
         	FXMLLoader loader = new FXMLLoader(getClass().getResource("VersusLayout.fxml"));
             Parent root = loader.load();
             VersusController versusController = loader.getController();
-            contentGridPane.getChildren().setAll(root);
+           
+
+            Scene sceneAi = contentGridPane.getScene();
+            root.translateXProperty().set(-sceneAi.getWidth());
+            stackpane.getChildren().add(root);
+            Timeline timeline = new Timeline();
+
+            KeyValue keyValue = new KeyValue(root.translateXProperty(), 0, Interpolator.EASE_IN);
+            KeyFrame keyFrame = new KeyFrame(Duration.seconds(1), keyValue);
+            timeline.getKeyFrames().add(keyFrame);
+
+            KeyValue keyValue2 = new KeyValue(contentGridPane.translateXProperty(),sceneAi.getWidth(), Interpolator.EASE_IN);
+            KeyFrame keyFrame2 = new KeyFrame(Duration.seconds(1), keyValue2);
+            timeline.getKeyFrames().add(keyFrame2);
+            timeline.setOnFinished(event -> stackpane.getChildren().setAll(root));
+            timeline.play();
         } catch (IOException e) {
             e.printStackTrace();
         }

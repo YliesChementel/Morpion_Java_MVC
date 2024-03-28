@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class ToolbarController {
@@ -31,6 +32,9 @@ public class ToolbarController {
             Scene scene = new Scene(root);
             Stage stage = new Stage();
             stage.setScene(scene);
+            Image icon = new Image("file:rss/images/Cog.png");
+            stage.getIcons().add(icon);
+            stage.setResizable(false);
             stage.setTitle("Settings");
             settingController = loader.getController();
             settingController.setParentController(this);
@@ -48,6 +52,8 @@ public class ToolbarController {
             Parent root = loader.load();
             Scene scene = new Scene(root);
             Stage stage = new Stage();
+            Image icon = new Image("file:rss/images/Model.jpg");
+            stage.getIcons().add(icon);
             stage.setScene(scene);
             stage.setTitle("Models");
             stage.show();

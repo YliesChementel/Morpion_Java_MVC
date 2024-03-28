@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 //import javafx.scene.layout.Pane;
 //import javafx.scene.paint.Color;
 //import javafx.scene.shape.Rectangle;
@@ -16,8 +17,12 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("MainLayout.fxml"));
-        primaryStage.setTitle("JavaFX Toolbar Example");
-        primaryStage.setScene(new Scene(root, 600, 600));
+        primaryStage.setTitle("LE SUPER MORPION");
+        Image icon = new Image("file:rss/images/Morpion.jpg");
+        primaryStage.getIcons().add(icon);
+        primaryStage.setScene(new Scene(root, 720, 626));
+        primaryStage.setMinWidth(720);
+        primaryStage.setMinHeight(626);
         primaryStage.show();
 /*
         // Création d'un rectangle

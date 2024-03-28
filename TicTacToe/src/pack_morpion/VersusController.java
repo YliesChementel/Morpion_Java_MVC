@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import ai.Config;
 import ai.ConfigFileLoader;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,12 +16,15 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import javafx.animation.Interpolator;
 
 
 public class VersusController {
 	@FXML
-    private HBox hbox;
+    private StackPane stackpane;
 
     @FXML
     private Button homme_Vs_Ai;
@@ -46,19 +52,44 @@ public class VersusController {
     private void initialize() {
     	
         grid.setHgap(40);
-        homme_Vs_Ai.setOnAction(event -> handleHommeVsAi());
+        grid.setVgap(20);
         homme_Vs_Homme.setOnAction(event -> handleHommeVsHomme());
-
+        homme_Vs_Ai.setOnAction(event -> handleHommeVsAi());
+        
         ToggleGroup group = new ToggleGroup();
         radioF.setSelected(true);
         radioF.setToggleGroup(group);
         radioM.setToggleGroup(group);
         radioD.setToggleGroup(group);
         
+        homme_Vs_Homme.setOnMousePressed(event -> {
+        	homme_Vs_Homme.setStyle("-fx-background-color: #2b78e4;");
+			homme_Vs_Homme.setTranslateY(homme_Vs_Homme.getTranslateY() - 10);
+	    });
+
+        homme_Vs_Homme.setOnMouseReleased(event -> {
+        	homme_Vs_Homme.setStyle("");
+			homme_Vs_Homme.setTranslateY(homme_Vs_Homme.getTranslateY() + 10);
+	    });
+		
+        homme_Vs_Ai.setOnMousePressed(event -> {
+        	homme_Vs_Ai.setStyle("-fx-background-color: #2b78e4;");
+        	homme_Vs_Ai.setTranslateY(homme_Vs_Ai.getTranslateY() - 10);
+	    });
+
+		homme_Vs_Ai.setOnMouseReleased(event -> {
+			homme_Vs_Ai.setStyle("");
+			homme_Vs_Ai.setTranslateY(homme_Vs_Ai.getTranslateY() + 10);
+	    });
     }
     
     private void handleHommeVsAi() {
-    	RadioButton button = (RadioButton) grid.getChildren().stream()
+    	HBox hboxRadio = (HBox) grid.getChildren().stream()
+                .filter(node -> node instanceof HBox)
+                .findFirst()
+                .orElse(null);
+    	
+    	RadioButton button = (RadioButton) hboxRadio.getChildren().stream()
                 .filter(node -> node instanceof RadioButton && ((RadioButton) node).isSelected())
                 .findFirst()
                 .orElse(null);
@@ -66,7 +97,7 @@ public class VersusController {
         if (button != null) {
             ConfigFileLoader configLoad = new ConfigFileLoader();
             configLoad.loadConfigFile(".\\rss\\config.txt");
-            Config config = configLoad.get(button.getText());
+            Config config = configLoad.get(button.getId());
             String modelName = "model_" + config.hiddenLayerSize + "_" + config.numberOfhiddenLayers + "_"
                     + config.learningRate + ".srf";
 
@@ -97,8 +128,20 @@ public class VersusController {
 	                        GameAiController gameAiController = loader2.getController();
 	                        gameAiController.setAiModelPath(file);
 	                        
-	                        hbox.getChildren().clear();
-	                        hbox.getChildren().add(root2);
+	                        Scene sceneAi = homme_Vs_Ai.getScene();
+	                        root2.translateXProperty().set(sceneAi.getWidth());
+	                        stackpane.getChildren().add(root2);
+
+	                        Timeline timeline = new Timeline();
+	                        KeyValue keyValue = new KeyValue(root2.translateXProperty(), 0, Interpolator.EASE_IN);
+	                        KeyFrame keyFrame = new KeyFrame(Duration.seconds(1), keyValue);
+	                        timeline.getKeyFrames().add(keyFrame);
+	                        KeyValue keyValue2 = new KeyValue(grid.translateXProperty(), -sceneAi.getWidth(), Interpolator.EASE_IN);
+	                        KeyFrame keyFrame2 = new KeyFrame(Duration.seconds(1), keyValue2);
+	                        timeline.getKeyFrames().add(keyFrame2);
+
+	                        timeline.setOnFinished(event1 -> stackpane.getChildren().remove(grid));
+	                        timeline.play();
 	                    } catch (IOException e) {
 	                        e.printStackTrace();
 	                    }
@@ -116,8 +159,20 @@ public class VersusController {
                     GameAiController gameAiController = loader.getController();
                     gameAiController.setAiModelPath(file);
                     
-                    hbox.getChildren().clear();
-                    hbox.getChildren().add(root);
+                    Scene sceneAi = homme_Vs_Ai.getScene();
+                    root.translateXProperty().set(sceneAi.getWidth());
+                    stackpane.getChildren().add(root);
+
+                    Timeline timeline = new Timeline();
+                    KeyValue keyValue = new KeyValue(root.translateXProperty(), 0, Interpolator.EASE_IN);
+                    KeyFrame keyFrame = new KeyFrame(Duration.seconds(1), keyValue);
+                    timeline.getKeyFrames().add(keyFrame);
+                    KeyValue keyValue2 = new KeyValue(grid.translateXProperty(), -sceneAi.getWidth(), Interpolator.EASE_IN);
+                    KeyFrame keyFrame2 = new KeyFrame(Duration.seconds(1), keyValue2);
+                    timeline.getKeyFrames().add(keyFrame2);
+
+                    timeline.setOnFinished(event -> stackpane.getChildren().remove(grid));
+                    timeline.play();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -127,10 +182,24 @@ public class VersusController {
 
     private void handleHommeVsHomme() {
     	try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("GameLayout.fxml"));
+    		FXMLLoader loader = new FXMLLoader(getClass().getResource("GameLayout.fxml"));
             Parent root = loader.load();
-            hbox.getChildren().clear();
-            hbox.getChildren().add(root);
+            Scene scene = homme_Vs_Homme.getScene();
+            root.translateXProperty().set(scene.getWidth());
+            stackpane.getChildren().add(root);
+
+            Timeline timeline = new Timeline();
+            KeyValue keyValue = new KeyValue(root.translateXProperty(), 0, Interpolator.EASE_IN);
+            KeyFrame keyFrame = new KeyFrame(Duration.seconds(1), keyValue);
+            timeline.getKeyFrames().add(keyFrame);
+            KeyValue keyValue2 = new KeyValue(grid.translateXProperty(), -scene.getWidth(), Interpolator.EASE_IN);
+            KeyFrame keyFrame2 = new KeyFrame(Duration.seconds(1), keyValue2);
+            timeline.getKeyFrames().add(keyFrame2);
+
+            timeline.setOnFinished(event -> stackpane.getChildren().remove(grid));
+            timeline.play();
+            
+            
         } catch (IOException e) {
             e.printStackTrace();
         }
