@@ -5,10 +5,10 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ToolBar?>
 
-<ToolBar prefHeight="40.0" prefWidth="600.0" styleClass="MenuBar" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pack_morpion.ToolbarController">
+<ToolBar prefHeight="40.0" prefWidth="600.0" styleClass="ToolBar" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pack_morpion.ToolbarController">
     <items>
-    	<MenuBar focusTraversable="false" style="-fx-background-color: #a9e6f9; -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.7) , 10,0,0,1 ); -fx-border-color: black;" styleClass="Menu">
-	        <Menu style="-fx-background-color: #a9e6f9; -fx-focus-traversable: false; -fx-font-family: Comic Sans MS;" styleClass="MenuButtons" text="Menu">
+    	<MenuBar fx:id="menuBar" focusTraversable="false" style="-fx-background-color: #a9e6f9;" styleClass="Menu">
+	        <Menu fx:id="menu"  text="Menu ▼">
 	            <items>
 	                <MenuItem fx:id="settingsItem" styleClass="MenuButtons" text="Settings" />
 	                <MenuItem fx:id="modelsItem" styleClass="MenuButtons" text="Models" />

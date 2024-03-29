@@ -70,6 +70,10 @@ public class VersusController {
         homme_Vs_Homme.setOnMouseReleased(event -> {
         	homme_Vs_Homme.setStyle("");
 			homme_Vs_Homme.setTranslateY(homme_Vs_Homme.getTranslateY() + 10);
+			homme_Vs_Ai.setDisable(true);
+			homme_Vs_Homme.setDisable(true);
+			homme_Vs_Ai.setStyle("-fx-opacity: 1;");
+			homme_Vs_Homme.setStyle("-fx-opacity: 1;");
 	    });
 		
         homme_Vs_Ai.setOnMousePressed(event -> {
@@ -80,6 +84,11 @@ public class VersusController {
 		homme_Vs_Ai.setOnMouseReleased(event -> {
 			homme_Vs_Ai.setStyle("");
 			homme_Vs_Ai.setTranslateY(homme_Vs_Ai.getTranslateY() + 10);
+			homme_Vs_Ai.setDisable(true);
+			homme_Vs_Homme.setDisable(true);
+			homme_Vs_Ai.setStyle("-fx-opacity: 1;");
+			homme_Vs_Homme.setStyle("-fx-opacity: 1;");
+			
 	    });
     }
     

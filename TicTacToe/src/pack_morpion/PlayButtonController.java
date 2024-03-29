@@ -5,6 +5,7 @@ import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -39,6 +40,9 @@ public class PlayButtonController {
     @FXML
     private void handlePlayButtonClicked() {
         try {
+        	playButton.setDisable(true);
+        	Platform.runLater(() -> playButton.setStyle("-fx-opacity: 1;"));
+        	
             FXMLLoader loader = new FXMLLoader(getClass().getResource("VersusLayout.fxml"));
             Parent root = loader.load();
             

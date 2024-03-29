@@ -7,10 +7,14 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
-          fx:controller="pack_morpion.WinController">
+          fx:controller="pack_morpion.WinController"
+          stylesheets="@application.css"
+          styleClass="Win"
+          prefHeight="400.0" prefWidth="560">
+          
 	<children>
-        <Label fx:id="messageLabel" layoutX="233.0" layoutY="70.0" text="Félicitations, vous avez gagné!" />
-        <Button fx:id="rejouerButton" layoutX="233.0" layoutY="150.0" mnemonicParsing="false" onAction="#rejouer" text="Rejouer" />
-        <Button layoutX="233.0" layoutY="200.0" mnemonicParsing="false" onAction="#retour" text="Retour" fx:id="retourButton" />
+        <Label fx:id="messageLabel" layoutX="50" layoutY="150" text="Félicitations, vous avez gagné!" styleClass="textFieldWin"/>
+        <Button fx:id="rejouerButton" layoutX="372" layoutY="365" mnemonicParsing="false" onAction="#rejouer" text="Rejouer" styleClass="ButtonsWin" />
+        <Button layoutX="150.0" layoutY="365" mnemonicParsing="false" onAction="#retour" text="Retour" fx:id="retourButton" styleClass="ButtonsWin" />
     </children>
 </AnchorPane>
