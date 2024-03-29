@@ -32,10 +32,10 @@ public class ToolbarController {
             Scene scene = new Scene(root);
             Stage stage = new Stage();
             stage.setScene(scene);
-            Image icon = new Image("file:rss/images/Cog.png");
+            Image icon = new Image("file:///..\\rss\\images\\Cog.png");
             stage.getIcons().add(icon);
             stage.setResizable(false);
-            stage.setTitle("Settings");
+            stage.setTitle("Paramètre");
             settingController = loader.getController();
             settingController.setParentController(this);
             settingController.showSettings();
@@ -46,16 +46,17 @@ public class ToolbarController {
     }
 
     private void handleModels() {
-        System.out.println("Models clicked");
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("ModelLayout.fxml"));
+    	try {
+    		FXMLLoader loader = new FXMLLoader(getClass().getResource("ModelLayout.fxml"));
             Parent root = loader.load();
-            Scene scene = new Scene(root);
-            Stage stage = new Stage();
-            Image icon = new Image("file:rss/images/Model.jpg");
+            ModelViewController controller = loader.getController();
+            Stage stage = new Stage(); // Create a new stage
+            Image icon = new Image("file:///..\\rss\\images\\Model.jpg");
             stage.getIcons().add(icon);
+            Scene scene = new Scene(root);
             stage.setScene(scene);
-            stage.setTitle("Models");
+            stage.setTitle("Modèls");
+            controller.setStage(stage);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

@@ -5,21 +5,22 @@ import java.io.File;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 public class ModelViewController {
 	
 	@FXML
     private VBox filesContainer;
     private final File folder = new File(".\\rss\\models\\");
+    Stage stage;
 	
 	public void initialize() {
-    	// Get list of files
+    	
         File[] listOfFiles = folder.listFiles();
 
         if (listOfFiles != null) {
             for (File file : listOfFiles) {
                 if (file.isFile()) {
-                    // Create a CheckBox for each file
                     CheckBox checkBox = new CheckBox(file.getName());
                     filesContainer.getChildren().add(checkBox);
                 }
@@ -45,6 +46,13 @@ public class ModelViewController {
                 }
             }
         }
+        if (stage != null) {
+            stage.close();
+        }
+    }
+    
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 
 

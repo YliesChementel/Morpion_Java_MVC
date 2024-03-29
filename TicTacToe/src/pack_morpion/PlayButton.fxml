@@ -6,6 +6,6 @@
 <StackPane fx:id="stackPane" prefHeight="400" prefWidth="600" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pack_morpion.PlayButtonController">
 
     <!-- Bouton Play -->
-    <Button fx:id="playButton" onAction="#handlePlayButtonClicked" prefHeight="88.0" prefWidth="252.0" text="Play" styleClass="PlayButton"/>
+    <Button fx:id="playButton" onAction="#handlePlayButtonClicked" prefHeight="88.0" prefWidth="252.0" text="Jouer" styleClass="PlayButton"/>
 
 </StackPane>

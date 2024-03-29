@@ -18,6 +18,25 @@ public class GameAiController {
 
     @FXML
     private GridPane contentGridPaneAi;
+    
+    @FXML
+    private Button btn1;
+    @FXML
+    private Button btn2;
+    @FXML
+    private Button btn3;
+    @FXML
+    private Button btn4;
+    @FXML
+    private Button btn5;
+    @FXML
+    private Button btn6;
+    @FXML
+    private Button btn7;
+    @FXML
+    private Button btn8;
+    @FXML
+    private Button btn9;
 
     private int buttonCount = 0;
     private int nbJoueur = 1;
@@ -25,16 +44,69 @@ public class GameAiController {
     private MultiLayerPerceptron net;
     private double[] listMatrix = {0, 0, 0, 0, 0, 0, 0, 0, 0};
     private boolean turnAI = false;
+    
+    Stage stage;
+    
+    
 
     public GameAiController() {
         this.initMatrix(tableauJeu);
     }
+    
+    
     
     public void setAiModelPath(String modelPath) {
         this.net = MultiLayerPerceptron.load(modelPath);
     }
 
     public void initialize() {
+    }
+    
+    public void rejouerPartieSansChanger() {
+    	turnAI = false; 
+        tableauJeu = new String[3][3]; 
+        listMatrix = new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0};
+        buttonCount = 0;
+        nbJoueur = 1;
+
+        btn1.setText("");
+        btn2.setText("");
+        btn3.setText("");
+        btn4.setText("");
+        btn5.setText("");
+        btn6.setText("");
+        btn7.setText("");
+        btn8.setText("");
+        btn9.setText("");
+
+        if (stage != null) {
+            stage.close();
+        }
+
+    }
+    
+    public void rejouerPartie(String modelPath) {
+    	turnAI = false; 
+        tableauJeu = new String[3][3]; 
+        listMatrix = new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0};
+        buttonCount = 0;
+        nbJoueur = 1;
+        setAiModelPath(modelPath);
+
+        btn1.setText("");
+        btn2.setText("");
+        btn3.setText("");
+        btn4.setText("");
+        btn5.setText("");
+        btn6.setText("");
+        btn7.setText("");
+        btn8.setText("");
+        btn9.setText("");
+
+        if (stage != null) {
+            stage.close();
+        }
+
     }
 
 
@@ -129,19 +201,18 @@ public class GameAiController {
 
     private boolean victory(String[][] board, int player) {
         String symbol = player == 1 ? "X" : "O";
-        // Vérifier les lignes et les colonnes
         for (int i = 0; i < 3; i++) {
             if (board[i][0] == symbol && board[i][1] == symbol && board[i][2] == symbol) {
-                return true; // Ligne gagnante
+                return true; 
             }
             if (board[0][i] == symbol && board[1][i] == symbol && board[2][i] == symbol) {
-                return true; // Colonne gagnante
+                return true;
             }
         }
-        // Vérifier les diagonales
+        
         if ((board[0][0] == symbol && board[1][1] == symbol && board[2][2] == symbol) ||
             (board[0][2] == symbol && board[1][1] == symbol && board[2][0] == symbol)) {
-            return true; // Diagonale gagnante
+            return true; 
         }
         return false;
     }

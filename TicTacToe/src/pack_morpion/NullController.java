@@ -21,9 +21,6 @@ public class NullController {
     public NullController() {
     	
     }
-    
-    
-    
         
     public void setGameController(GameController gameController) {
         this.gameController = gameController;
@@ -46,6 +43,9 @@ public class NullController {
     
     @FXML
     private void rejouer(ActionEvent event) {
-        // Code pour recommencer la partie
+    	stage.close();
+    	gameController.rejouerPartie();
+    	
     }
+
 }

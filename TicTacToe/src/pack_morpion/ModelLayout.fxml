@@ -11,8 +11,9 @@
             stylesheets="@application.css"
             styleClass="Models">
 
-    <VBox spacing="10" alignment="BOTTOM_CENTER" fx:id="filesContainer">
+    <VBox spacing="10" alignment="CENTER">
+        <VBox spacing="10" alignment="CENTER" fx:id="filesContainer"/>
         <Button text="Supprimer les fichiers sélectionnés" onAction="#deleteSelectedFiles" styleClass="ButtonModels"/>
-    </VBox>
+    </VBox>   
 
 </AnchorPane>

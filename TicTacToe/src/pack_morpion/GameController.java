@@ -7,10 +7,9 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 import java.io.IOException;
-
+import javafx.util.Duration;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -44,6 +43,7 @@ public class GameController {
     private boolean joueurX = true; 
 
     private String[][] tableauJeu = new String[3][3];
+    Stage stage;
     
     @FXML
     private StackPane stackpane;
@@ -77,27 +77,46 @@ public class GameController {
         }
     }
     
+    public void rejouerPartie() {
+    	joueurX = true;
+        tableauJeu = new String[3][3];
+
+        btn1.setText("");
+        btn2.setText("");
+        btn3.setText("");
+        btn4.setText("");
+        btn5.setText("");
+        btn6.setText("");
+        btn7.setText("");
+        btn8.setText("");
+        btn9.setText("");
+
+        if (stage != null) {
+            stage.close();
+        }
+    }
+    
     protected void afficherVersusLayout() {
         try {
         	FXMLLoader loader = new FXMLLoader(getClass().getResource("VersusLayout.fxml"));
-            Parent root = loader.load();
-            VersusController versusController = loader.getController();
-           
+        	 Parent root = loader.load();
+             VersusController versusController = loader.getController();
+            
 
-            Scene sceneAi = contentGridPane.getScene();
-            root.translateXProperty().set(-sceneAi.getWidth());
-            stackpane.getChildren().add(root);
-            Timeline timeline = new Timeline();
+             Scene sceneAi = contentGridPane.getScene();
+             root.translateXProperty().set(-sceneAi.getWidth());
+             stackpane.getChildren().add(root);
+             Timeline timeline = new Timeline();
 
-            KeyValue keyValue = new KeyValue(root.translateXProperty(), 0, Interpolator.EASE_IN);
-            KeyFrame keyFrame = new KeyFrame(Duration.seconds(1), keyValue);
-            timeline.getKeyFrames().add(keyFrame);
+             KeyValue keyValue = new KeyValue(root.translateXProperty(), 0, Interpolator.EASE_IN);
+             KeyFrame keyFrame = new KeyFrame(Duration.seconds(1), keyValue);
+             timeline.getKeyFrames().add(keyFrame);
 
-            KeyValue keyValue2 = new KeyValue(contentGridPane.translateXProperty(),sceneAi.getWidth(), Interpolator.EASE_IN);
-            KeyFrame keyFrame2 = new KeyFrame(Duration.seconds(1), keyValue2);
-            timeline.getKeyFrames().add(keyFrame2);
-            timeline.setOnFinished(event -> stackpane.getChildren().setAll(root));
-            timeline.play();
+             KeyValue keyValue2 = new KeyValue(contentGridPane.translateXProperty(),sceneAi.getWidth(), Interpolator.EASE_IN);
+             KeyFrame keyFrame2 = new KeyFrame(Duration.seconds(1), keyValue2);
+             timeline.getKeyFrames().add(keyFrame2);
+             timeline.setOnFinished(event -> stackpane.getChildren().setAll(root));
+             timeline.play();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -128,7 +147,6 @@ public class GameController {
             Parent root = loader.load();
             WinController winController = loader.getController();
             winController.setGameController(this);
-            
             
             winController.afficherVictoire(joueur);
             
