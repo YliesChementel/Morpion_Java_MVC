@@ -4,6 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -127,11 +128,13 @@ public class GameController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("NullLayout.fxml"));
             Parent root = loader.load();
-            
             NullController nullController = loader.getController();
             nullController.setGameController(this);
-                                
             Stage stage = new Stage();
+            
+            Image icon = new Image("file:rss/images/draw-icon.jpg");
+            stage.getIcons().add(icon);
+            
             nullController.setStage(stage);
             stage.setScene(new Scene(root));
             stage.setTitle("Nulle");
@@ -147,10 +150,12 @@ public class GameController {
             Parent root = loader.load();
             WinController winController = loader.getController();
             winController.setGameController(this);
-            
             winController.afficherVictoire(joueur);
-            
             Stage stage = new Stage();
+            
+            Image icon = new Image("file:rss/images/victory-icon.png");
+            stage.getIcons().add(icon);
+            
             winController.setStage(stage);
             stage.setScene(new Scene(root));
             stage.setTitle("Félicitations !");

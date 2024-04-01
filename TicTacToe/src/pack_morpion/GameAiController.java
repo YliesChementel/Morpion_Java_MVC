@@ -11,10 +11,22 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+import javafx.util.Duration;
+import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+
+
 public class GameAiController {
+	
+	@FXML
+    private StackPane stackpane;
 
     @FXML
     private GridPane contentGridPaneAi;
@@ -149,11 +161,13 @@ public class GameAiController {
     	try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("LostLayout.fxml"));
             Parent root = loader.load();
-
             LostController lostController = loader.getController();
             lostController.setGameAiController(this);
-
             Stage stage = new Stage();
+            
+            Image icon = new Image("file:rss/images/lost-icon.png");
+            stage.getIcons().add(icon);
+            
             lostController.setStage(stage);
             stage.setScene(new Scene(root));
             stage.setTitle("Défaite");
@@ -218,11 +232,26 @@ public class GameAiController {
     }
     
     protected void afficherVersusLayout() {
-        try {
+    	try {
         	FXMLLoader loader = new FXMLLoader(getClass().getResource("VersusLayout.fxml"));
-            Parent root = loader.load();
-            VersusController versusController = loader.getController();
-            contentGridPaneAi.getChildren().setAll(root);
+        	 Parent root = loader.load();
+             VersusController versusController = loader.getController();
+            
+
+             Scene sceneAi = contentGridPaneAi.getScene();
+             root.translateXProperty().set(-sceneAi.getWidth());
+             stackpane.getChildren().add(root);
+             Timeline timeline = new Timeline();
+
+             KeyValue keyValue = new KeyValue(root.translateXProperty(), 0, Interpolator.EASE_IN);
+             KeyFrame keyFrame = new KeyFrame(Duration.seconds(1), keyValue);
+             timeline.getKeyFrames().add(keyFrame);
+
+             KeyValue keyValue2 = new KeyValue(contentGridPaneAi.translateXProperty(),sceneAi.getWidth(), Interpolator.EASE_IN);
+             KeyFrame keyFrame2 = new KeyFrame(Duration.seconds(1), keyValue2);
+             timeline.getKeyFrames().add(keyFrame2);
+             timeline.setOnFinished(event -> stackpane.getChildren().setAll(root));
+             timeline.play();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -232,11 +261,13 @@ public class GameAiController {
     	try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("NullAiLayout.fxml"));
             Parent root = loader.load();
-            
             NullAiController nullAiController = loader.getController();
             nullAiController.setGameAiController(this);
-                                
             Stage stage = new Stage();
+            
+            Image icon = new Image("file:rss/images/draw-icon.jpg");
+            stage.getIcons().add(icon);
+            
             nullAiController.setStage(stage);
             stage.setScene(new Scene(root));
             stage.setTitle("Nulle");
@@ -252,11 +283,12 @@ public class GameAiController {
             Parent root = loader.load();
             WinController winController = loader.getController();
             winController.setGameAiController(this);
-            
-            
             winController.afficherVictoireAi(joueur);
-            
             Stage stage = new Stage();
+            
+            Image icon = new Image("file:rss/images/victory-icon.png");
+            stage.getIcons().add(icon);
+            
             winController.setStage(stage);
             stage.setScene(new Scene(root));
             stage.setTitle("Félicitations !");

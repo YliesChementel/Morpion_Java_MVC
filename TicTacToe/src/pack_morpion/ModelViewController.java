@@ -5,11 +5,14 @@ import java.io.File;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 public class ModelViewController {
 	
-	@FXML
+	@FXML	
     private VBox filesContainer;
     private final File folder = new File(".\\rss\\models\\");
     Stage stage;
@@ -22,6 +25,8 @@ public class ModelViewController {
             for (File file : listOfFiles) {
                 if (file.isFile()) {
                     CheckBox checkBox = new CheckBox(file.getName());
+                    checkBox.setTextFill(Color.WHITE); //A changer de couleur 
+                    checkBox.setFont(Font.font("Comic Sans MS", FontWeight.BOLD, 12));
                     filesContainer.getChildren().add(checkBox);
                 }
             }

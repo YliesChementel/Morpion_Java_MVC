@@ -3,6 +3,7 @@
     -fx-background-size: cover; 
 }
 
+
 .ToolBar {
 	-fx-background-color: transparent;
 	-fx-focus-traversable: false;
@@ -76,9 +77,10 @@
 	-fx-background-radius: 10;
 }
 
+
 .Models {
     -fx-background-image: url("file:///../rss/images/model_background.png");
-    -fx-background-size: cover;  
+    -fx-background-size: cover;
 }
 
 .ButtonModels {

@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
@@ -82,6 +83,11 @@ public class WinController {
     	}
     	else {
 	        Alert alert = new Alert(AlertType.CONFIRMATION);
+	        
+	        Image icon = new Image("file:rss/images/alerte-icon.jpg");
+	        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+	        stage.getIcons().add(icon);
+	        
 	        alert.setTitle("Confirmation");
 	        alert.setHeaderText("Changer la difficulté ?");
 	        alert.setContentText("Voulez-vous changer la difficulté avant de rejouer ?");
