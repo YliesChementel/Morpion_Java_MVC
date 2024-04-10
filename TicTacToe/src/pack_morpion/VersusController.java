@@ -2,6 +2,9 @@ package pack_morpion;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import ai.Config;
 import ai.ConfigFileLoader;
 import javafx.animation.KeyFrame;
@@ -43,6 +46,8 @@ public class VersusController {
 
     @FXML
     private RadioButton radioD;
+    
+    protected List<String> modelIds = new ArrayList<>();
     
     
     public VersusController() {
@@ -107,6 +112,7 @@ public class VersusController {
             ConfigFileLoader configLoad = new ConfigFileLoader();
             configLoad.loadConfigFile(".\\rss\\config.txt");
             Config config = configLoad.get(button.getId());
+            modelIds.add(button.getId());
             String modelName = "model_" + config.hiddenLayerSize + "_" + config.numberOfhiddenLayers + "_"
                     + config.learningRate + ".srf";
 
@@ -187,6 +193,10 @@ public class VersusController {
                 }
             }
        }
+    }
+    
+    public List<String> getModelIds() {
+        return modelIds;
     }
 
     private void handleHommeVsHomme() {
