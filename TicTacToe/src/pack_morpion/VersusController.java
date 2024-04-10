@@ -34,6 +34,9 @@ public class VersusController {
 
     @FXML
     private Button homme_Vs_Homme;
+    
+    @FXML
+    private Button buttonRetour;
 
     @FXML
     private GridPane grid;
@@ -47,7 +50,6 @@ public class VersusController {
     @FXML
     private RadioButton radioD;
     
-    protected List<String> modelIds = new ArrayList<>();
     
     
     public VersusController() {
@@ -60,6 +62,7 @@ public class VersusController {
         grid.setVgap(20);
         homme_Vs_Homme.setOnAction(event -> handleHommeVsHomme());
         homme_Vs_Ai.setOnAction(event -> handleHommeVsAi());
+        buttonRetour.setOnAction(event -> handleRetour());
         
         ToggleGroup group = new ToggleGroup();
         radioF.setSelected(true);
@@ -97,6 +100,32 @@ public class VersusController {
 	    });
     }
     
+    private void handleRetour() {
+    	try {
+        	FXMLLoader loader = new FXMLLoader(getClass().getResource("PlayButton.fxml"));
+        	 Parent root = loader.load();
+             PlayButtonController playButtonController = loader.getController();
+            
+
+             Scene sceneAi = grid.getScene();
+             root.translateXProperty().set(-sceneAi.getWidth());
+             stackpane.getChildren().add(root);
+             Timeline timeline = new Timeline();
+
+             KeyValue keyValue = new KeyValue(root.translateXProperty(), 0, Interpolator.EASE_IN);
+             KeyFrame keyFrame = new KeyFrame(Duration.seconds(1), keyValue);
+             timeline.getKeyFrames().add(keyFrame);
+
+             KeyValue keyValue2 = new KeyValue(grid.translateXProperty(),sceneAi.getWidth(), Interpolator.EASE_IN);
+             KeyFrame keyFrame2 = new KeyFrame(Duration.seconds(1), keyValue2);
+             timeline.getKeyFrames().add(keyFrame2);
+             timeline.setOnFinished(event -> stackpane.getChildren().setAll(root));
+             timeline.play();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
     private void handleHommeVsAi() {
     	HBox hboxRadio = (HBox) grid.getChildren().stream()
                 .filter(node -> node instanceof HBox)
@@ -112,7 +141,6 @@ public class VersusController {
             ConfigFileLoader configLoad = new ConfigFileLoader();
             configLoad.loadConfigFile(".\\rss\\config.txt");
             Config config = configLoad.get(button.getId());
-            modelIds.add(button.getId());
             String modelName = "model_" + config.hiddenLayerSize + "_" + config.numberOfhiddenLayers + "_"
                     + config.learningRate + ".srf";
 
@@ -195,9 +223,6 @@ public class VersusController {
        }
     }
     
-    public List<String> getModelIds() {
-        return modelIds;
-    }
 
     private void handleHommeVsHomme() {
     	try {

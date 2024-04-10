@@ -78,5 +78,7 @@
             </HBox>
             
         </GridPane>
+        <Button fx:id="buttonRetour" text="Retour" StackPane.alignment="BOTTOM_RIGHT" styleClass="retourVsButton"/>
+
     </children>
 </StackPane>

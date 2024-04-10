@@ -160,6 +160,20 @@
 	-fx-background-radius: 10;
 }
 
+.retourVsButton {
+	-fx-font-size: 14; 
+	-fx-font-weight: bold; 
+	-fx-background-color: #a9e6f9; 
+	-fx-background-radius: 10; 
+	-fx-border-color: black; 
+	-fx-border-width: 3;
+	-fx-border-radius: 10;
+}
+
+.retourVsButton:hover {
+	-fx-text-fill:white;
+}
+
 .HboxRadio{
 	-fx-alignment: center;
 }

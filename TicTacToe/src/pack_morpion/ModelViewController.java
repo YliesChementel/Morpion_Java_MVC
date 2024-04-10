@@ -67,13 +67,13 @@ public class ModelViewController {
 	private String getDifficultyIndicator(File file) {
         String fileName = file.getName();
         if (fileName.contains("F")) {
-            return "F"; // Facile
+            return "F";
         } else if (fileName.contains("M")) {
-            return "M"; // Moyen
+            return "M";
         } else if (fileName.contains("D")) {
-            return "D"; // Difficile
+            return "D";
         } else {
-            return "?"; // Difficulté inconnue
+            return "?";
         }
     }
 
@@ -84,7 +84,10 @@ public class ModelViewController {
             if (node instanceof CheckBox) {
                 CheckBox checkBox = (CheckBox) node;
                 if (checkBox.isSelected()) {
-                    File fileToDelete = new File(folder.getPath() + File.separator + checkBox.getText());
+                	String checkBoxText = checkBox.getText();
+                    int index = checkBoxText.indexOf(" ");
+                    String fileName = checkBoxText.substring(0, index);
+                    File fileToDelete = new File(folder.getPath() + File.separator + fileName);
                     if (fileToDelete.delete()) {                        
                         nodesToRemove.add(node);
                     }
@@ -92,7 +95,6 @@ public class ModelViewController {
             }
         }
         
-        // Supprimez les nœuds de l'interface utilisateur
         filesContainer.getChildren().removeAll(nodesToRemove);
     }
     
