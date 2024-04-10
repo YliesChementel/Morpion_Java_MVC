@@ -7,6 +7,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
@@ -54,6 +56,13 @@ public class WinController {
     @FXML
     private void retour(ActionEvent event) {
         if (gameController != null) {
+        	String audioFile = "file:///../rss/son/son_stackpane_end.wav";
+            Media media = new Media(new File(audioFile).toURI().toString());
+            MediaPlayer mediaPlayer = new MediaPlayer(media);
+            mediaPlayer.setCycleCount(1);
+            mediaPlayer.setVolume(mediaPlayer.getVolume() - 0.9);
+            mediaPlayer.play();
+        	
         	TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), gameController.stackPaneView);
 		 	Scene scene = gameController.stackPaneView.getScene();
 	        translateTransition.setFromY(0);
@@ -93,6 +102,13 @@ public class WinController {
     private void rejouer(ActionEvent event) {
     	
     	if(gameController != null) {
+    		String audioFile = "file:///../rss/son/son_stackpane_end.wav";
+            Media media = new Media(new File(audioFile).toURI().toString());
+            MediaPlayer mediaPlayer = new MediaPlayer(media);
+            mediaPlayer.setCycleCount(1);
+            mediaPlayer.setVolume(mediaPlayer.getVolume() - 0.9);
+            mediaPlayer.play();
+    		
     		TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), gameController.stackPaneView);
 		 	Scene scene = gameController.stackPaneView.getScene();
 	        translateTransition.setFromY(0);

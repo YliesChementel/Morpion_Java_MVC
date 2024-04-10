@@ -6,8 +6,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import javafx.util.Duration;
 import javafx.animation.Interpolator;
@@ -109,6 +112,14 @@ public class GameController {
             Scene sceneAi = contentGridPane.getScene();
             root.translateXProperty().set(-sceneAi.getWidth());
             stackpane.getChildren().add(root);
+            
+            String audioFile = "file:///../rss/son/son_transition_end.wav";
+            Media media = new Media(new File(audioFile).toURI().toString());
+            MediaPlayer mediaPlayer = new MediaPlayer(media);
+            mediaPlayer.setCycleCount(1);
+            mediaPlayer.setVolume(mediaPlayer.getVolume() - 0.9);
+            mediaPlayer.play();
+            
             Timeline timeline = new Timeline();
 
             KeyValue keyValue = new KeyValue(root.translateXProperty(), 0, Interpolator.EASE_IN);
@@ -139,6 +150,13 @@ public class GameController {
             stackPaneView.getChildren().setAll(root);
             stackPaneView.toFront();
             
+            String audioFile1 = "file:///../rss/son/son_stackpane_begin.wav";
+            Media media1 = new Media(new File(audioFile1).toURI().toString());
+            MediaPlayer mediaPlayer1 = new MediaPlayer(media1);
+            mediaPlayer1.setCycleCount(1);
+            mediaPlayer1.setVolume(mediaPlayer1.getVolume() - 0.9);
+            mediaPlayer1.play();
+            
             TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), stackPaneView);
             translateTransition.setFromY(-stackPaneView.getHeight());
             translateTransition.setToY(0);
@@ -149,7 +167,15 @@ public class GameController {
             bounceTransition.setCycleCount(2);
             bounceTransition.setAutoReverse(true);
             
-            translateTransition.setOnFinished(event -> bounceTransition.play());
+            translateTransition.setOnFinished(event ->{ 
+            	bounceTransition.play();
+            	String audioFile = "file:///../rss/son/son_draw.wav";
+                Media media = new Media(new File(audioFile).toURI().toString());
+                MediaPlayer mediaPlayer = new MediaPlayer(media);
+                mediaPlayer.setCycleCount(1);
+                mediaPlayer.setVolume(mediaPlayer.getVolume() - 0.9);
+                mediaPlayer.play();
+            	});
             translateTransition.play();
         } catch (IOException e) {
             e.printStackTrace();
@@ -171,6 +197,13 @@ public class GameController {
             stackPaneView.toFront();
             contentGridPane.setDisable(true);
             
+            String audioFile1 = "file:///../rss/son/son_stackpane_begin.wav";
+            Media media1 = new Media(new File(audioFile1).toURI().toString());
+            MediaPlayer mediaPlayer1 = new MediaPlayer(media1);
+            mediaPlayer1.setCycleCount(1);
+            mediaPlayer1.setVolume(mediaPlayer1.getVolume() - 0.9);
+            mediaPlayer1.play();
+            
             TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), stackPaneView);
             translateTransition.setFromY(-stackPaneView.getHeight());
             translateTransition.setToY(0);
@@ -181,7 +214,15 @@ public class GameController {
             bounceTransition.setCycleCount(2);
             bounceTransition.setAutoReverse(true);
             
-            translateTransition.setOnFinished(event -> bounceTransition.play());
+            translateTransition.setOnFinished(event ->{ 
+            	bounceTransition.play();
+            	String audioFile = "file:///../rss/son/son_victory.wav";
+                Media media = new Media(new File(audioFile).toURI().toString());
+                MediaPlayer mediaPlayer = new MediaPlayer(media);
+                mediaPlayer.setCycleCount(1);
+                mediaPlayer.setVolume(mediaPlayer.getVolume() - 0.9);
+                mediaPlayer.play();
+            	});
             translateTransition.play();
         } catch (IOException e) {
             e.printStackTrace();

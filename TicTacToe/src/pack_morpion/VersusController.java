@@ -20,6 +20,8 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.animation.Interpolator;
@@ -106,6 +108,12 @@ public class VersusController {
         	 Parent root = loader.load();
              PlayButtonController playButtonController = loader.getController();
             
+             String audioFile = "file:///../rss/son/son_transition_end.wav";
+             Media media = new Media(new File(audioFile).toURI().toString());
+             MediaPlayer mediaPlayer = new MediaPlayer(media);
+             mediaPlayer.setCycleCount(1);
+             mediaPlayer.setVolume(mediaPlayer.getVolume() - 0.9);
+             mediaPlayer.play();
 
              Scene sceneAi = grid.getScene();
              root.translateXProperty().set(-sceneAi.getWidth());
@@ -175,6 +183,13 @@ public class VersusController {
 	                        root2.translateXProperty().set(sceneAi.getWidth());
 	                        stackpane.getChildren().add(root2);
 
+	                        String audioFile = "file:///../rss/son/son_transition_begin.wav";
+	                        Media media = new Media(new File(audioFile).toURI().toString());
+	                        MediaPlayer mediaPlayer = new MediaPlayer(media);
+	                        mediaPlayer.setCycleCount(1);
+	                        mediaPlayer.setVolume(mediaPlayer.getVolume() - 0.9);
+	                        mediaPlayer.play();
+	                        
 	                        Timeline timeline = new Timeline();
 	                        KeyValue keyValue = new KeyValue(root2.translateXProperty(), 0, Interpolator.EASE_IN);
 	                        KeyFrame keyFrame = new KeyFrame(Duration.seconds(1), keyValue);
@@ -206,6 +221,13 @@ public class VersusController {
                     root.translateXProperty().set(sceneAi.getWidth());
                     stackpane.getChildren().add(root);
 
+                    String audioFile = "file:///../rss/son/son_transition_begin.wav";
+                    Media media = new Media(new File(audioFile).toURI().toString());
+                    MediaPlayer mediaPlayer = new MediaPlayer(media);
+                    mediaPlayer.setCycleCount(1);
+                    mediaPlayer.setVolume(mediaPlayer.getVolume() - 0.9);
+                    mediaPlayer.play();
+                    
                     Timeline timeline = new Timeline();
                     KeyValue keyValue = new KeyValue(root.translateXProperty(), 0, Interpolator.EASE_IN);
                     KeyFrame keyFrame = new KeyFrame(Duration.seconds(1), keyValue);
@@ -232,6 +254,13 @@ public class VersusController {
             root.translateXProperty().set(scene.getWidth());
             stackpane.getChildren().add(root);
 
+            String audioFile = "file:///../rss/son/son_transition_begin.wav";
+            Media media = new Media(new File(audioFile).toURI().toString());
+            MediaPlayer mediaPlayer = new MediaPlayer(media);
+            mediaPlayer.setCycleCount(1);
+            mediaPlayer.setVolume(mediaPlayer.getVolume() - 0.9);
+            mediaPlayer.play();
+            
             Timeline timeline = new Timeline();
             KeyValue keyValue = new KeyValue(root.translateXProperty(), 0, Interpolator.EASE_IN);
             KeyFrame keyFrame = new KeyFrame(Duration.seconds(1), keyValue);

@@ -1,5 +1,6 @@
 package pack_morpion;
 
+import java.io.File;
 import java.io.IOException;
 
 import ai.MultiLayerPerceptron;
@@ -14,6 +15,8 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
 import javafx.util.Duration;
@@ -175,7 +178,15 @@ public class GameAiController {
             bounceTransition.setCycleCount(2);
             bounceTransition.setAutoReverse(true);
             
-            translateTransition.setOnFinished(event -> bounceTransition.play());
+            translateTransition.setOnFinished(event ->{ 
+            	bounceTransition.play();
+            	String audioFile = "file:///../rss/son/son_loss.wav";
+                Media media = new Media(new File(audioFile).toURI().toString());
+                MediaPlayer mediaPlayer = new MediaPlayer(media);
+                mediaPlayer.setCycleCount(1);
+                mediaPlayer.setVolume(mediaPlayer.getVolume() - 0.9);
+                mediaPlayer.play();
+            	});
             translateTransition.play();
         } catch (IOException e) {
             e.printStackTrace();
@@ -246,6 +257,14 @@ public class GameAiController {
              Scene sceneAi = contentGridPaneAi.getScene();
              root.translateXProperty().set(-sceneAi.getWidth());
              stackpane.getChildren().add(root);
+             
+             String audioFile = "file:///../rss/son/son_transition_end.wav";
+             Media media = new Media(new File(audioFile).toURI().toString());
+             MediaPlayer mediaPlayer = new MediaPlayer(media);
+             mediaPlayer.setCycleCount(1);
+             mediaPlayer.setVolume(mediaPlayer.getVolume() - 0.9);
+             mediaPlayer.play();
+             
              Timeline timeline = new Timeline();
 
              KeyValue keyValue = new KeyValue(root.translateXProperty(), 0, Interpolator.EASE_IN);
@@ -286,7 +305,15 @@ public class GameAiController {
             bounceTransition.setCycleCount(2);
             bounceTransition.setAutoReverse(true);
             
-            translateTransition.setOnFinished(event -> bounceTransition.play());
+            translateTransition.setOnFinished(event ->{ 
+            	bounceTransition.play();
+            	String audioFile = "file:///../rss/son/son_draw.wav";
+                Media media = new Media(new File(audioFile).toURI().toString());
+                MediaPlayer mediaPlayer = new MediaPlayer(media);
+                mediaPlayer.setCycleCount(1);
+                mediaPlayer.setVolume(mediaPlayer.getVolume() - 0.9);
+                mediaPlayer.play();
+            	});
             translateTransition.play();
         } catch (IOException e) {
             e.printStackTrace();
@@ -318,7 +345,15 @@ public class GameAiController {
             bounceTransition.setCycleCount(2);
             bounceTransition.setAutoReverse(true);
             
-            translateTransition.setOnFinished(event -> bounceTransition.play());
+            translateTransition.setOnFinished(event ->{ 
+            	bounceTransition.play();
+            	String audioFile = "file:///../rss/son/son_victory.wav";
+                Media media = new Media(new File(audioFile).toURI().toString());
+                MediaPlayer mediaPlayer = new MediaPlayer(media);
+                mediaPlayer.setCycleCount(1);
+                mediaPlayer.setVolume(mediaPlayer.getVolume() - 0.9);
+                mediaPlayer.play();
+            	});
             translateTransition.play();
         } catch (IOException e) {
             e.printStackTrace();

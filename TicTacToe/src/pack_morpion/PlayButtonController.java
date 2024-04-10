@@ -1,4 +1,5 @@
 package pack_morpion;
+import java.io.File;
 import java.io.IOException;
 
 import javafx.animation.Interpolator;
@@ -12,6 +13,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
 
@@ -40,6 +43,13 @@ public class PlayButtonController {
     @FXML
     private void handlePlayButtonClicked() {
         try {
+        	String audioFile = "file:///../rss/son/son_transition_begin.wav";
+            Media media = new Media(new File(audioFile).toURI().toString());
+            MediaPlayer mediaPlayer = new MediaPlayer(media);
+            mediaPlayer.setCycleCount(1);
+            mediaPlayer.setVolume(mediaPlayer.getVolume() - 0.9);
+            mediaPlayer.play();
+            
         	playButton.setDisable(true);
         	Platform.runLater(() -> playButton.setStyle("-fx-opacity: 1;"));
         	
