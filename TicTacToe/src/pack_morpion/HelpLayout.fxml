@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            stylesheets="@application.css"
+            styleClass="Help"
+            fx:id="rootPane"
+            fx:controller="pack_morpion.HelpController"
+            prefHeight="400.0" prefWidth="600.0">
+    <StackPane style="-fx-padding: 0 20 0 20;" alignment="CENTER"> <!-- Ajout du padding à gauche et à droite -->
+        <VBox spacing="20.0" alignment="CENTER">
+            <children>
+                <Label styleClass="HelpLabel" text="Bienvenue dans l'aide de ce super Morpion" />
+                <TextArea fx:id="helpTextArea" styleClass="helpText" wrapText="true" editable="false">
+                
+                </TextArea>
+                <Button styleClass="okHelpButton" mnemonicParsing="false" text="OK" onAction="#closeHelp" />
+            </children>
+        </VBox>
+    </StackPane>
+</AnchorPane>

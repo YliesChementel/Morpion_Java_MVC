@@ -54,8 +54,8 @@ public class LostController {
         stage.getIcons().add(icon);
         
 	    alert.setTitle("Confirmation");
-	    alert.setHeaderText("Changer la difficulté ?");
-	    alert.setContentText("Voulez-vous changer la difficulté avant de rejouer ?");
+	    alert.setHeaderText("Changer la difficulté?");
+	    alert.setContentText("Voulez-vous changer la difficulté avant de rejouer?");
 	    ButtonType rejouer = new ButtonType("Rejouer");
 	    ButtonType changerDifficulte = new ButtonType("Changer la difficulté");
 	    alert.getButtonTypes().setAll(changerDifficulte, rejouer);
@@ -85,13 +85,10 @@ public class LostController {
         Optional<ButtonType> result = choixDifficulte.showAndWait();
         if (result.isPresent()) {
             if (result.get() == facile) {
-                // Code pour charger le modèle de difficulté facile
                 chargerModele("F");
             } else if (result.get() == moyen) {
-                // Code pour charger le modèle de difficulté moyenne
                 chargerModele("M");
             } else if (result.get() == difficile) {
-                // Code pour charger le modèle de difficulté difficile
                 chargerModele("D");
             }
         }
