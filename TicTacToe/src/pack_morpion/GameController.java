@@ -4,7 +4,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -15,6 +14,7 @@ import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 
 public class GameController {
@@ -38,8 +38,8 @@ public class GameController {
     @FXML
     private Button btn9;
     
-    @FXML
-    private GridPane contentGridPane;
+    @FXML 
+    public GridPane contentGridPane;
 
     private boolean joueurX = true; 
 
@@ -48,7 +48,9 @@ public class GameController {
     
     @FXML
     private StackPane stackpane;
-
+    
+    @FXML
+    public StackPane stackPaneView;
     
     @FXML
     private void handleButtonClick(ActionEvent event) {
@@ -100,24 +102,24 @@ public class GameController {
     protected void afficherVersusLayout() {
         try {
         	FXMLLoader loader = new FXMLLoader(getClass().getResource("VersusLayout.fxml"));
-        	 Parent root = loader.load();
-             VersusController versusController = loader.getController();
+        	Parent root = loader.load();
+            VersusController versusController = loader.getController();
             
 
-             Scene sceneAi = contentGridPane.getScene();
-             root.translateXProperty().set(-sceneAi.getWidth());
-             stackpane.getChildren().add(root);
-             Timeline timeline = new Timeline();
+            Scene sceneAi = contentGridPane.getScene();
+            root.translateXProperty().set(-sceneAi.getWidth());
+            stackpane.getChildren().add(root);
+            Timeline timeline = new Timeline();
 
-             KeyValue keyValue = new KeyValue(root.translateXProperty(), 0, Interpolator.EASE_IN);
-             KeyFrame keyFrame = new KeyFrame(Duration.seconds(1), keyValue);
-             timeline.getKeyFrames().add(keyFrame);
+            KeyValue keyValue = new KeyValue(root.translateXProperty(), 0, Interpolator.EASE_IN);
+            KeyFrame keyFrame = new KeyFrame(Duration.seconds(1), keyValue);
+            timeline.getKeyFrames().add(keyFrame);
 
-             KeyValue keyValue2 = new KeyValue(contentGridPane.translateXProperty(),sceneAi.getWidth(), Interpolator.EASE_IN);
-             KeyFrame keyFrame2 = new KeyFrame(Duration.seconds(1), keyValue2);
-             timeline.getKeyFrames().add(keyFrame2);
-             timeline.setOnFinished(event -> stackpane.getChildren().setAll(root));
-             timeline.play();
+            KeyValue keyValue2 = new KeyValue(contentGridPane.translateXProperty(),sceneAi.getWidth(), Interpolator.EASE_IN);
+            KeyFrame keyFrame2 = new KeyFrame(Duration.seconds(1), keyValue2);
+            timeline.getKeyFrames().add(keyFrame2);
+            timeline.setOnFinished(event -> stackpane.getChildren().setAll(root));
+            timeline.play();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -130,15 +132,25 @@ public class GameController {
             Parent root = loader.load();
             NullController nullController = loader.getController();
             nullController.setGameController(this);
-            Stage stage = new Stage();
+           
+            stackPaneView.setVisible(true);
+            stackPaneView.setMaxHeight(300);
+            stackPaneView.setMaxWidth(300);
+            stackPaneView.getChildren().setAll(root);
+            stackPaneView.toFront();
             
-            Image icon = new Image("file:rss/images/draw-icon.jpg");
-            stage.getIcons().add(icon);
+            TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), stackPaneView);
+            translateTransition.setFromY(-stackPaneView.getHeight());
+            translateTransition.setToY(0);
             
-            nullController.setStage(stage);
-            stage.setScene(new Scene(root));
-            stage.setTitle("Nulle");
-            stage.show();
+            TranslateTransition bounceTransition = new TranslateTransition(Duration.millis(300), stackPaneView);
+            bounceTransition.setFromY(0);
+            bounceTransition.setToY(-20);
+            bounceTransition.setCycleCount(2);
+            bounceTransition.setAutoReverse(true);
+            
+            translateTransition.setOnFinished(event -> bounceTransition.play());
+            translateTransition.play();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -151,15 +163,26 @@ public class GameController {
             WinController winController = loader.getController();
             winController.setGameController(this);
             winController.afficherVictoire(joueur);
-            Stage stage = new Stage();
             
-            Image icon = new Image("file:rss/images/victory-icon.png");
-            stage.getIcons().add(icon);
+            stackPaneView.setVisible(true);
+            stackPaneView.setMaxHeight(400);
+            stackPaneView.setMaxWidth(560);
+            stackPaneView.getChildren().setAll(root);
+            stackPaneView.toFront();
+            contentGridPane.setDisable(true);
             
-            winController.setStage(stage);
-            stage.setScene(new Scene(root));
-            stage.setTitle("Félicitations !");
-            stage.show();
+            TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), stackPaneView);
+            translateTransition.setFromY(-stackPaneView.getHeight());
+            translateTransition.setToY(0);
+            
+            TranslateTransition bounceTransition = new TranslateTransition(Duration.millis(300), stackPaneView);
+            bounceTransition.setFromY(0);
+            bounceTransition.setToY(-20);
+            bounceTransition.setCycleCount(2);
+            bounceTransition.setAutoReverse(true);
+            
+            translateTransition.setOnFinished(event -> bounceTransition.play());
+            translateTransition.play();
         } catch (IOException e) {
             e.printStackTrace();
         }

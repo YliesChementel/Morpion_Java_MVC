@@ -10,6 +10,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,6 +18,7 @@ import java.util.Optional;
 
 import ai.Config;
 import ai.ConfigFileLoader;
+import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 
 public class NullAiController {
@@ -30,8 +32,6 @@ public class NullAiController {
     
     private GameAiController gameAiController; 
     
-    private Stage stage;
-    
     public NullAiController() {
     	
     }
@@ -44,17 +44,20 @@ public class NullAiController {
     }
     
 
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
-
     @FXML
     private void retour(ActionEvent event) {
-    	if (stage != null) {
-            stage.close(); 
-            if (gameAiController != null) { 
-                gameAiController.afficherVersusLayout();
-            }
+        if (gameAiController != null) { 
+        	TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), gameAiController.stackPaneView);
+		 	Scene scene = gameAiController.stackPaneView.getScene();
+	        translateTransition.setFromY(0);
+	        translateTransition.setToY(-scene.getHeight());
+	        
+	        translateTransition.setOnFinished(e -> {
+	        	gameAiController.afficherVersusLayout();
+	        	gameAiController.stackPaneView.setVisible(false);
+	        	gameAiController.contentGridPaneAi.setDisable(false);
+	        });
+	        translateTransition.play();
         }
     }
     
@@ -76,7 +79,17 @@ public class NullAiController {
 	    	if (response == changerDifficulte) {
 	    		choisirNouvelleDifficulte();
 	        } else if (response == rejouer) {
-	            gameAiController.rejouerPartieSansChanger();
+	            TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), gameAiController.stackPaneView);
+			 	Scene scene = gameAiController.stackPaneView.getScene();
+		        translateTransition.setFromY(0);
+		        translateTransition.setToY(-scene.getHeight());
+		        
+		        translateTransition.setOnFinished(e -> {
+		        	gameAiController.rejouerPartieSansChanger();
+		        	gameAiController.stackPaneView.setVisible(false);
+		        	gameAiController.contentGridPaneAi.setDisable(false);
+		        });
+		        translateTransition.play();
 	        }
 	    });
 	    stage.close();
@@ -134,7 +147,17 @@ public class NullAiController {
                 stage.show();
                 
                 stage.setOnHidden(event -> {
-                	gameAiController.rejouerPartie(file);
+                	TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), gameAiController.stackPaneView);
+        		 	Scene scene1 = gameAiController.stackPaneView.getScene();
+        	        translateTransition.setFromY(0);
+        	        translateTransition.setToY(-scene1.getHeight());
+        	        
+        	        translateTransition.setOnFinished(e -> {
+        	        	gameAiController.rejouerPartie(file);
+        	        	gameAiController.stackPaneView.setVisible(false);
+        	        	gameAiController.contentGridPaneAi.setDisable(false);
+        	        });
+        	        translateTransition.play();
                 });
                 
         	} catch (IOException e) {
@@ -142,7 +165,17 @@ public class NullAiController {
         	}
        }
         else {
-        	gameAiController.rejouerPartie(file);
+        	TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), gameAiController.stackPaneView);
+		 	Scene scene = gameAiController.stackPaneView.getScene();
+	        translateTransition.setFromY(0);
+	        translateTransition.setToY(-scene.getHeight());
+	        
+	        translateTransition.setOnFinished(e -> {
+	        	gameAiController.rejouerPartie(file);
+	        	gameAiController.stackPaneView.setVisible(false);
+	        	gameAiController.contentGridPaneAi.setDisable(false);
+	        });
+	        translateTransition.play();
         }
     }
 

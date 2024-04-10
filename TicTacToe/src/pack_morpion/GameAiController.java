@@ -21,6 +21,7 @@ import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
 
 
 public class GameAiController {
@@ -28,8 +29,8 @@ public class GameAiController {
 	@FXML
     private StackPane stackpane;
 
-    @FXML
-    private GridPane contentGridPaneAi;
+    @FXML 
+    public GridPane contentGridPaneAi;
     
     @FXML
     private Button btn1;
@@ -57,7 +58,8 @@ public class GameAiController {
     private double[] listMatrix = {0, 0, 0, 0, 0, 0, 0, 0, 0};
     private boolean turnAI = false;
     
-    Stage stage;
+    @FXML
+    public StackPane stackPaneView;
     
     
 
@@ -91,10 +93,6 @@ public class GameAiController {
         btn8.setText("");
         btn9.setText("");
 
-        if (stage != null) {
-            stage.close();
-        }
-
     }
     
     public void rejouerPartie(String modelPath) {
@@ -114,10 +112,6 @@ public class GameAiController {
         btn7.setText("");
         btn8.setText("");
         btn9.setText("");
-
-        if (stage != null) {
-            stage.close();
-        }
 
     }
 
@@ -163,15 +157,26 @@ public class GameAiController {
             Parent root = loader.load();
             LostController lostController = loader.getController();
             lostController.setGameAiController(this);
-            Stage stage = new Stage();
+
+            stackPaneView.setVisible(true);
+            stackPaneView.setMaxHeight(400);
+            stackPaneView.setMaxWidth(560);
+            stackPaneView.getChildren().setAll(root);
+            stackPaneView.toFront();
+            contentGridPaneAi.setDisable(true);
             
-            Image icon = new Image("file:rss/images/lost-icon.png");
-            stage.getIcons().add(icon);
+            TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), stackPaneView);
+            translateTransition.setFromY(-stackPaneView.getHeight());
+            translateTransition.setToY(0);
             
-            lostController.setStage(stage);
-            stage.setScene(new Scene(root));
-            stage.setTitle("Défaite");
-            stage.show();
+            TranslateTransition bounceTransition = new TranslateTransition(Duration.millis(300), stackPaneView);
+            bounceTransition.setFromY(0);
+            bounceTransition.setToY(-20);
+            bounceTransition.setCycleCount(2);
+            bounceTransition.setAutoReverse(true);
+            
+            translateTransition.setOnFinished(event -> bounceTransition.play());
+            translateTransition.play();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -263,15 +268,26 @@ public class GameAiController {
             Parent root = loader.load();
             NullAiController nullAiController = loader.getController();
             nullAiController.setGameAiController(this);
-            Stage stage = new Stage();
             
-            Image icon = new Image("file:rss/images/draw-icon.jpg");
-            stage.getIcons().add(icon);
+            stackPaneView.setVisible(true);
+            stackPaneView.setMaxHeight(300);
+            stackPaneView.setMaxWidth(300);
+            stackPaneView.getChildren().setAll(root);
+            stackPaneView.toFront();
+            contentGridPaneAi.setDisable(true);
             
-            nullAiController.setStage(stage);
-            stage.setScene(new Scene(root));
-            stage.setTitle("Nulle");
-            stage.show();
+            TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), stackPaneView);
+            translateTransition.setFromY(-stackPaneView.getHeight());
+            translateTransition.setToY(0);
+            
+            TranslateTransition bounceTransition = new TranslateTransition(Duration.millis(300), stackPaneView);
+            bounceTransition.setFromY(0);
+            bounceTransition.setToY(-20);
+            bounceTransition.setCycleCount(2);
+            bounceTransition.setAutoReverse(true);
+            
+            translateTransition.setOnFinished(event -> bounceTransition.play());
+            translateTransition.play();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -284,15 +300,26 @@ public class GameAiController {
             WinController winController = loader.getController();
             winController.setGameAiController(this);
             winController.afficherVictoireAi(joueur);
-            Stage stage = new Stage();
             
-            Image icon = new Image("file:rss/images/victory-icon.png");
-            stage.getIcons().add(icon);
+            stackPaneView.setVisible(true);
+            stackPaneView.setMaxHeight(400);
+            stackPaneView.setMaxWidth(560);
+            stackPaneView.getChildren().setAll(root);
+            stackPaneView.toFront();
+            contentGridPaneAi.setDisable(true);
             
-            winController.setStage(stage);
-            stage.setScene(new Scene(root));
-            stage.setTitle("Félicitations !");
-            stage.show();
+            TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), stackPaneView);
+            translateTransition.setFromY(-stackPaneView.getHeight());
+            translateTransition.setToY(0);
+            
+            TranslateTransition bounceTransition = new TranslateTransition(Duration.millis(300), stackPaneView);
+            bounceTransition.setFromY(0);
+            bounceTransition.setToY(-20);
+            bounceTransition.setCycleCount(2);
+            bounceTransition.setAutoReverse(true);
+            
+            translateTransition.setOnFinished(event -> bounceTransition.play());
+            translateTransition.play();
         } catch (IOException e) {
             e.printStackTrace();
         }

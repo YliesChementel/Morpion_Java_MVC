@@ -10,6 +10,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,6 +18,7 @@ import java.util.Optional;
 
 import ai.Config;
 import ai.ConfigFileLoader;
+import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 
 public class LostController {
@@ -30,7 +32,6 @@ public class LostController {
     
     private GameAiController gameAiController; 
     
-    private Stage stage;
     
     public LostController() {
     	
@@ -38,11 +39,6 @@ public class LostController {
     
     public void setGameAiController(GameAiController gameAiController) {
         this.gameAiController = gameAiController;
-    }
-    
-
-    public void setStage(Stage stage) {
-        this.stage = stage;
     }
     
     @FXML
@@ -63,7 +59,17 @@ public class LostController {
 	    	if (response == changerDifficulte) {
 	    		choisirNouvelleDifficulte();
 	        } else if (response == rejouer) {
-	            gameAiController.rejouerPartieSansChanger();
+	        	TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), gameAiController.stackPaneView);
+			 	Scene scene = gameAiController.stackPaneView.getScene();
+		        translateTransition.setFromY(0);
+		        translateTransition.setToY(-scene.getHeight());
+		        
+		        translateTransition.setOnFinished(e -> {
+		        	 gameAiController.rejouerPartieSansChanger();
+		        	gameAiController.stackPaneView.setVisible(false);
+		        	gameAiController.contentGridPaneAi.setDisable(false);
+		        });
+		        translateTransition.play();
 	        }
 	    });
 	    stage.close();
@@ -85,10 +91,13 @@ public class LostController {
         Optional<ButtonType> result = choixDifficulte.showAndWait();
         if (result.isPresent()) {
             if (result.get() == facile) {
+                // Code pour charger le modèle de difficulté facile
                 chargerModele("F");
             } else if (result.get() == moyen) {
+                // Code pour charger le modèle de difficulté moyenne
                 chargerModele("M");
             } else if (result.get() == difficile) {
+                // Code pour charger le modèle de difficulté difficile
                 chargerModele("D");
             }
         }
@@ -121,7 +130,17 @@ public class LostController {
                 stage.show();
                 
                 stage.setOnHidden(event -> {
-                	gameAiController.rejouerPartie(file);
+                	TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), gameAiController.stackPaneView);
+        		 	Scene scene1 = gameAiController.stackPaneView.getScene();
+        	        translateTransition.setFromY(0);
+        	        translateTransition.setToY(-scene1.getHeight());
+        	        
+        	        translateTransition.setOnFinished(e -> {
+        	        	gameAiController.rejouerPartie(file);
+        	        	gameAiController.stackPaneView.setVisible(false);
+        	        	gameAiController.contentGridPaneAi.setDisable(false);
+        	        });
+        	        translateTransition.play();
                 });
                 
         	} catch (IOException e) {
@@ -129,17 +148,34 @@ public class LostController {
         	}
        }
         else {
-        	gameAiController.rejouerPartie(file);
+        	TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), gameAiController.stackPaneView);
+		 	Scene scene = gameAiController.stackPaneView.getScene();
+	        translateTransition.setFromY(0);
+	        translateTransition.setToY(-scene.getHeight());
+	        
+	        translateTransition.setOnFinished(e -> {
+	        	gameAiController.rejouerPartie(file);
+	        	gameAiController.stackPaneView.setVisible(false);
+	        	gameAiController.contentGridPaneAi.setDisable(false);
+	        });
+	        translateTransition.play();
         }
     }
 
     @FXML
     private void retour(ActionEvent event) {
-    	if (stage != null) {
-            stage.close(); 
-            if(gameAiController != null) {
-            	gameAiController.afficherVersusLayout();
-            }
+        if(gameAiController != null) {
+        	TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), gameAiController.stackPaneView);
+		 	Scene scene = gameAiController.stackPaneView.getScene();
+	        translateTransition.setFromY(0);
+	        translateTransition.setToY(-scene.getHeight());
+	        
+	        translateTransition.setOnFinished(e -> {
+	        	gameAiController.afficherVersusLayout();
+	        	gameAiController.stackPaneView.setVisible(false);
+	        	gameAiController.contentGridPaneAi.setDisable(false);
+	        });
+	        translateTransition.play();
         }
     }
 }
