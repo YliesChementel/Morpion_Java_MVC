@@ -2,9 +2,6 @@ package pack_morpion;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import ai.Config;
 import ai.ConfigFileLoader;
 import javafx.animation.KeyFrame;
@@ -20,14 +17,12 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.animation.Interpolator;
 
-
-public class VersusController {
+ 
+public class VersusController extends Action{
 	@FXML
     private StackPane stackpane;
 
@@ -64,7 +59,9 @@ public class VersusController {
         grid.setVgap(20);
         homme_Vs_Homme.setOnAction(event -> handleHommeVsHomme());
         homme_Vs_Ai.setOnAction(event -> handleHommeVsAi());
-        buttonRetour.setOnAction(event -> handleRetour());
+        buttonRetour.setOnAction(event -> { 
+        	handleRetour();
+        	this.Media("son_transition_end.wav");});
         
         ToggleGroup group = new ToggleGroup();
         radioF.setSelected(true);
@@ -80,8 +77,6 @@ public class VersusController {
         homme_Vs_Homme.setOnMouseReleased(event -> {
         	homme_Vs_Homme.setStyle("");
 			homme_Vs_Homme.setTranslateY(homme_Vs_Homme.getTranslateY() + 10);
-			homme_Vs_Ai.setDisable(true);
-			homme_Vs_Homme.setDisable(true);
 			homme_Vs_Ai.setStyle("-fx-opacity: 1;");
 			homme_Vs_Homme.setStyle("-fx-opacity: 1;");
 	    });
@@ -94,8 +89,6 @@ public class VersusController {
 		homme_Vs_Ai.setOnMouseReleased(event -> {
 			homme_Vs_Ai.setStyle("");
 			homme_Vs_Ai.setTranslateY(homme_Vs_Ai.getTranslateY() + 10);
-			homme_Vs_Ai.setDisable(true);
-			homme_Vs_Homme.setDisable(true);
 			homme_Vs_Ai.setStyle("-fx-opacity: 1;");
 			homme_Vs_Homme.setStyle("-fx-opacity: 1;");
 			
@@ -107,13 +100,6 @@ public class VersusController {
         	FXMLLoader loader = new FXMLLoader(getClass().getResource("PlayButton.fxml"));
         	 Parent root = loader.load();
              PlayButtonController playButtonController = loader.getController();
-            
-             String audioFile = "file:///../rss/son/son_transition_end.wav";
-             Media media = new Media(new File(audioFile).toURI().toString());
-             MediaPlayer mediaPlayer = new MediaPlayer(media);
-             mediaPlayer.setCycleCount(1);
-             mediaPlayer.setVolume(mediaPlayer.getVolume() - 0.9);
-             mediaPlayer.play();
 
              Scene sceneAi = grid.getScene();
              root.translateXProperty().set(-sceneAi.getWidth());
@@ -135,6 +121,8 @@ public class VersusController {
     }
     
     private void handleHommeVsAi() {
+    	homme_Vs_Ai.setDisable(true);
+		homme_Vs_Homme.setDisable(true);
     	HBox hboxRadio = (HBox) grid.getChildren().stream()
                 .filter(node -> node instanceof HBox)
                 .findFirst()
@@ -183,12 +171,7 @@ public class VersusController {
 	                        root2.translateXProperty().set(sceneAi.getWidth());
 	                        stackpane.getChildren().add(root2);
 
-	                        String audioFile = "file:///../rss/son/son_transition_begin.wav";
-	                        Media media = new Media(new File(audioFile).toURI().toString());
-	                        MediaPlayer mediaPlayer = new MediaPlayer(media);
-	                        mediaPlayer.setCycleCount(1);
-	                        mediaPlayer.setVolume(mediaPlayer.getVolume() - 0.9);
-	                        mediaPlayer.play();
+	                        this.Media("son_transition_begin.wav");
 	                        
 	                        Timeline timeline = new Timeline();
 	                        KeyValue keyValue = new KeyValue(root2.translateXProperty(), 0, Interpolator.EASE_IN);
@@ -221,12 +204,7 @@ public class VersusController {
                     root.translateXProperty().set(sceneAi.getWidth());
                     stackpane.getChildren().add(root);
 
-                    String audioFile = "file:///../rss/son/son_transition_begin.wav";
-                    Media media = new Media(new File(audioFile).toURI().toString());
-                    MediaPlayer mediaPlayer = new MediaPlayer(media);
-                    mediaPlayer.setCycleCount(1);
-                    mediaPlayer.setVolume(mediaPlayer.getVolume() - 0.9);
-                    mediaPlayer.play();
+                    this.Media("son_transition_begin.wav");;
                     
                     Timeline timeline = new Timeline();
                     KeyValue keyValue = new KeyValue(root.translateXProperty(), 0, Interpolator.EASE_IN);
@@ -248,18 +226,16 @@ public class VersusController {
 
     private void handleHommeVsHomme() {
     	try {
+    		homme_Vs_Ai.setDisable(true);
+			homme_Vs_Homme.setDisable(true);
+    		
     		FXMLLoader loader = new FXMLLoader(getClass().getResource("GameLayout.fxml"));
             Parent root = loader.load();
             Scene scene = homme_Vs_Homme.getScene();
             root.translateXProperty().set(scene.getWidth());
             stackpane.getChildren().add(root);
 
-            String audioFile = "file:///../rss/son/son_transition_begin.wav";
-            Media media = new Media(new File(audioFile).toURI().toString());
-            MediaPlayer mediaPlayer = new MediaPlayer(media);
-            mediaPlayer.setCycleCount(1);
-            mediaPlayer.setVolume(mediaPlayer.getVolume() - 0.9);
-            mediaPlayer.play();
+            this.Media("son_transition_begin.wav");
             
             Timeline timeline = new Timeline();
             KeyValue keyValue = new KeyValue(root.translateXProperty(), 0, Interpolator.EASE_IN);

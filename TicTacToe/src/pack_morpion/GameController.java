@@ -4,13 +4,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.io.IOException;
 import javafx.util.Duration;
 import javafx.animation.Interpolator;
@@ -20,7 +19,7 @@ import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 
-public class GameController {
+public class GameController extends Action {
 
     @FXML
     private Button btn1;
@@ -54,6 +53,12 @@ public class GameController {
     
     @FXML
     public StackPane stackPaneView;
+    
+    
+    private final Duration animationDuration = Duration.seconds(5);
+    private final Duration animationDelay = Duration.seconds(0.2);
+    private final int numConfetto = 1;
+    
     
     @FXML
     private void handleButtonClick(ActionEvent event) {
@@ -113,13 +118,8 @@ public class GameController {
             root.translateXProperty().set(-sceneAi.getWidth());
             stackpane.getChildren().add(root);
             
-            String audioFile = "file:///../rss/son/son_transition_end.wav";
-            Media media = new Media(new File(audioFile).toURI().toString());
-            MediaPlayer mediaPlayer = new MediaPlayer(media);
-            mediaPlayer.setCycleCount(1);
-            mediaPlayer.setVolume(mediaPlayer.getVolume() - 0.9);
-            mediaPlayer.play();
-            
+            this.Media("son_transition_end.wav");
+      
             Timeline timeline = new Timeline();
 
             KeyValue keyValue = new KeyValue(root.translateXProperty(), 0, Interpolator.EASE_IN);
@@ -150,12 +150,7 @@ public class GameController {
             stackPaneView.getChildren().setAll(root);
             stackPaneView.toFront();
             
-            String audioFile1 = "file:///../rss/son/son_stackpane_begin.wav";
-            Media media1 = new Media(new File(audioFile1).toURI().toString());
-            MediaPlayer mediaPlayer1 = new MediaPlayer(media1);
-            mediaPlayer1.setCycleCount(1);
-            mediaPlayer1.setVolume(mediaPlayer1.getVolume() - 0.9);
-            mediaPlayer1.play();
+            this.Media("son_stackpane_begin.wav");
             
             TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), stackPaneView);
             translateTransition.setFromY(-stackPaneView.getHeight());
@@ -169,12 +164,9 @@ public class GameController {
             
             translateTransition.setOnFinished(event ->{ 
             	bounceTransition.play();
-            	String audioFile = "file:///../rss/son/son_draw.wav";
-                Media media = new Media(new File(audioFile).toURI().toString());
-                MediaPlayer mediaPlayer = new MediaPlayer(media);
-                mediaPlayer.setCycleCount(1);
-                mediaPlayer.setVolume(mediaPlayer.getVolume() - 0.9);
-                mediaPlayer.play();
+
+            	this.Media("son_draw.wav");
+            	
             	});
             translateTransition.play();
         } catch (IOException e) {
@@ -197,15 +189,12 @@ public class GameController {
             stackPaneView.toFront();
             contentGridPane.setDisable(true);
             
-            String audioFile1 = "file:///../rss/son/son_stackpane_begin.wav";
-            Media media1 = new Media(new File(audioFile1).toURI().toString());
-            MediaPlayer mediaPlayer1 = new MediaPlayer(media1);
-            mediaPlayer1.setCycleCount(1);
-            mediaPlayer1.setVolume(mediaPlayer1.getVolume() - 0.9);
-            mediaPlayer1.play();
+            this.Media("son_stackpane_begin.wav");
+            
+            Scene scene = this.stackPaneView.getScene();
             
             TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), stackPaneView);
-            translateTransition.setFromY(-stackPaneView.getHeight());
+            translateTransition.setFromY(-scene.getHeight());
             translateTransition.setToY(0);
             
             TranslateTransition bounceTransition = new TranslateTransition(Duration.millis(300), stackPaneView);
@@ -216,12 +205,9 @@ public class GameController {
             
             translateTransition.setOnFinished(event ->{ 
             	bounceTransition.play();
-            	String audioFile = "file:///../rss/son/son_victory.wav";
-                Media media = new Media(new File(audioFile).toURI().toString());
-                MediaPlayer mediaPlayer = new MediaPlayer(media);
-                mediaPlayer.setCycleCount(1);
-                mediaPlayer.setVolume(mediaPlayer.getVolume() - 0.9);
-                mediaPlayer.play();
+
+            	this.Media("son_victory.wav");
+             
             	});
             translateTransition.play();
         } catch (IOException e) {

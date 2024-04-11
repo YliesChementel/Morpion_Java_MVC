@@ -1,6 +1,5 @@
 package pack_morpion;
 
-import java.io.File;
 import java.io.IOException;
 
 import ai.MultiLayerPerceptron;
@@ -12,13 +11,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.stage.Stage;
-
 import javafx.util.Duration;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -27,7 +21,7 @@ import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 
 
-public class GameAiController {
+public class GameAiController extends Action{
 	
 	@FXML
     private StackPane stackpane;
@@ -180,12 +174,9 @@ public class GameAiController {
             
             translateTransition.setOnFinished(event ->{ 
             	bounceTransition.play();
-            	String audioFile = "file:///../rss/son/son_loss.wav";
-                Media media = new Media(new File(audioFile).toURI().toString());
-                MediaPlayer mediaPlayer = new MediaPlayer(media);
-                mediaPlayer.setCycleCount(1);
-                mediaPlayer.setVolume(mediaPlayer.getVolume() - 0.9);
-                mediaPlayer.play();
+
+            	this.Media("son_loss.wav");
+            	
             	});
             translateTransition.play();
         } catch (IOException e) {
@@ -258,12 +249,7 @@ public class GameAiController {
              root.translateXProperty().set(-sceneAi.getWidth());
              stackpane.getChildren().add(root);
              
-             String audioFile = "file:///../rss/son/son_transition_end.wav";
-             Media media = new Media(new File(audioFile).toURI().toString());
-             MediaPlayer mediaPlayer = new MediaPlayer(media);
-             mediaPlayer.setCycleCount(1);
-             mediaPlayer.setVolume(mediaPlayer.getVolume() - 0.9);
-             mediaPlayer.play();
+             this.Media("son_transition_end.wav");
              
              Timeline timeline = new Timeline();
 
@@ -307,12 +293,9 @@ public class GameAiController {
             
             translateTransition.setOnFinished(event ->{ 
             	bounceTransition.play();
-            	String audioFile = "file:///../rss/son/son_draw.wav";
-                Media media = new Media(new File(audioFile).toURI().toString());
-                MediaPlayer mediaPlayer = new MediaPlayer(media);
-                mediaPlayer.setCycleCount(1);
-                mediaPlayer.setVolume(mediaPlayer.getVolume() - 0.9);
-                mediaPlayer.play();
+
+            	this.Media("son_draw.wav");
+            	
             	});
             translateTransition.play();
         } catch (IOException e) {
@@ -347,12 +330,9 @@ public class GameAiController {
             
             translateTransition.setOnFinished(event ->{ 
             	bounceTransition.play();
-            	String audioFile = "file:///../rss/son/son_victory.wav";
-                Media media = new Media(new File(audioFile).toURI().toString());
-                MediaPlayer mediaPlayer = new MediaPlayer(media);
-                mediaPlayer.setCycleCount(1);
-                mediaPlayer.setVolume(mediaPlayer.getVolume() - 0.9);
-                mediaPlayer.play();
+
+                this.Media("son_victory.wav");
+                
             	});
             translateTransition.play();
         } catch (IOException e) {

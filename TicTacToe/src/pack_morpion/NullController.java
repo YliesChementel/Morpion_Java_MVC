@@ -3,16 +3,12 @@ package pack_morpion;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
-
-import java.io.File;
 
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 
-public class NullController {
+public class NullController extends Action {
 	
 
     @FXML
@@ -35,12 +31,8 @@ public class NullController {
     @FXML
     private void retour(ActionEvent event) {
         if (gameController != null) { 
-        	String audioFile = "file:///../rss/son/son_stackpane_end.wav";
-            Media media = new Media(new File(audioFile).toURI().toString());
-            MediaPlayer mediaPlayer = new MediaPlayer(media);
-            mediaPlayer.setCycleCount(1);
-            mediaPlayer.setVolume(mediaPlayer.getVolume() - 0.9);
-            mediaPlayer.play();
+
+        	this.Media("son_stackpane_end.wav");
         	
         	TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), gameController.stackPaneView);
 		 	Scene scene = gameController.stackPaneView.getScene();

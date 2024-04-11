@@ -7,12 +7,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -23,10 +20,9 @@ import java.util.Optional;
 import ai.Config;
 import ai.ConfigFileLoader;
 import javafx.animation.TranslateTransition;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 
-public class WinController {
+public class WinController extends Action{
 	
 	@FXML
     private Label messageLabel;
@@ -56,12 +52,8 @@ public class WinController {
     @FXML
     private void retour(ActionEvent event) {
         if (gameController != null) {
-        	String audioFile = "file:///../rss/son/son_stackpane_end.wav";
-            Media media = new Media(new File(audioFile).toURI().toString());
-            MediaPlayer mediaPlayer = new MediaPlayer(media);
-            mediaPlayer.setCycleCount(1);
-            mediaPlayer.setVolume(mediaPlayer.getVolume() - 0.9);
-            mediaPlayer.play();
+        	
+        	this.Media("son_stackpane_end.wav");
         	
         	TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), gameController.stackPaneView);
 		 	Scene scene = gameController.stackPaneView.getScene();
@@ -102,12 +94,8 @@ public class WinController {
     private void rejouer(ActionEvent event) {
     	
     	if(gameController != null) {
-    		String audioFile = "file:///../rss/son/son_stackpane_end.wav";
-            Media media = new Media(new File(audioFile).toURI().toString());
-            MediaPlayer mediaPlayer = new MediaPlayer(media);
-            mediaPlayer.setCycleCount(1);
-            mediaPlayer.setVolume(mediaPlayer.getVolume() - 0.9);
-            mediaPlayer.play();
+    		
+            this.Media("son_stackpane_end.wav");
     		
     		TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), gameController.stackPaneView);
 		 	Scene scene = gameController.stackPaneView.getScene();
