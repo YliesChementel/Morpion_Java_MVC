@@ -11,6 +11,9 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
 import javafx.util.Duration;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -54,9 +57,11 @@ public class GameController extends Action {
     @FXML
     public StackPane stackPaneView;
     
+    public Timeline timelineConfetto;
+    
     
     private final Duration animationDuration = Duration.seconds(5);
-    private final Duration animationDelay = Duration.seconds(0.2);
+    private final Duration animationDelay = Duration.seconds(0.01);
     private final int numConfetto = 1;
     
     
@@ -129,7 +134,9 @@ public class GameController extends Action {
             KeyValue keyValue2 = new KeyValue(contentGridPane.translateXProperty(),sceneAi.getWidth(), Interpolator.EASE_IN);
             KeyFrame keyFrame2 = new KeyFrame(Duration.seconds(1), keyValue2);
             timeline.getKeyFrames().add(keyFrame2);
-            timeline.setOnFinished(event -> stackpane.getChildren().setAll(root));
+            timeline.setOnFinished(event -> { 
+            	timelineConfetto.stop();
+            	stackpane.getChildren().setAll(root);});
             timeline.play();
         } catch (IOException e) {
             e.printStackTrace();
@@ -207,13 +214,56 @@ public class GameController extends Action {
             	bounceTransition.play();
 
             	this.Media("son_victory.wav");
-             
+            	
+            	this.confetto(scene);
+            	
             	});
             translateTransition.play();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+    
+    private void confetto(Scene scene) {
+    	List<String> confettoImages = Arrays.asList("file:rss/images/confetto_vert.png", 
+    			"file:rss/images/confetto_bleu.png", 
+    			"file:rss/images/confetto_rouge.png",
+    			"file:rss/images/confetto_jaune.png",
+    			"file:rss/images/confetto_blanc.png",
+    			"file:rss/images/confetto_violet.png",
+    			"file:rss/images/confetto_orange.png",
+    			"file:rss/images/confetto_rose.png");
+
+        Timeline timeline = new Timeline(new KeyFrame(Duration.ZERO, event1 -> {
+                for (int i = 0; i < numConfetto; i++) {
+                	String imagePath = confettoImages.get((int) (Math.random() * confettoImages.size()));
+                    Image confettoImage = new Image(imagePath);
+                    
+                    ImageView imageView = new ImageView(confettoImage);
+                    
+                    imageView.setTranslateX(Math.random() * scene.getWidth() * 2 - scene.getWidth());
+                    imageView.setTranslateY(-scene.getHeight());
+                    
+                    imageView.fitWidthProperty().bind(stackpane.widthProperty().divide(50));
+                    imageView.fitHeightProperty().bind(stackpane.heightProperty().divide(50));
+                    
+                    
+                    stackpane.getChildren().add(imageView);
+                    imageView.toBack();
+                    
+                    TranslateTransition translateTransition1 = new TranslateTransition(animationDuration, imageView);
+                    translateTransition1.setToY(600);
+                    translateTransition1.setOnFinished(e -> stackpane.getChildren().remove(imageView));
+                    translateTransition1.play();
+                }
+        }), new KeyFrame(animationDelay));
+
+        timelineConfetto=timeline;
+        
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+    }
+    
 
     private boolean verifierGagnant(String joueur) {
         for (int i = 0; i < 3; i++) {

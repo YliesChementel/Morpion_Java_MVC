@@ -104,6 +104,7 @@ public class WinController extends Action{
 	        
 	        translateTransition.setOnFinished(e -> {
 	            gameController.rejouerPartie();
+	            gameController.timelineConfetto.stop();
 	            gameController.stackPaneView.setVisible(false);
 	            gameController.contentGridPane.setDisable(false);
 	        });
