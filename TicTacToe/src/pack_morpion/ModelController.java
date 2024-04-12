@@ -10,6 +10,7 @@ import ai.SigmoidalTransferFunction;
 import ai.Test;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -31,6 +32,9 @@ public class ModelController {
     
     @FXML
     private BorderPane borderPane;
+    
+    @FXML
+    private Label progressLabel;
 	
     private String file;
     private int h;
@@ -50,6 +54,8 @@ public class ModelController {
     @FXML
     public void initialize() {
     	
+    	progressLabel.textProperty().bind(progressBar.progressProperty().multiply(100).asString("%.2f%%"));
+
     }
 
     
@@ -103,7 +109,7 @@ public class ModelController {
         textField.textProperty().bind(task.messageProperty());
         new Thread(task).start();
         task.setOnSucceeded(workerStateEvent -> {
-            System.out.println("Task succeeded!");
+            //System.out.println("Task succeeded!");
             File newFile = new File(file);
             try {
                 boolean success = newFile.createNewFile();
@@ -115,7 +121,7 @@ public class ModelController {
         });
 
         task.setOnFailed(workerStateEvent -> {
-            System.out.println("Task failed!");
+            //System.out.println("Task failed!");
             task.getException().printStackTrace();
         });
     }   

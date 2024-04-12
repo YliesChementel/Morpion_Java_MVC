@@ -1,3 +1,4 @@
+
 package pack_morpion;
 
 import java.io.File;
@@ -20,12 +21,7 @@ public class Main extends Application {
         Image icon = new Image("file:rss/images/Morpion.jpg");
         primaryStage.getIcons().add(icon);
         
-        String audioFile = "file:///../rss/son/Theme.mp4";
-        Media media = new Media(new File(audioFile).toURI().toString());
-        MediaPlayer mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-        mediaPlayer.setVolume(mediaPlayer.getVolume() - 0.9);
-        mediaPlayer.play();
+        MediaPlayerUtil.getMediaPlayer().play();
         
         primaryStage.setScene(new Scene(root, 720, 626));
         primaryStage.setMinWidth(720);

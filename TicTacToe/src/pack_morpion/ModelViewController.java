@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -35,7 +36,7 @@ public class ModelViewController {
     	
 		File[] listOfFiles = folder.listFiles();
 
-        if (listOfFiles != null) {
+        if (listOfFiles.length != 0) {
             for (File file : listOfFiles) {
                 if (file.isFile()) {
                     String fileName = file.getName();
@@ -60,7 +61,9 @@ public class ModelViewController {
             }
         } 
         else {
-        	System.out.println("dossier vide");
+        	Label textVide = new Label("dossier vide");
+        	textVide.setStyle("-fx-text-fill: red; -fx-font-size: 24px; -fx-font-weight: bold;");
+            filesContainer.getChildren().add(textVide);
         }
     }
 	

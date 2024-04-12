@@ -3,6 +3,12 @@
     -fx-background-size: cover; 
 }
 
+.ProgressLabel {
+    -fx-font-family: 'Comic Sans MS';
+    -fx-text-fill: white;
+    -fx-alignment: CENTER;
+	-fx-font-weight: bold;
+}
 
 .ToolBar {
 	-fx-background-color: transparent;

@@ -1,7 +1,9 @@
+
 package pack_morpion;
 
 import java.io.File;
 import java.io.IOException;
+
 import ai.Config;
 import ai.ConfigFileLoader;
 import javafx.animation.KeyFrame;
@@ -14,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -21,8 +24,8 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.animation.Interpolator;
 
- 
-public class VersusController extends Action{
+
+public class VersusController extends Action {
 	@FXML
     private StackPane stackpane;
 
@@ -60,8 +63,8 @@ public class VersusController extends Action{
         homme_Vs_Homme.setOnAction(event -> handleHommeVsHomme());
         homme_Vs_Ai.setOnAction(event -> handleHommeVsAi());
         buttonRetour.setOnAction(event -> { 
-        	handleRetour();
-        	this.Media("son_transition_end.wav");});
+            handleRetour();
+            this.Media("son_transition_end.wav");});
         
         ToggleGroup group = new ToggleGroup();
         radioF.setSelected(true);
@@ -95,11 +98,34 @@ public class VersusController extends Action{
 	    });
     }
     
+    private void transition(Scene scene, Parent root) {
+    	root.translateXProperty().set(scene.getWidth());
+        stackpane.getChildren().add(root);
+        
+        this.Media("son_transition_begin.wav");
+
+        Timeline timeline = new Timeline();
+        KeyValue keyValue = new KeyValue(root.translateXProperty(), 0, Interpolator.EASE_IN);
+        KeyFrame keyFrame = new KeyFrame(Duration.seconds(1), keyValue);
+        timeline.getKeyFrames().add(keyFrame);
+        KeyValue keyValue2 = new KeyValue(grid.translateXProperty(), -scene.getWidth(), Interpolator.EASE_IN);
+        KeyFrame keyFrame2 = new KeyFrame(Duration.seconds(1), keyValue2);
+        timeline.getKeyFrames().add(keyFrame2);
+        
+        KeyValue keyValue3 = new KeyValue(buttonRetour.translateXProperty(), -scene.getWidth(), Interpolator.EASE_IN);
+        KeyFrame keyFrame3 = new KeyFrame(Duration.seconds(1), keyValue3);
+        timeline.getKeyFrames().add(keyFrame3);
+
+        timeline.setOnFinished(event -> stackpane.getChildren().removeAll(grid, buttonRetour));
+        timeline.play();
+    }
+    
     private void handleRetour() {
     	try {
         	FXMLLoader loader = new FXMLLoader(getClass().getResource("PlayButton.fxml"));
         	 Parent root = loader.load();
              PlayButtonController playButtonController = loader.getController();
+            
 
              Scene sceneAi = grid.getScene();
              root.translateXProperty().set(-sceneAi.getWidth());
@@ -113,6 +139,12 @@ public class VersusController extends Action{
              KeyValue keyValue2 = new KeyValue(grid.translateXProperty(),sceneAi.getWidth(), Interpolator.EASE_IN);
              KeyFrame keyFrame2 = new KeyFrame(Duration.seconds(1), keyValue2);
              timeline.getKeyFrames().add(keyFrame2);
+             
+             KeyValue keyValue3 = new KeyValue(buttonRetour.translateXProperty(),sceneAi.getWidth(), Interpolator.EASE_IN);
+             KeyFrame keyFrame3 = new KeyFrame(Duration.seconds(1), keyValue3);
+             timeline.getKeyFrames().add(keyFrame3);
+             
+             timeline.setOnFinished(event -> stackpane.getChildren().remove(buttonRetour));
              timeline.setOnFinished(event -> stackpane.getChildren().setAll(root));
              timeline.play();
         } catch (IOException e) {
@@ -122,7 +154,7 @@ public class VersusController extends Action{
     
     private void handleHommeVsAi() {
     	homme_Vs_Ai.setDisable(true);
-		homme_Vs_Homme.setDisable(true);
+        homme_Vs_Homme.setDisable(true);
     	HBox hboxRadio = (HBox) grid.getChildren().stream()
                 .filter(node -> node instanceof HBox)
                 .findFirst()
@@ -150,11 +182,14 @@ public class VersusController extends Action{
               	try {
 	            	FXMLLoader loader = new FXMLLoader(getClass().getResource("ChargementLayout.fxml"));
 	                Parent root = loader.load();
+	                
 	                ModelController controller = loader.getController();
 	                controller.setParameters(config.hiddenLayerSize, config.learningRate, config.numberOfhiddenLayers, file);
 	                controller.initializeModel();
 	                Scene scene = new Scene(root);
 	                Stage stage = new Stage();
+	                Image icon = new Image("file:rss/images/load-icon.png");
+	                stage.getIcons().add(icon);
 	                stage.setScene(scene);
 	                stage.setTitle("Loading");
 	                stage.show();
@@ -168,21 +203,9 @@ public class VersusController extends Action{
 	                        gameAiController.setAiModelPath(file);
 	                        
 	                        Scene sceneAi = homme_Vs_Ai.getScene();
-	                        root2.translateXProperty().set(sceneAi.getWidth());
-	                        stackpane.getChildren().add(root2);
 
-	                        this.Media("son_transition_begin.wav");
+	                        transition(sceneAi,root2);
 	                        
-	                        Timeline timeline = new Timeline();
-	                        KeyValue keyValue = new KeyValue(root2.translateXProperty(), 0, Interpolator.EASE_IN);
-	                        KeyFrame keyFrame = new KeyFrame(Duration.seconds(1), keyValue);
-	                        timeline.getKeyFrames().add(keyFrame);
-	                        KeyValue keyValue2 = new KeyValue(grid.translateXProperty(), -sceneAi.getWidth(), Interpolator.EASE_IN);
-	                        KeyFrame keyFrame2 = new KeyFrame(Duration.seconds(1), keyValue2);
-	                        timeline.getKeyFrames().add(keyFrame2);
-
-	                        timeline.setOnFinished(event1 -> stackpane.getChildren().remove(grid));
-	                        timeline.play();
 	                    } catch (IOException e) {
 	                        e.printStackTrace();
 	                    }
@@ -201,21 +224,8 @@ public class VersusController extends Action{
                     gameAiController.setAiModelPath(file);
                     
                     Scene sceneAi = homme_Vs_Ai.getScene();
-                    root.translateXProperty().set(sceneAi.getWidth());
-                    stackpane.getChildren().add(root);
 
-                    this.Media("son_transition_begin.wav");;
-                    
-                    Timeline timeline = new Timeline();
-                    KeyValue keyValue = new KeyValue(root.translateXProperty(), 0, Interpolator.EASE_IN);
-                    KeyFrame keyFrame = new KeyFrame(Duration.seconds(1), keyValue);
-                    timeline.getKeyFrames().add(keyFrame);
-                    KeyValue keyValue2 = new KeyValue(grid.translateXProperty(), -sceneAi.getWidth(), Interpolator.EASE_IN);
-                    KeyFrame keyFrame2 = new KeyFrame(Duration.seconds(1), keyValue2);
-                    timeline.getKeyFrames().add(keyFrame2);
-
-                    timeline.setOnFinished(event -> stackpane.getChildren().remove(grid));
-                    timeline.play();
+                    transition(sceneAi,root);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -227,26 +237,12 @@ public class VersusController extends Action{
     private void handleHommeVsHomme() {
     	try {
     		homme_Vs_Ai.setDisable(true);
-			homme_Vs_Homme.setDisable(true);
-    		
+            homme_Vs_Homme.setDisable(true);
     		FXMLLoader loader = new FXMLLoader(getClass().getResource("GameLayout.fxml"));
             Parent root = loader.load();
             Scene scene = homme_Vs_Homme.getScene();
-            root.translateXProperty().set(scene.getWidth());
-            stackpane.getChildren().add(root);
 
-            this.Media("son_transition_begin.wav");
-            
-            Timeline timeline = new Timeline();
-            KeyValue keyValue = new KeyValue(root.translateXProperty(), 0, Interpolator.EASE_IN);
-            KeyFrame keyFrame = new KeyFrame(Duration.seconds(1), keyValue);
-            timeline.getKeyFrames().add(keyFrame);
-            KeyValue keyValue2 = new KeyValue(grid.translateXProperty(), -scene.getWidth(), Interpolator.EASE_IN);
-            KeyFrame keyFrame2 = new KeyFrame(Duration.seconds(1), keyValue2);
-            timeline.getKeyFrames().add(keyFrame2);
-
-            timeline.setOnFinished(event -> stackpane.getChildren().remove(grid));
-            timeline.play();
+            transition(scene,root);
             
             
         } catch (IOException e) {

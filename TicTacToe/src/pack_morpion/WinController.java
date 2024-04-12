@@ -161,13 +161,10 @@ public class WinController extends Action{
         Optional<ButtonType> result = choixDifficulte.showAndWait();
         if (result.isPresent()) {
             if (result.get() == facile) {
-                // Code pour charger le modèle de difficulté facile
                 chargerModele("F");
             } else if (result.get() == moyen) {
-                // Code pour charger le modèle de difficulté moyenne
                 chargerModele("M");
             } else if (result.get() == difficile) {
-                // Code pour charger le modèle de difficulté difficile
                 chargerModele("D");
             }
         }
@@ -235,4 +232,3 @@ public class WinController extends Action{
 }
 
     
-

@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.VBox?>
 <?import pack_morpion.ModelController?>
-
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
@@ -15,11 +14,14 @@
             stylesheets="@application.css">
 
     <center>
-        <ProgressBar fx:id="progressBar" prefWidth="400" prefHeight="50" progress="0" styleClass="ProgressBar"/>
+        <VBox alignment="CENTER">
+            <ProgressBar fx:id="progressBar" prefWidth="400" prefHeight="50" progress="0" styleClass="ProgressBar" />
+            <Label fx:id="progressLabel" styleClass="ProgressLabel" />
+        </VBox>
     </center>
 
     <top>
         <TextField fx:id="textField" editable="false" prefWidth="400" prefHeight="50" styleClass="textFieldLoad"/>
     </top>
-	
+    
 </BorderPane>
