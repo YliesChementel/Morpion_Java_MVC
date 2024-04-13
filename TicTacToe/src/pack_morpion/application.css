@@ -16,6 +16,52 @@
 	
 }
 
+.slider .thumb {
+    -fx-background-color: #a9e6f9; /* couleur de fond */
+}
+
+.slider .track {
+    -fx-background-color: #BDBDBD; /* couleur de fond */
+}
+
+/* Définir la couleur de la piste lorsque la souris est dessus */
+.slider .track:hover {
+    -fx-background-color: #757575; /* couleur de fond */
+}
+
+/* Définir la couleur des marques */
+.slider .tick-mark {
+    -fx-fill: #616161; /* couleur des marques */
+}
+
+/* Définir la couleur de la bordure du curseur */
+.slider .thumb {
+    -fx-border-color: black; /* couleur de la bordure */
+    -fx-border-width: 1; /* largeur de la bordure */
+    -fx-border-radius: 50;
+}
+
+/* Définir la couleur de la bordure du curseur lorsqu'il est survolé */
+.slider .thumb:hover {
+    -fx-border-color: black; /* couleur de la bordure */
+}
+
+/* Définir la couleur de la bordure du curseur lorsqu'il est pressé */
+.slider .thumb:pressed {
+    -fx-border-color: white; /* couleur de la bordure */
+}
+
+.volume-button {
+	-fx-background-color: transparent; 
+    -fx-background-radius: 50%; 
+    -fx-min-width: 40px; 
+    -fx-min-height: 40px;
+	-fx-font-size: 15px;
+	-fx-border-color: black; 
+	-fx-border-width: 2;
+	-fx-border-radius: 50;
+}
+
 .help-button {
     -fx-background-color: transparent; 
     -fx-text-fill: black; 

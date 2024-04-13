@@ -10,6 +10,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.scene.control.Slider;
+import javafx.scene.shape.Rectangle;
 
 public class ToolbarController {
     @FXML
@@ -20,15 +22,52 @@ public class ToolbarController {
     
     @FXML
     private Button helpItem;
+    
+    @FXML
+    private Button volumeItem;
+    
+    @FXML
+    private Slider volumeSlider;
+
 
     private SettingController settingController;
+    
+    @FXML
+    private Rectangle customTrack;
 
     @FXML
     public void initialize() {
         settingsItem.setOnAction(event -> handleSettings());
         modelsItem.setOnAction(event -> handleModels());
         helpItem.setOnAction(event -> handleHelp());
+        volumeItem.setOnAction(event -> handleVolumeButtonClick());
+        
+        volumeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            double volumeValue = newValue.doubleValue();
+
+            double volume = volumeValue / 100.0;
+
+            Main.getMainMediaPlayer().setVolume(volume);
+        });
+        
     }
+    
+    @FXML
+    private void changeSliderTrackColor() {
+        double value = volumeSlider.getValue();
+        double max = volumeSlider.getMax();
+        double min = volumeSlider.getMin();
+        double ratio = (value - min) / (max - min);
+        String color = String.format("#%02X%02X%02X", (int) (255 * ratio), (int) (255 * (1 - ratio)), 0); 
+        volumeSlider.lookup(".track").setStyle("-fx-background-color: linear-gradient(to right, " + color + " " + (ratio * 100) + "%, transparent " + (ratio * 100) + "%);");
+    }
+    
+    @FXML
+    private void handleVolumeButtonClick() {
+        volumeSlider.setVisible(!volumeSlider.isVisible());
+        changeSliderTrackColor();
+    }
+    
 
     private void handleSettings() {
     	try {
