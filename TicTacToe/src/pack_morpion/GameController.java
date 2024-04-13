@@ -9,6 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -61,14 +62,29 @@ public class GameController extends Action {
     @FXML
     public Label labelTimer;
     
-    public Timeline timelineConfetto;
-    public Timeline timelineTimer;
-    
     public int seconds = 0;
     
+    public Timeline timelineTimer;
+    
+    @FXML
+    public  Label labelWinO;
+    
+    public int winO = 0; 
+    
+    @FXML
+    public  Label labelWinX;
+    
+    public int winX = 0; 
+    
+    @FXML
+    public VBox VBoxGame;
+    
+    public Timeline timelineConfetto;
     
     private final Duration animationDuration = Duration.seconds(5);
+    
     private final Duration animationDelay = Duration.seconds(0.01);
+    
     private final int numConfetto = 1;
     
     @FXML
@@ -84,6 +100,20 @@ public class GameController extends Action {
         int minutes = (seconds % 3600) / 60;
         int secs = seconds % 60;
         labelTimer.setText(String.format("%02d:%02d", minutes, secs));
+    }
+    
+    private void updateWin(String joueur) {
+    	if(joueur == "X") {
+    		winX++;
+            labelWinX.setText(String.format("%d", winX));
+    	}
+    	else {
+    		 winO++;
+    	     labelWinO.setText(String.format("%d", winO));
+    	}
+    	labelTimer.setText("00:00");
+        seconds=0;
+    	timelineTimer.stop();
     }
     
     @FXML
@@ -127,14 +157,11 @@ public class GameController extends Action {
         btn7.setText("");
         btn8.setText("");
         btn9.setText("");
-
-        if (stage != null) {
-            stage.close();
-        }
+        
+        timelineTimer.play();
     }
     
     protected void afficherVersusLayout() {
-    	timelineTimer.stop();
         try {
         	FXMLLoader loader = new FXMLLoader(getClass().getResource("VersusLayout.fxml"));
         	Parent root = loader.load();
@@ -153,7 +180,7 @@ public class GameController extends Action {
             KeyFrame keyFrame = new KeyFrame(Duration.seconds(1), keyValue);
             timeline.getKeyFrames().add(keyFrame);
 
-            KeyValue keyValue2 = new KeyValue(contentGridPane.translateXProperty(),sceneAi.getWidth(), Interpolator.EASE_IN);
+            KeyValue keyValue2 = new KeyValue(VBoxGame.translateXProperty(),sceneAi.getWidth(), Interpolator.EASE_IN);
             KeyFrame keyFrame2 = new KeyFrame(Duration.seconds(1), keyValue2);
             timeline.getKeyFrames().add(keyFrame2);
             timeline.setOnFinished(event -> {
@@ -169,7 +196,6 @@ public class GameController extends Action {
     
     
     private void afficherFenetreNull() {
-    	timelineTimer.stop();
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("NullLayout.fxml"));
             Parent root = loader.load();
@@ -207,7 +233,6 @@ public class GameController extends Action {
     }
     
     private void afficherFenetreVictoire(String joueur) {
-    	timelineTimer.stop();
         try {
         	FXMLLoader loader = new FXMLLoader(getClass().getResource("WinLayout.fxml"));
             Parent root = loader.load();
@@ -294,16 +319,19 @@ public class GameController extends Action {
     private boolean verifierGagnant(String joueur) {
         for (int i = 0; i < 3; i++) {
             if (tableauJeu[i][0] == joueur && tableauJeu[i][1] == joueur && tableauJeu[i][2] == joueur) {
+            	this.updateWin(joueur);
                 return true;
             }
         }
         for (int j = 0; j < 3; j++) {
             if (tableauJeu[0][j] == joueur && tableauJeu[1][j] == joueur && tableauJeu[2][j] == joueur) {
+            	this.updateWin(joueur);
                 return true;
             }
         }
         if ((tableauJeu[0][0] == joueur && tableauJeu[1][1] == joueur && tableauJeu[2][2] == joueur)
                 || (tableauJeu[0][2] == joueur && tableauJeu[1][1] == joueur && tableauJeu[2][0] == joueur)) {
+        	this.updateWin(joueur);
             return true;
         }
         return false;

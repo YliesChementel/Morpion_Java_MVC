@@ -10,8 +10,10 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -58,7 +60,33 @@ public class GameAiController extends Action{
     @FXML
     public StackPane stackPaneView;
     
+    @FXML
+    public Label labelTimer;
     
+    public int seconds = 0;
+    
+    public Timeline timelineTimer;
+    
+    @FXML
+    public  Label labelWinO;
+    
+    public int winO = 0; 
+    
+    @FXML
+    public  Label labelWinX;
+    
+    public int winX = 0; 
+    
+    @FXML
+    public VBox VBoxGame;
+    
+    public Timeline timelineConfetto;
+    
+    private final Duration animationDuration = Duration.seconds(5);
+    
+    private final Duration animationDelay = Duration.seconds(0.01);
+    
+    private final int numConfetto = 1;
 
     public GameAiController() {
         this.initMatrix(tableauJeu);
@@ -70,7 +98,33 @@ public class GameAiController extends Action{
         this.net = MultiLayerPerceptron.load(modelPath);
     }
 
-    public void initialize() {
+    @FXML
+	private void initialize() {
+    	timelineTimer = new Timeline(new KeyFrame(Duration.seconds(1), e -> updateTimer()));
+	
+    	timelineTimer.setCycleCount(Timeline.INDEFINITE);
+    	timelineTimer.play();
+    }
+    
+    private void updateTimer() {
+        seconds++;
+        int minutes = (seconds % 3600) / 60;
+        int secs = seconds % 60;
+        labelTimer.setText(String.format("%02d:%02d", minutes, secs));
+    }
+    
+    private void updateWin(int joueur) {
+    	if(joueur == 1) {
+    		winX++;
+            labelWinX.setText(String.format("%d", winX));
+    	}
+    	else {
+    		 winO++;
+    	     labelWinO.setText(String.format("%d", winO));
+    	}
+    	labelTimer.setText("00:00");
+        seconds=0;
+    	timelineTimer.stop();
     }
     
     public void rejouerPartieSansChanger() {
@@ -90,6 +144,7 @@ public class GameAiController extends Action{
         btn8.setText("");
         btn9.setText("");
 
+        timelineTimer.play();
     }
     
     public void rejouerPartie(String modelPath) {
@@ -110,6 +165,7 @@ public class GameAiController extends Action{
         btn8.setText("");
         btn9.setText("");
 
+        timelineTimer.play();
     }
 
 
@@ -235,15 +291,18 @@ public class GameAiController extends Action{
         String symbol = player == 1 ? "X" : "O";
         for (int i = 0; i < 3; i++) {
             if (board[i][0] == symbol && board[i][1] == symbol && board[i][2] == symbol) {
+            	this.updateWin(player);
                 return true; 
             }
             if (board[0][i] == symbol && board[1][i] == symbol && board[2][i] == symbol) {
+            	this.updateWin(player);
                 return true;
             }
         }
         
         if ((board[0][0] == symbol && board[1][1] == symbol && board[2][2] == symbol) ||
             (board[0][2] == symbol && board[1][1] == symbol && board[2][0] == symbol)) {
+        	this.updateWin(player);
             return true; 
         }
         return false;
@@ -268,7 +327,7 @@ public class GameAiController extends Action{
              KeyFrame keyFrame = new KeyFrame(Duration.seconds(1), keyValue);
              timeline.getKeyFrames().add(keyFrame);
 
-             KeyValue keyValue2 = new KeyValue(contentGridPaneAi.translateXProperty(),sceneAi.getWidth(), Interpolator.EASE_IN);
+             KeyValue keyValue2 = new KeyValue(VBoxGame.translateXProperty(),sceneAi.getWidth(), Interpolator.EASE_IN);
              KeyFrame keyFrame2 = new KeyFrame(Duration.seconds(1), keyValue2);
              timeline.getKeyFrames().add(keyFrame2);
              timeline.setOnFinished(event -> stackpane.getChildren().setAll(root));
