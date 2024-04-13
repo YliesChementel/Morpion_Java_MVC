@@ -336,3 +336,17 @@
     -fx-border-radius: 10;
 	-fx-background-radius: 10;
 }
+
+.timer{
+	-fx-font-family: 'Comic Sans MS'; 
+	-fx-font-weight: bold; 
+	-fx-border-color : black;
+	-fx-border-width: 2;
+	-fx-border-radius: 10;
+	-fx-background-radius: 10;
+    -fx-background-color: #87cefa;
+    -fx-max-width: 100px;
+    -fx-max-height: 10px;
+    -fx-min-width: 85px;
+    -fx-background-radius: 10px;
+}

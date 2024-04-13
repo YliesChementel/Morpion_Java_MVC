@@ -48,7 +48,7 @@ public class SettingController {
     	
         ConfigFileLoader configLoad = new ConfigFileLoader();
         
-        String configFilePath = ".\\rss\\config.txt";
+        String configFilePath = "file:///../rss/config.txt";
         configLoad.loadConfigFile(configFilePath);
 
         
@@ -87,7 +87,7 @@ public class SettingController {
 
     private void saveConfigToFile(String level, String size, String rate, String layers) {
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter("C:.\\rss\\config.txt", true));
+            BufferedWriter writer = new BufferedWriter(new FileWriter("file:///../rss/config.txt", true));
             writer.write(level + ":" + size + ":" + rate + ":" + layers + "\n");
             writer.close();
         } catch (IOException e) {

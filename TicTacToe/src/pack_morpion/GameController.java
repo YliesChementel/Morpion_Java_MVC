@@ -4,6 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -57,13 +58,33 @@ public class GameController extends Action {
     @FXML
     public StackPane stackPaneView;
     
+    @FXML
+    public Label labelTimer;
+    
     public Timeline timelineConfetto;
+    public Timeline timelineTimer;
+    
+    public int seconds = 0;
     
     
     private final Duration animationDuration = Duration.seconds(5);
     private final Duration animationDelay = Duration.seconds(0.01);
     private final int numConfetto = 1;
     
+    @FXML
+	private void initialize() {
+    	timelineTimer = new Timeline(new KeyFrame(Duration.seconds(1), e -> updateTimer()));
+	
+    	timelineTimer.setCycleCount(Timeline.INDEFINITE);
+    	timelineTimer.play();
+    }
+    
+    private void updateTimer() {
+        seconds++;
+        int minutes = (seconds % 3600) / 60;
+        int secs = seconds % 60;
+        labelTimer.setText(String.format("%02d:%02d", minutes, secs));
+    }
     
     @FXML
     private void handleButtonClick(ActionEvent event) {
@@ -113,6 +134,7 @@ public class GameController extends Action {
     }
     
     protected void afficherVersusLayout() {
+    	timelineTimer.stop();
         try {
         	FXMLLoader loader = new FXMLLoader(getClass().getResource("VersusLayout.fxml"));
         	Parent root = loader.load();
@@ -134,8 +156,10 @@ public class GameController extends Action {
             KeyValue keyValue2 = new KeyValue(contentGridPane.translateXProperty(),sceneAi.getWidth(), Interpolator.EASE_IN);
             KeyFrame keyFrame2 = new KeyFrame(Duration.seconds(1), keyValue2);
             timeline.getKeyFrames().add(keyFrame2);
-            timeline.setOnFinished(event -> { 
-            	timelineConfetto.stop();
+            timeline.setOnFinished(event -> {
+            	if(timelineConfetto !=null) {
+            		timelineConfetto.stop();
+            	}
             	stackpane.getChildren().setAll(root);});
             timeline.play();
         } catch (IOException e) {
@@ -145,6 +169,7 @@ public class GameController extends Action {
     
     
     private void afficherFenetreNull() {
+    	timelineTimer.stop();
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("NullLayout.fxml"));
             Parent root = loader.load();
@@ -182,6 +207,7 @@ public class GameController extends Action {
     }
     
     private void afficherFenetreVictoire(String joueur) {
+    	timelineTimer.stop();
         try {
         	FXMLLoader loader = new FXMLLoader(getClass().getResource("WinLayout.fxml"));
             Parent root = loader.load();

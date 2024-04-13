@@ -3,7 +3,6 @@ package pack_morpion;
 import java.io.IOException;
 
 import ai.MultiLayerPerceptron;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +16,7 @@ import javafx.util.Duration;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
+import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 
@@ -191,10 +191,20 @@ public class GameAiController extends Action{
         int row = BestOutcome / 3;
         int col = BestOutcome % 3;
 
+        for (int i = 0; i < 9; i++) {
+        	System.out.println(coup[i]);
+        }
+        System.out.println();
+        contentGridPaneAi.setDisable(true);
         for (Node node : contentGridPaneAi.getChildren()) {
             if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == col && node instanceof Button) {
                 Button aiButton = (Button) node;
-                Platform.runLater(() -> aiButton.fire());
+                
+                Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.8), event -> {
+                    aiButton.fireEvent(event);
+                }));
+                timeline.setOnFinished(event -> contentGridPaneAi.setDisable(false));
+                timeline.play();
                 break;
             }
         }
@@ -202,11 +212,12 @@ public class GameAiController extends Action{
 
     private int findBestOutcome(double[] list) {
         int indice = 0;
-        double max = list[0];
+        double max = Double.NEGATIVE_INFINITY;
+
         for (int i = 0; i < 9; i++) {
             if (list[i] > max && listMatrix[i] == 0.0) {
-                indice = i;
                 max = list[i];
+                indice = i;
             }
         }
         return indice;
