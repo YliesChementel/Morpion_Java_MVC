@@ -3,20 +3,24 @@ package pack_morpion;
 
 import java.io.File;
 import java.io.IOException;
-
 import ai.Config;
 import ai.ConfigFileLoader;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -28,6 +32,7 @@ import javafx.animation.Interpolator;
 public class VersusController extends Action {
 	@FXML
     private StackPane stackpane;
+	
 
     @FXML
     private Button homme_Vs_Ai;
@@ -203,6 +208,19 @@ public class VersusController extends Action {
 	                        gameAiController.setAiModelPath(file);
 	                        
 	                        Scene sceneAi = homme_Vs_Ai.getScene();
+	                        
+	                        BorderPane borderPane = (BorderPane) sceneAi.getRoot(); // Récupère le BorderPane racine de la scène
+	                        ToolBar toolBar = (ToolBar) borderPane.getTop(); // Supposons que votre ToolBar est située en haut de votre BorderPane
+	                        
+	                        if (toolBar != null) {
+	                            ObservableList<Node> items = toolBar.getItems();
+	                            for (Node item : items) {
+	                                if (item instanceof MenuBar) {
+	                                    MenuBar menuBar = (MenuBar) item;
+	                                    menuBar.setVisible(false); // Cachez la MenuBar
+	                                }
+	                            }
+	                        }
 
 	                        transition(sceneAi,root2);
 	                        
@@ -224,6 +242,19 @@ public class VersusController extends Action {
                     gameAiController.setAiModelPath(file);
                     
                     Scene sceneAi = homme_Vs_Ai.getScene();
+                    
+                    BorderPane borderPane = (BorderPane) sceneAi.getRoot(); // Récupère le BorderPane racine de la scène
+                    ToolBar toolBar = (ToolBar) borderPane.getTop(); // Supposons que votre ToolBar est située en haut de votre BorderPane
+                    
+                    if (toolBar != null) {
+                        ObservableList<Node> items = toolBar.getItems();
+                        for (Node item : items) {
+                            if (item instanceof MenuBar) {
+                                MenuBar menuBar = (MenuBar) item;
+                                menuBar.setVisible(false); // Cachez la MenuBar
+                            }
+                        }
+                    }
 
                     transition(sceneAi,root);
                 } catch (IOException e) {
@@ -241,6 +272,19 @@ public class VersusController extends Action {
     		FXMLLoader loader = new FXMLLoader(getClass().getResource("GameLayout.fxml"));
             Parent root = loader.load();
             Scene scene = homme_Vs_Homme.getScene();
+            
+            BorderPane borderPane = (BorderPane) scene.getRoot(); // Récupère le BorderPane racine de la scène
+            ToolBar toolBar = (ToolBar) borderPane.getTop(); // Supposons que votre ToolBar est située en haut de votre BorderPane
+            
+            if (toolBar != null) {
+                ObservableList<Node> items = toolBar.getItems();
+                for (Node item : items) {
+                    if (item instanceof MenuBar) {
+                        MenuBar menuBar = (MenuBar) item;
+                        menuBar.setVisible(false); // Cachez la MenuBar
+                    }
+                }
+            }
 
             transition(scene,root);
             

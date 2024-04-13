@@ -3,6 +3,8 @@ package pack_morpion;
 import java.io.IOException;
 
 import ai.MultiLayerPerceptron;
+import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,6 +13,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.ToolBar;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -18,7 +23,6 @@ import javafx.util.Duration;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
-import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 
@@ -60,8 +64,10 @@ public class GameAiController extends Action{
     @FXML
     public StackPane stackPaneView;
     
+    
     @FXML
     public Label labelTimer;
+    
     
     public int seconds = 0;
     
@@ -70,12 +76,12 @@ public class GameAiController extends Action{
     @FXML
     public  Label labelWinO;
     
-    public int winO = 0; 
+    public int winO = 0;
     
     @FXML
     public  Label labelWinX;
     
-    public int winX = 0; 
+    public int winX = 0;
     
     @FXML
     public VBox VBoxGame;
@@ -87,6 +93,7 @@ public class GameAiController extends Action{
     private final Duration animationDelay = Duration.seconds(0.01);
     
     private final int numConfetto = 1;
+    
 
     public GameAiController() {
         this.initMatrix(tableauJeu);
@@ -99,33 +106,33 @@ public class GameAiController extends Action{
     }
 
     @FXML
-	private void initialize() {
-    	timelineTimer = new Timeline(new KeyFrame(Duration.seconds(1), e -> updateTimer()));
+    private void initialize() {
+	        timelineTimer = new Timeline(new KeyFrame(Duration.seconds(1), e -> updateTimer()));
+	    
+	        timelineTimer.setCycleCount(Timeline.INDEFINITE);
+	        timelineTimer.play();
+	}
 	
-    	timelineTimer.setCycleCount(Timeline.INDEFINITE);
-    	timelineTimer.play();
-    }
-    
-    private void updateTimer() {
-        seconds++;
-        int minutes = (seconds % 3600) / 60;
-        int secs = seconds % 60;
-        labelTimer.setText(String.format("%02d:%02d", minutes, secs));
-    }
-    
-    private void updateWin(int joueur) {
-    	if(joueur == 1) {
-    		winX++;
-            labelWinX.setText(String.format("%d", winX));
-    	}
-    	else {
-    		 winO++;
-    	     labelWinO.setText(String.format("%d", winO));
-    	}
-    	labelTimer.setText("00:00");
-        seconds=0;
-    	timelineTimer.stop();
-    }
+	private void updateTimer() {
+	    seconds++;
+	    int minutes = (seconds % 3600) / 60;
+	    int secs = seconds % 60;
+	    labelTimer.setText(String.format("%02d:%02d", minutes, secs));
+	}
+	
+	private void updateWin(int joueur) {
+	        if(joueur == 1) {
+	                winX++;
+	        labelWinX.setText(String.format("%d", winX));
+	        }
+	        else {
+	                 winO++;
+	             labelWinO.setText(String.format("%d", winO));
+	        }
+	        labelTimer.setText("00:00");
+	    seconds=0;
+	        timelineTimer.stop();
+	}
     
     public void rejouerPartieSansChanger() {
     	turnAI = false; 
@@ -143,8 +150,8 @@ public class GameAiController extends Action{
         btn7.setText("");
         btn8.setText("");
         btn9.setText("");
-
         timelineTimer.play();
+
     }
     
     public void rejouerPartie(String modelPath) {
@@ -164,8 +171,9 @@ public class GameAiController extends Action{
         btn7.setText("");
         btn8.setText("");
         btn9.setText("");
-
+        
         timelineTimer.play();
+
     }
 
 
@@ -246,18 +254,20 @@ public class GameAiController extends Action{
         int BestOutcome = findBestOutcome(coup);
         int row = BestOutcome / 3;
         int col = BestOutcome % 3;
-
+        
         for (int i = 0; i < 9; i++) {
-        	System.out.println(coup[i]);
-        }
-        System.out.println();
-        contentGridPaneAi.setDisable(true);
+            System.out.println(coup[i]);
+	    }
+	    System.out.println();
+	    contentGridPaneAi.setDisable(true);
+	    
         for (Node node : contentGridPaneAi.getChildren()) {
             if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == col && node instanceof Button) {
                 Button aiButton = (Button) node;
-                
+               // Platform.runLater(() -> aiButton.fire());
                 Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.8), event -> {
                     aiButton.fireEvent(event);
+               
                 }));
                 timeline.setOnFinished(event -> contentGridPaneAi.setDisable(false));
                 timeline.play();
@@ -269,9 +279,9 @@ public class GameAiController extends Action{
     private int findBestOutcome(double[] list) {
         int indice = 0;
         double max = Double.NEGATIVE_INFINITY;
-
         for (int i = 0; i < 9; i++) {
             if (list[i] > max && listMatrix[i] == 0.0) {
+                
                 max = list[i];
                 indice = i;
             }
@@ -321,13 +331,26 @@ public class GameAiController extends Action{
              
              this.Media("son_transition_end.wav");
              
+             BorderPane borderPane = (BorderPane) sceneAi.getRoot();
+             ToolBar toolBar = (ToolBar) borderPane.getTop(); 
+             
+             if (toolBar != null) {
+                 ObservableList<Node> items = toolBar.getItems();
+                 for (Node item : items) {
+                     if (item instanceof MenuBar) {
+                         MenuBar menuBar = (MenuBar) item;
+                         menuBar.setVisible(true); 
+                     }
+                 }
+             }
+             
              Timeline timeline = new Timeline();
 
              KeyValue keyValue = new KeyValue(root.translateXProperty(), 0, Interpolator.EASE_IN);
              KeyFrame keyFrame = new KeyFrame(Duration.seconds(1), keyValue);
              timeline.getKeyFrames().add(keyFrame);
 
-             KeyValue keyValue2 = new KeyValue(VBoxGame.translateXProperty(),sceneAi.getWidth(), Interpolator.EASE_IN);
+             KeyValue keyValue2 = new KeyValue(contentGridPaneAi.translateXProperty(),sceneAi.getWidth(), Interpolator.EASE_IN);
              KeyFrame keyFrame2 = new KeyFrame(Duration.seconds(1), keyValue2);
              timeline.getKeyFrames().add(keyFrame2);
              timeline.setOnFinished(event -> stackpane.getChildren().setAll(root));

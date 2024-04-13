@@ -1,12 +1,16 @@
 package pack_morpion;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -22,6 +26,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 
 public class GameController extends Action {
@@ -59,6 +64,13 @@ public class GameController extends Action {
     @FXML
     public StackPane stackPaneView;
     
+    public Timeline timelineConfetto;
+    
+    
+    private final Duration animationDuration = Duration.seconds(5);
+    private final Duration animationDelay = Duration.seconds(0.01);
+    private final int numConfetto = 1;
+    
     @FXML
     public Label labelTimer;
     
@@ -69,52 +81,45 @@ public class GameController extends Action {
     @FXML
     public  Label labelWinO;
     
-    public int winO = 0; 
+    public int winO = 0;
     
     @FXML
     public  Label labelWinX;
     
-    public int winX = 0; 
+    public int winX = 0;
     
     @FXML
     public VBox VBoxGame;
     
-    public Timeline timelineConfetto;
-    
-    private final Duration animationDuration = Duration.seconds(5);
-    
-    private final Duration animationDelay = Duration.seconds(0.01);
-    
-    private final int numConfetto = 1;
-    
     @FXML
-	private void initialize() {
-    	timelineTimer = new Timeline(new KeyFrame(Duration.seconds(1), e -> updateTimer()));
+    private void initialize() {
+        timelineTimer = new Timeline(new KeyFrame(Duration.seconds(1), e -> updateTimer()));
+    
+        timelineTimer.setCycleCount(Timeline.INDEFINITE);
+        timelineTimer.play();
+	}
 	
-    	timelineTimer.setCycleCount(Timeline.INDEFINITE);
-    	timelineTimer.play();
-    }
+	private void updateTimer() {
+	    seconds++;
+	    int minutes = (seconds % 3600) / 60;
+	    int secs = seconds % 60;
+	    labelTimer.setText(String.format("%02d:%02d", minutes, secs));
+	}
+	
+	private void updateWin(String joueur) {
+	        if(joueur == "X") {
+	                winX++;
+	        labelWinX.setText(String.format("%d", winX));
+	        }
+	        else {
+	                 winO++;
+	             labelWinO.setText(String.format("%d", winO));
+	        }
+	        labelTimer.setText("00:00");
+	    seconds=0;
+	        timelineTimer.stop();
+	}
     
-    private void updateTimer() {
-        seconds++;
-        int minutes = (seconds % 3600) / 60;
-        int secs = seconds % 60;
-        labelTimer.setText(String.format("%02d:%02d", minutes, secs));
-    }
-    
-    private void updateWin(String joueur) {
-    	if(joueur == "X") {
-    		winX++;
-            labelWinX.setText(String.format("%d", winX));
-    	}
-    	else {
-    		 winO++;
-    	     labelWinO.setText(String.format("%d", winO));
-    	}
-    	labelTimer.setText("00:00");
-        seconds=0;
-    	timelineTimer.stop();
-    }
     
     @FXML
     private void handleButtonClick(ActionEvent event) {
@@ -157,7 +162,7 @@ public class GameController extends Action {
         btn7.setText("");
         btn8.setText("");
         btn9.setText("");
-        
+
         timelineTimer.play();
     }
     
@@ -168,11 +173,24 @@ public class GameController extends Action {
             VersusController versusController = loader.getController();
             
 
-            Scene sceneAi = contentGridPane.getScene();
-            root.translateXProperty().set(-sceneAi.getWidth());
+            Scene scene = contentGridPane.getScene();
+            root.translateXProperty().set(-scene.getWidth());
             stackpane.getChildren().add(root);
             
             this.Media("son_transition_end.wav");
+            
+            BorderPane borderPane = (BorderPane) scene.getRoot(); 
+            ToolBar toolBar = (ToolBar) borderPane.getTop(); 
+            
+            if (toolBar != null) {
+                ObservableList<Node> items = toolBar.getItems();
+                for (Node item : items) {
+                    if (item instanceof MenuBar) {
+                        MenuBar menuBar = (MenuBar) item;
+                        menuBar.setVisible(true); 
+                    }
+                }
+            }
       
             Timeline timeline = new Timeline();
 
@@ -180,12 +198,12 @@ public class GameController extends Action {
             KeyFrame keyFrame = new KeyFrame(Duration.seconds(1), keyValue);
             timeline.getKeyFrames().add(keyFrame);
 
-            KeyValue keyValue2 = new KeyValue(VBoxGame.translateXProperty(),sceneAi.getWidth(), Interpolator.EASE_IN);
+            KeyValue keyValue2 = new KeyValue(contentGridPane.translateXProperty(),scene.getWidth(), Interpolator.EASE_IN);
             KeyFrame keyFrame2 = new KeyFrame(Duration.seconds(1), keyValue2);
             timeline.getKeyFrames().add(keyFrame2);
-            timeline.setOnFinished(event -> {
+            timeline.setOnFinished(event -> { 
             	if(timelineConfetto !=null) {
-            		timelineConfetto.stop();
+                    timelineConfetto.stop();
             	}
             	stackpane.getChildren().setAll(root);});
             timeline.play();

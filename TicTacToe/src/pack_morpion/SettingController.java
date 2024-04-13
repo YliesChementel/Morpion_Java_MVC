@@ -3,7 +3,6 @@ package pack_morpion;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-
 import ai.Config;
 import ai.ConfigFileLoader;
 import javafx.fxml.FXML;
