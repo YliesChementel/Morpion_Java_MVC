@@ -34,7 +34,6 @@ public class ToolbarController {
     
     @FXML
     private Rectangle customTrack;
-    
 
     @FXML
     public void initialize() {

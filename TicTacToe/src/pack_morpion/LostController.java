@@ -21,7 +21,7 @@ import ai.ConfigFileLoader;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 
-public class LostController {
+public class LostController extends Action{
 
 
     @FXML
@@ -59,13 +59,14 @@ public class LostController {
 	    	if (response == changerDifficulte) {
 	    		choisirNouvelleDifficulte();
 	        } else if (response == rejouer) {
+	        	this.Media("son_stackpane_end.wav");
 	        	TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), gameAiController.stackPaneView);
 			 	Scene scene = gameAiController.stackPaneView.getScene();
 		        translateTransition.setFromY(0);
 		        translateTransition.setToY(-scene.getHeight());
 		        
 		        translateTransition.setOnFinished(e -> {
-		        	 gameAiController.rejouerPartieSansChanger();
+		        	gameAiController.rejouerPartie(null);
 		        	gameAiController.stackPaneView.setVisible(false);
 		        	gameAiController.contentGridPaneAi.setDisable(false);
 		        });
@@ -130,6 +131,7 @@ public class LostController {
                 stage.show();
                 
                 stage.setOnHidden(event -> {
+                	this.Media("son_stackpane_end.wav");
                 	TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), gameAiController.stackPaneView);
         		 	Scene scene1 = gameAiController.stackPaneView.getScene();
         	        translateTransition.setFromY(0);
@@ -148,6 +150,7 @@ public class LostController {
         	}
        }
         else {
+        	 this.Media("son_stackpane_end.wav");
         	TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), gameAiController.stackPaneView);
 		 	Scene scene = gameAiController.stackPaneView.getScene();
 	        translateTransition.setFromY(0);
@@ -165,6 +168,7 @@ public class LostController {
     @FXML
     private void retour(ActionEvent event) {
         if(gameAiController != null) {
+        	this.Media("son_stackpane_end.wav");
         	TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), gameAiController.stackPaneView);
 		 	Scene scene = gameAiController.stackPaneView.getScene();
 	        translateTransition.setFromY(0);

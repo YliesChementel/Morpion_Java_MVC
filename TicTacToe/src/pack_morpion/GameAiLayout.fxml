@@ -23,6 +23,7 @@
 		</StackPane>
 
 		<VBox alignment="CENTER" spacing="10" fx:id="VBoxGame">
+		<Label text="" alignment="CENTER" fx:id="LabelTurn" styleClass="LabelTurn"></Label>
 			<HBox alignment="TOP_CENTER" spacing="25">
 				<StackPane styleClass="timer">
 					<Label text="0" graphicTextGap="40" fx:id="labelWinX">

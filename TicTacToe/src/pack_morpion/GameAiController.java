@@ -1,6 +1,8 @@
 package pack_morpion;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 import ai.MultiLayerPerceptron;
 import javafx.application.Platform;
@@ -15,6 +17,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.ToolBar;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -25,7 +29,6 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
-
 
 public class GameAiController extends Action{
 	
@@ -64,28 +67,6 @@ public class GameAiController extends Action{
     @FXML
     public StackPane stackPaneView;
     
-    
-    @FXML
-    public Label labelTimer;
-    
-    
-    public int seconds = 0;
-    
-    public Timeline timelineTimer;
-    
-    @FXML
-    public  Label labelWinO;
-    
-    public int winO = 0;
-    
-    @FXML
-    public  Label labelWinX;
-    
-    public int winX = 0;
-    
-    @FXML
-    public VBox VBoxGame;
-    
     public Timeline timelineConfetto;
     
     private final Duration animationDuration = Duration.seconds(5);
@@ -94,7 +75,30 @@ public class GameAiController extends Action{
     
     private final int numConfetto = 1;
     
-
+    @FXML
+    public Label labelTimer;
+    
+    public int seconds = 0;
+    
+    public Timeline timelineTimer;
+    
+    @FXML
+    public  Label labelWinO;
+    
+    public int winO = 0; 
+    
+    @FXML
+    public  Label labelWinX;
+    
+    public int winX = 0; 
+    
+    @FXML
+    public VBox VBoxGame;
+    
+    @FXML
+    public Label LabelTurn;
+    
+    
     public GameAiController() {
         this.initMatrix(tableauJeu);
     }
@@ -106,61 +110,56 @@ public class GameAiController extends Action{
     }
 
     @FXML
-    private void initialize() {
-	        timelineTimer = new Timeline(new KeyFrame(Duration.seconds(1), e -> updateTimer()));
-	    
-	        timelineTimer.setCycleCount(Timeline.INDEFINITE);
-	        timelineTimer.play();
-	}
+	private void initialize() {
+    	timelineTimer = new Timeline(new KeyFrame(Duration.seconds(1), e -> updateTimer()));
 	
-	private void updateTimer() {
-	    seconds++;
-	    int minutes = (seconds % 3600) / 60;
-	    int secs = seconds % 60;
-	    labelTimer.setText(String.format("%02d:%02d", minutes, secs));
-	}
-	
-	private void updateWin(int joueur) {
-	        if(joueur == 1) {
-	                winX++;
-	        labelWinX.setText(String.format("%d", winX));
-	        }
-	        else {
-	                 winO++;
-	             labelWinO.setText(String.format("%d", winO));
-	        }
-	        labelTimer.setText("00:00");
-	    seconds=0;
-	        timelineTimer.stop();
-	}
-    
-    public void rejouerPartieSansChanger() {
-    	turnAI = false; 
-        tableauJeu = new String[3][3]; 
-        listMatrix = new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0};
-        buttonCount = 0;
-        nbJoueur = 1;
-
-        btn1.setText("");
-        btn2.setText("");
-        btn3.setText("");
-        btn4.setText("");
-        btn5.setText("");
-        btn6.setText("");
-        btn7.setText("");
-        btn8.setText("");
-        btn9.setText("");
-        timelineTimer.play();
-
+    	timelineTimer.setCycleCount(Timeline.INDEFINITE);
+    	timelineTimer.play();
+    	
+    	this.updateTurn();
     }
     
+    private void updateTurn() {
+    	if(turnAI) {
+    		LabelTurn.setText("C'est à l'ordi de jouer");
+    	}
+    	else {
+    		LabelTurn.setText("C'est à vous de jouer");
+    	}
+    }
+    
+    private void updateTimer() {
+        seconds++;
+        int minutes = (seconds % 3600) / 60;
+        int secs = seconds % 60;
+        labelTimer.setText(String.format("%02d:%02d", minutes, secs));
+    }
+    
+    private void updateWin(int joueur) {
+    	if(joueur == 1) {
+    		winX++;
+            labelWinX.setText(String.format("%d", winX));
+    	}
+    	else {
+    		 winO++;
+    	     labelWinO.setText(String.format("%d", winO));
+    	}
+    	labelTimer.setText("00:00");
+        seconds=0;
+    	timelineTimer.stop();
+    }
+    
+    
     public void rejouerPartie(String modelPath) {
-    	turnAI = false; 
+        turnAI = false; 
         tableauJeu = new String[3][3]; 
         listMatrix = new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0};
         buttonCount = 0;
         nbJoueur = 1;
-        setAiModelPath(modelPath);
+        
+        if (modelPath != null) {
+            setAiModelPath(modelPath);
+        }
 
         btn1.setText("");
         btn2.setText("");
@@ -171,9 +170,8 @@ public class GameAiController extends Action{
         btn7.setText("");
         btn8.setText("");
         btn9.setText("");
-        
-        timelineTimer.play();
 
+        timelineTimer.play();
     }
 
 
@@ -210,6 +208,7 @@ public class GameAiController extends Action{
 	            playAi();
 	        }
         }
+        this.updateTurn();
     }
 
     private void afficherFenetrePerdu() {
@@ -225,6 +224,8 @@ public class GameAiController extends Action{
             stackPaneView.getChildren().setAll(root);
             stackPaneView.toFront();
             contentGridPaneAi.setDisable(true);
+            
+            this.Media("son_stackpane_begin.wav");
             
             TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), stackPaneView);
             translateTransition.setFromY(-stackPaneView.getHeight());
@@ -254,20 +255,18 @@ public class GameAiController extends Action{
         int BestOutcome = findBestOutcome(coup);
         int row = BestOutcome / 3;
         int col = BestOutcome % 3;
-        
+
         for (int i = 0; i < 9; i++) {
-            System.out.println(coup[i]);
-	    }
-	    System.out.println();
-	    contentGridPaneAi.setDisable(true);
-	    
+        	System.out.println(coup[i]);
+        }
+        System.out.println();
+        contentGridPaneAi.setDisable(true);
         for (Node node : contentGridPaneAi.getChildren()) {
             if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == col && node instanceof Button) {
                 Button aiButton = (Button) node;
-               // Platform.runLater(() -> aiButton.fire());
+                
                 Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.8), event -> {
                     aiButton.fireEvent(event);
-               
                 }));
                 timeline.setOnFinished(event -> contentGridPaneAi.setDisable(false));
                 timeline.play();
@@ -279,9 +278,9 @@ public class GameAiController extends Action{
     private int findBestOutcome(double[] list) {
         int indice = 0;
         double max = Double.NEGATIVE_INFINITY;
+
         for (int i = 0; i < 9; i++) {
             if (list[i] > max && listMatrix[i] == 0.0) {
-                
                 max = list[i];
                 indice = i;
             }
@@ -333,7 +332,7 @@ public class GameAiController extends Action{
              
              BorderPane borderPane = (BorderPane) sceneAi.getRoot();
              ToolBar toolBar = (ToolBar) borderPane.getTop(); 
-             
+
              if (toolBar != null) {
                  ObservableList<Node> items = toolBar.getItems();
                  for (Node item : items) {
@@ -350,10 +349,15 @@ public class GameAiController extends Action{
              KeyFrame keyFrame = new KeyFrame(Duration.seconds(1), keyValue);
              timeline.getKeyFrames().add(keyFrame);
 
-             KeyValue keyValue2 = new KeyValue(contentGridPaneAi.translateXProperty(),sceneAi.getWidth(), Interpolator.EASE_IN);
+             KeyValue keyValue2 = new KeyValue(VBoxGame.translateXProperty(),sceneAi.getWidth(), Interpolator.EASE_IN);
              KeyFrame keyFrame2 = new KeyFrame(Duration.seconds(1), keyValue2);
              timeline.getKeyFrames().add(keyFrame2);
-             timeline.setOnFinished(event -> stackpane.getChildren().setAll(root));
+             timeline.setOnFinished(event -> {
+            	 if(timelineConfetto !=null) {
+            		 timelineConfetto.stop();
+            	 }
+            	 stackpane.getChildren().setAll(root);
+            	 });
              timeline.play();
         } catch (IOException e) {
             e.printStackTrace();
@@ -373,6 +377,8 @@ public class GameAiController extends Action{
             stackPaneView.getChildren().setAll(root);
             stackPaneView.toFront();
             contentGridPaneAi.setDisable(true);
+            
+            this.Media("son_stackpane_begin.wav");
             
             TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), stackPaneView);
             translateTransition.setFromY(-stackPaneView.getHeight());
@@ -411,6 +417,10 @@ public class GameAiController extends Action{
             stackPaneView.toFront();
             contentGridPaneAi.setDisable(true);
             
+            this.Media("son_stackpane_begin.wav");
+            
+            Scene scene = this.stackPaneView.getScene();
+            
             TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), stackPaneView);
             translateTransition.setFromY(-stackPaneView.getHeight());
             translateTransition.setToY(0);
@@ -426,11 +436,52 @@ public class GameAiController extends Action{
 
                 this.Media("son_victory.wav");
                 
+                this.confetto(scene);
             	});
             translateTransition.play();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    
+    private void confetto(Scene scene) {
+    	List<String> confettoImages = Arrays.asList("file:rss/images/confetto_vert.png", 
+    			"file:rss/images/confetto_bleu.png", 
+    			"file:rss/images/confetto_rouge.png",
+    			"file:rss/images/confetto_jaune.png",
+    			"file:rss/images/confetto_blanc.png",
+    			"file:rss/images/confetto_violet.png",
+    			"file:rss/images/confetto_orange.png",
+    			"file:rss/images/confetto_rose.png");
+
+        Timeline timeline = new Timeline(new KeyFrame(Duration.ZERO, event1 -> {
+                for (int i = 0; i < numConfetto; i++) {
+                	String imagePath = confettoImages.get((int) (Math.random() * confettoImages.size()));
+                    Image confettoImage = new Image(imagePath);
+                    
+                    ImageView imageView = new ImageView(confettoImage);
+                    
+                    imageView.setTranslateX(Math.random() * scene.getWidth() * 2 - scene.getWidth());
+                    imageView.setTranslateY(-scene.getHeight());
+                    
+                    imageView.fitWidthProperty().bind(stackpane.widthProperty().divide(50));
+                    imageView.fitHeightProperty().bind(stackpane.heightProperty().divide(50));
+                    
+                    
+                    stackpane.getChildren().add(imageView);
+                    imageView.toBack();
+                    
+                    TranslateTransition translateTransition1 = new TranslateTransition(animationDuration, imageView);
+                    translateTransition1.setToY(600);
+                    translateTransition1.setOnFinished(e -> stackpane.getChildren().remove(imageView));
+                    translateTransition1.play();
+                }
+        }), new KeyFrame(animationDelay));
+
+        timelineConfetto=timeline;
+        
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
     }
 
 }

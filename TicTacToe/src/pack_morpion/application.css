@@ -1,5 +1,5 @@
 .root {
-    -fx-background-image: url("https://image.freepik.com/vecteurs-libre/paysage-vert-ciel-bleu_74689-139.jpg");
+    -fx-background-image: url("file:///../rss/images/paysage-vert-ciel-bleu.jpg");
     -fx-background-size: cover; 
 }
 
@@ -197,7 +197,7 @@
 }
 
 .ManVsMan {
-	-fx-border-color : #2b78e4;
+	-fx-border-color : black;
 	-fx-border-radius: 10;
 	-fx-border-width :3;
 	-fx-background-color: #a9e6f9;
@@ -205,7 +205,7 @@
 }
 
 .AIVsMan {
-	-fx-border-color : #2b78e4;
+	-fx-border-color : black;
 	-fx-border-radius: 10;
 	-fx-border-width :3;
 	-fx-background-color: #a9e6f9;
@@ -228,6 +228,41 @@
 
 .HboxRadio{
 	-fx-alignment: center;
+}
+
+.TextFieldVersus {
+	-fx-font-family: 'Comic Sans MS'; 
+	-fx-font-weight : bold;
+	-fx-border-color : black;
+	-fx-border-width: 2;
+	-fx-border-radius: 10;
+	-fx-background-radius: 10;
+    -fx-background-color: #87cefa;
+	-fx-max-width: 85px;
+	-fx-max-height: 85px;
+}
+
+.LabelVersus {
+	-fx-font-family: 'Comic Sans MS'; 
+	-fx-font-weight : bold;
+	-fx-font-size: 14; 
+	-fx-padding: 5px 0 0 0;
+}
+
+.VboxVersus{
+	-fx-translate-y: -20;
+}
+
+.radio-button .radio {
+    -fx-background-color: #87cefa;
+    -fx-border-width: 2;
+    -fx-border-radius: 15;
+    -fx-border-color: black;
+}
+
+.radio-button:selected .radio .dot {
+    -fx-background-color: black;
+    -fx-background-radius: 15px;
 }
 
 .ProgressBar {
@@ -336,16 +371,34 @@
     -fx-border-radius: 10;
 	-fx-background-radius: 10;
 }
+
 .timer{
-        -fx-font-family: 'Comic Sans MS';
-        -fx-font-weight: bold;
-        -fx-border-color : black;
-        -fx-border-width: 2;
-        -fx-border-radius: 10;
-        -fx-background-radius: 10;
+	-fx-font-family: 'Comic Sans MS';
+	-fx-font-weight: bold;
+	-fx-border-color : black;
+	-fx-border-width: 2;
+	-fx-border-radius: 10;
+	-fx-background-radius: 10;
     -fx-background-color: #87cefa;
     -fx-max-width: 100px;
     -fx-max-height: 10px;
     -fx-min-width: 85px;
     -fx-background-radius: 10px;
+}
+
+
+.LabelNamesGame{
+	-fx-font-family: 'Comic Sans MS';
+	-fx-font-weight: bold;
+	
+}
+
+.LabelTurn{
+	-fx-font-family: 'Comic Sans MS';
+	-fx-font-weight: bold;
+	
+}
+
+.VBoxGame{
+	-fx-translate-y: -30;
 }

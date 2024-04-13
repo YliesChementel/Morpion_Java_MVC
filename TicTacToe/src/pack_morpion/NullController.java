@@ -51,6 +51,7 @@ public class NullController extends Action {
     
     @FXML
     private void rejouer(ActionEvent event) {
+    	this.Media("son_stackpane_end.wav");
     	TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), gameController.stackPaneView);
 	 	Scene scene = gameController.stackPaneView.getScene();
         translateTransition.setFromY(0);

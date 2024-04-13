@@ -22,8 +22,11 @@
 			maxWidth="560" maxHeight="400"
 			style="-fx-background-radius: 10;">
 		</StackPane>
-		<VBox alignment="CENTER" spacing="10" fx:id="VBoxGame">
+		<VBox alignment="CENTER" spacing="10" fx:id="VBoxGame" styleClass="VBoxGame">
+			<Label text="" alignment="CENTER" fx:id="LabelTurn" styleClass="LabelTurn"></Label>
 			<HBox alignment="TOP_CENTER" spacing="25">
+				<VBox alignment="CENTER">
+				<Label text="" fx:id="LabelNameX"  styleClass="LabelNamesGame"></Label>
 				<StackPane styleClass="timer">
 					<Label text="0" graphicTextGap="40" fx:id="labelWinX">
 						<graphic>
@@ -33,6 +36,9 @@
 					    </graphic>
 					</Label>
 				</StackPane>
+				</VBox>
+				<VBox>
+				<Label text="" ></Label>
 				<StackPane styleClass="timer">
 					<Label text="00:00" graphicTextGap="30" fx:id="labelTimer">
 						<graphic>
@@ -42,6 +48,9 @@
 					    </graphic>
 					</Label>
 				</StackPane>
+				</VBox>
+				<VBox alignment="CENTER">
+				<Label text="" fx:id="LabelNameO" styleClass="LabelNamesGame"></Label>
 				<StackPane styleClass="timer">
 					<Label text="0" graphicTextGap="40" fx:id="labelWinO">
 						<graphic>
@@ -51,6 +60,7 @@
 					    </graphic>
 					</Label>
 				</StackPane>
+				</VBox>
 			</HBox>
 			<GridPane fx:id="contentGridPane" alignment="CENTER" hgap="10" vgap="10">
 				<Button fx:id="btn1" onAction="#handleButtonClick" prefWidth="100" prefHeight="100" GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="Cases"/>

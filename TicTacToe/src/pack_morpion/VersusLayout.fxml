@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.control.RadioButton?>
@@ -9,6 +11,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import pack_morpion.VersusController ?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.control.Label?>
 
 <StackPane xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
@@ -16,10 +19,23 @@
       fx:id="stackpane">
     
     <children>
-        <GridPane fx:id="grid" alignment="CENTER">
+    
+        <GridPane fx:id="grid" alignment="CENTER" style="-fx-translate-x: -53;">
             <padding>
                 <Insets top="10" bottom="10" left="10" right="10"/>
             </padding>
+            
+            <VBox fx:id="vBoxNom" alignment="TOP_CENTER" spacing="10" styleClass="VboxVersus">
+            	<Label text="NOMS" styleClass="LabelVersus"/>
+            	<HBox spacing="10">
+    				<Label text="X" styleClass="LabelVersus"/>
+    				<TextField fx:id="fieldF1" styleClass="TextFieldVersus"/>
+    			</HBox>
+    			<HBox spacing="10">
+    				<Label text="O" styleClass="LabelVersus"/>
+	    			<TextField fx:id="fieldF2" styleClass="TextFieldVersus"/>
+	    		</HBox>
+	   		</VBox>
             
             <Button fx:id="homme_Vs_Homme" GridPane.columnIndex="1" GridPane.rowIndex="0" prefHeight="70.0" prefWidth="252.0" styleClass="ManVsMan">
 		          <graphic>
@@ -54,7 +70,7 @@
             </Button>
             
             
-           <HBox GridPane.columnIndex="1" GridPane.rowIndex="3" spacing="10" styleClass="HboxRadio">
+           <HBox GridPane.columnIndex="1" GridPane.rowIndex="3" spacing="10" alignment="CENTER" styleClass="HboxRadio">
                 <children>
                    	<ImageView fitWidth="20" fitHeight="20">
 		                <Image url="file:///../rss/images/baby.png"/>

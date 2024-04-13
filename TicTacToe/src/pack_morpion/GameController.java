@@ -66,9 +66,10 @@ public class GameController extends Action {
     
     public Timeline timelineConfetto;
     
-    
     private final Duration animationDuration = Duration.seconds(5);
+    
     private final Duration animationDelay = Duration.seconds(0.01);
+    
     private final int numConfetto = 1;
     
     @FXML
@@ -91,35 +92,86 @@ public class GameController extends Action {
     @FXML
     public VBox VBoxGame;
     
+    public VersusController versus;
+    
     @FXML
-    private void initialize() {
-        timelineTimer = new Timeline(new KeyFrame(Duration.seconds(1), e -> updateTimer()));
+    public Label LabelNameX;
     
-        timelineTimer.setCycleCount(Timeline.INDEFINITE);
-        timelineTimer.play();
-	}
-	
-	private void updateTimer() {
-	    seconds++;
-	    int minutes = (seconds % 3600) / 60;
-	    int secs = seconds % 60;
-	    labelTimer.setText(String.format("%02d:%02d", minutes, secs));
-	}
-	
-	private void updateWin(String joueur) {
-	        if(joueur == "X") {
-	                winX++;
-	        labelWinX.setText(String.format("%d", winX));
-	        }
-	        else {
-	                 winO++;
-	             labelWinO.setText(String.format("%d", winO));
-	        }
-	        labelTimer.setText("00:00");
-	    seconds=0;
-	        timelineTimer.stop();
-	}
+    @FXML
+    public Label LabelNameO;
     
+    public String nomJoueurX;
+    
+    public String nomJoueurO;
+    
+    public VersusController versusController;
+    
+    @FXML
+    public Label LabelTurn;
+    
+    @FXML
+	private void initialize() {
+    	timelineTimer = new Timeline(new KeyFrame(Duration.seconds(1), e -> updateTimer()));
+	
+    	timelineTimer.setCycleCount(Timeline.INDEFINITE);
+    	timelineTimer.play();
+    	
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("VersusLayout.fxml"));
+    	try {
+			Parent root = loader.load();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+    	this.versusController = loader.getController();
+        
+        this.nomJoueurX = this.versusController.getNOM_JOUEURX();
+        this.nomJoueurO = this.versusController.getNOM_JOUEURO();
+        LabelNameX.setText(nomJoueurX);
+    	LabelNameO.setText(nomJoueurO);
+    	LabelTurn.toBack();
+    	this.updateTurn();
+    }
+    
+    private void updateTurn() {
+    	if(joueurX) {
+    		if(nomJoueurX=="") {
+        		LabelTurn.setText("C'est à X de jouer");
+        	}
+    		else {
+    			LabelTurn.setText("C'est à "+nomJoueurX+" de jouer");
+    		}
+    	}
+    	else {
+    		if(nomJoueurO=="") {
+        		LabelTurn.setText("C'est à O de jouer");
+        	}
+    		else {
+    			LabelTurn.setText("C'est à "+nomJoueurO+" de jouer");
+    		}
+    	}
+    	
+    }
+    
+    private void updateTimer() {
+        seconds++;
+        int minutes = (seconds % 3600) / 60;
+        int secs = seconds % 60;
+        labelTimer.setText(String.format("%02d:%02d", minutes, secs));
+    }
+    
+    private void updateWin(String joueur) {
+    	if(joueur == "X") {
+    		winX++;
+            labelWinX.setText(String.format("%d", winX));
+    	}
+    	else {
+    		 winO++;
+    	     labelWinO.setText(String.format("%d", winO));
+    	}
+    	labelTimer.setText("00:00");
+        seconds=0;
+    	timelineTimer.stop();
+    }
     
     @FXML
     private void handleButtonClick(ActionEvent event) {
@@ -147,6 +199,7 @@ public class GameController extends Action {
             	afficherFenetreNull();
             }
         }
+        this.updateTurn();
     }
     
     public void rejouerPartie() {
@@ -162,7 +215,7 @@ public class GameController extends Action {
         btn7.setText("");
         btn8.setText("");
         btn9.setText("");
-
+        
         timelineTimer.play();
     }
     
@@ -198,7 +251,7 @@ public class GameController extends Action {
             KeyFrame keyFrame = new KeyFrame(Duration.seconds(1), keyValue);
             timeline.getKeyFrames().add(keyFrame);
 
-            KeyValue keyValue2 = new KeyValue(contentGridPane.translateXProperty(),scene.getWidth(), Interpolator.EASE_IN);
+            KeyValue keyValue2 = new KeyValue(VBoxGame.translateXProperty(),scene.getWidth(), Interpolator.EASE_IN);
             KeyFrame keyFrame2 = new KeyFrame(Duration.seconds(1), keyValue2);
             timeline.getKeyFrames().add(keyFrame2);
             timeline.setOnFinished(event -> { 

@@ -130,18 +130,19 @@ public class WinController extends Action{
 	            if (response == changerDifficulte) {
 	            	choisirNouvelleDifficulte();
 	            } else if (response == rejouer) {
+	            	 this.Media("son_stackpane_end.wav");
 	            	TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), gameAiController.stackPaneView);
 	    		 	Scene scene = gameAiController.stackPaneView.getScene();
 	    	        translateTransition.setFromY(0);
 	    	        translateTransition.setToY(-scene.getHeight());
 	    	        
 	    	        translateTransition.setOnFinished(e -> {
-	    	        	
+	    	        	gameAiController.timelineConfetto.stop();
 	    	        	gameAiController.stackPaneView.setVisible(false);
 	    	        	gameAiController.contentGridPaneAi.setDisable(false);
 	    	        });
 	    	        translateTransition.play();     
-	    	        gameAiController.rejouerPartieSansChanger();     
+	    	        gameAiController.rejouerPartie(null);     
 	            }
 	        });
     	}
@@ -197,6 +198,7 @@ public class WinController extends Action{
                 stage.show();
                 
                 stage.setOnHidden(event -> {
+                	this.Media("son_stackpane_end.wav");
                 	TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), gameAiController.stackPaneView);
         		 	Scene scene1 = gameAiController.stackPaneView.getScene();
         	        translateTransition.setFromY(0);
@@ -215,6 +217,7 @@ public class WinController extends Action{
         	}
        }
         else {
+        	this.Media("son_stackpane_end.wav");
         	TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), gameAiController.stackPaneView);
 		 	Scene scene = gameAiController.stackPaneView.getScene();
 	        translateTransition.setFromY(0);

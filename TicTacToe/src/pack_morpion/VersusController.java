@@ -17,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
@@ -24,6 +25,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.animation.Interpolator;
@@ -33,7 +35,6 @@ public class VersusController extends Action {
 	@FXML
     private StackPane stackpane;
 	
-
     @FXML
     private Button homme_Vs_Ai;
 
@@ -55,13 +56,35 @@ public class VersusController extends Action {
     @FXML
     private RadioButton radioD;
     
+    @FXML
+    private VBox vBoxNom;
     
+    @FXML
+    private TextField fieldF1;
+    
+    @FXML
+    private TextField fieldF2;
+    
+    private static String NOM_JOUEURX ="";
+    
+    private static String NOM_JOUEURO ="";
+
+    public String getNOM_JOUEURX() {
+        return NOM_JOUEURX;
+    }
+    
+    public String getNOM_JOUEURO() {
+        return NOM_JOUEURO;
+    }
     
     public VersusController() {
     }
 
     @FXML
     private void initialize() {
+
+    	fieldF1.setText(NOM_JOUEURX);
+    	fieldF2.setText(NOM_JOUEURO);
     	
         grid.setHgap(40);
         grid.setVgap(20);
@@ -120,6 +143,10 @@ public class VersusController extends Action {
         KeyValue keyValue3 = new KeyValue(buttonRetour.translateXProperty(), -scene.getWidth(), Interpolator.EASE_IN);
         KeyFrame keyFrame3 = new KeyFrame(Duration.seconds(1), keyValue3);
         timeline.getKeyFrames().add(keyFrame3);
+        
+        KeyValue keyValue4 = new KeyValue(vBoxNom.translateXProperty(), -scene.getWidth(), Interpolator.EASE_IN);
+        KeyFrame keyFrame4 = new KeyFrame(Duration.seconds(1), keyValue4);
+        timeline.getKeyFrames().add(keyFrame4);
 
         timeline.setOnFinished(event -> stackpane.getChildren().removeAll(grid, buttonRetour));
         timeline.play();
@@ -266,6 +293,8 @@ public class VersusController extends Action {
     
 
     private void handleHommeVsHomme() {
+    	NOM_JOUEURX = fieldF1.getText();
+    	NOM_JOUEURO = fieldF2.getText();
     	try {
     		homme_Vs_Ai.setDisable(true);
             homme_Vs_Homme.setDisable(true);
