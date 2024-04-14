@@ -89,8 +89,8 @@ public class GameAiController extends Game{
     	try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("LostLayout.fxml"));
             Parent root = loader.load();
-            LostController lostController = loader.getController();
-            lostController.setGameAiController(this);
+            StackViewController stackViewController = loader.getController();
+            stackViewController.setGameAiController(this);
             
             this.transition(root,400,560,"son_stackpane_begin.wav","son_loss.wav",false);
             
@@ -104,8 +104,8 @@ public class GameAiController extends Game{
     	try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("NullAiLayout.fxml"));
             Parent root = loader.load();
-            NullAiController nullAiController = loader.getController();
-            nullAiController.setGameAiController(this);
+            StackViewController stackViewController = loader.getController();
+            stackViewController.setGameAiController(this);
             
             this.transition(root,300,300,"son_stackpane_begin.wav","son_draw.wav",false);
 

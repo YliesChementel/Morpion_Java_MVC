@@ -239,14 +239,14 @@ public class Game extends Action{
 	    	try {
 	        	FXMLLoader loader = new FXMLLoader(getClass().getResource("WinLayout.fxml"));
 	            Parent root = loader.load();
-	            WinController winController = loader.getController();
+	            StackViewController stackViewController = loader.getController();
 	            if(this instanceof GameAiController) {
-	            	winController.setGameAiController((GameAiController) this);
-		            winController.afficherVictoireAi(joueur);
+	            	stackViewController.setGameAiController((GameAiController) this);
+		            stackViewController.afficherVictoireAi(joueur);
 	            }
 	            else {
-	            	winController.setGameController((GameController) this);
-	                winController.afficherVictoire(joueur);
+	            	stackViewController.setGameController((GameController) this);
+	                stackViewController.afficherVictoire(joueur);
 	            }
 	            
 	            this.transition(root,400,560,"son_stackpane_begin.wav","son_victory.wav",true);

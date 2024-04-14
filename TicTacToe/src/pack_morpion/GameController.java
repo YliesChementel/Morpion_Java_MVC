@@ -97,8 +97,8 @@ public class GameController extends Game {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("NullLayout.fxml"));
             Parent root = loader.load();
-            NullController nullController = loader.getController();
-            nullController.setGameController(this);
+            StackViewController stackViewController = loader.getController();
+            stackViewController.setGameController(this);
            
             this.transition(root,300,300,"son_stackpane_begin.wav","son_draw.wav",false);
             

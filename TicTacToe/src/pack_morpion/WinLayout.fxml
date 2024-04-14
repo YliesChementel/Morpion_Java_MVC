@@ -3,11 +3,11 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.control.Button?>
-<?import pack_morpion.WinController?>
+<?import pack_morpion.StackViewController?>
 
 <AnchorPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
-          fx:controller="pack_morpion.WinController"
+          fx:controller="pack_morpion.StackViewController"
           stylesheets="@application.css"
           styleClass="Win"
           prefHeight="400.0" prefWidth="560"
