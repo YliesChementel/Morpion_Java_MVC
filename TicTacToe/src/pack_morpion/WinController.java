@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
@@ -23,6 +24,9 @@ import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 
 public class WinController extends Action{
+	
+	@FXML
+	private AnchorPane anchorPane;
 	
 	@FXML
     private Label messageLabel;
@@ -88,6 +92,7 @@ public class WinController extends Action{
     
     public void afficherVictoire(String joueur) {
         messageLabel.setText("Félicitations, joueur " + joueur + " a gagné !");
+        this.anchorPane.getChildren().remove(choixButton);
     }
     public void afficherVictoireAi(String joueur) {
         messageLabel.setText("Félicitations, " + joueur + " a gagné !");

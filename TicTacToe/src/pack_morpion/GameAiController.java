@@ -23,6 +23,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Line;
 import javafx.util.Duration;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -98,6 +99,8 @@ public class GameAiController extends Action{
     @FXML
     public Label LabelTurn;
     
+    public Line line;
+    
     
     public GameAiController() {
         this.initMatrix(tableauJeu);
@@ -172,6 +175,7 @@ public class GameAiController extends Action{
         btn9.setText("");
 
         timelineTimer.play();
+        stackpane.getChildren().remove(this.line);
     }
 
 
@@ -300,18 +304,25 @@ public class GameAiController extends Action{
         String symbol = player == 1 ? "X" : "O";
         for (int i = 0; i < 3; i++) {
             if (board[i][0] == symbol && board[i][1] == symbol && board[i][2] == symbol) {
+            	this.DrawLine(0,i);
             	this.updateWin(player);
                 return true; 
             }
             if (board[0][i] == symbol && board[1][i] == symbol && board[2][i] == symbol) {
+            	this.DrawLine(1,i);
             	this.updateWin(player);
                 return true;
             }
         }
         
-        if ((board[0][0] == symbol && board[1][1] == symbol && board[2][2] == symbol) ||
-            (board[0][2] == symbol && board[1][1] == symbol && board[2][0] == symbol)) {
+        if (board[0][0] == symbol && board[1][1] == symbol && board[2][2] == symbol) {
+        	this.DrawLine(2,0);
         	this.updateWin(player);
+            return true; 
+        }
+        if (board[0][2] == symbol && board[1][1] == symbol && board[2][0] == symbol) {
+        	this.DrawLine(2,1);
+            this.updateWin(player);
             return true; 
         }
         return false;
@@ -352,6 +363,12 @@ public class GameAiController extends Action{
              KeyValue keyValue2 = new KeyValue(VBoxGame.translateXProperty(),sceneAi.getWidth(), Interpolator.EASE_IN);
              KeyFrame keyFrame2 = new KeyFrame(Duration.seconds(1), keyValue2);
              timeline.getKeyFrames().add(keyFrame2);
+             
+             if(this.line!=null) {
+             	KeyValue keyValue3 = new KeyValue(line.translateXProperty(),sceneAi.getWidth(), Interpolator.EASE_IN);
+             	KeyFrame keyFrame3 = new KeyFrame(Duration.seconds(1), keyValue3);
+             	timeline.getKeyFrames().add(keyFrame3);
+             }
              timeline.setOnFinished(event -> {
             	 if(timelineConfetto !=null) {
             		 timelineConfetto.stop();
@@ -482,6 +499,43 @@ public class GameAiController extends Action{
         
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
+    }
+    
+    private void DrawLine(int typeCase,int pos) {
+    	if(typeCase==0) {
+    		this.line = new Line(0,0,300,0);
+    		if(pos==0) {
+    			this.line.setStyle("-fx-translate-y: -75;");
+    		}
+    		else if(pos==1) {
+    			this.line.setStyle("-fx-translate-y: 35;");
+    		}
+    		else {
+    			this.line.setStyle("-fx-translate-y: 145;");
+    		}
+    		
+    	}
+    	else if(typeCase==1) {
+    		this.line = new Line(0,0,0,300);
+    		if(pos==0) {
+    			this.line.setStyle("-fx-translate-x: -111;");
+    		}
+            else if(pos==2) {
+            	this.line.setStyle("-fx-translate-x: 109;");
+            }
+    	}
+    	else {
+    		if(pos==0) {
+    			this.line = new Line(-5,-5,245,245);
+    		}
+    		else {
+    			this.line = new Line(-5,245,245,-5);
+    		}
+    		this.line.setStyle("-fx-translate-x: -35;");
+    		this.line.setStyle("-fx-translate-y: 35;");
+    	}
+    	this.line.setStrokeWidth(5);
+    	stackpane.getChildren().add(this.line); 
     }
 
 }

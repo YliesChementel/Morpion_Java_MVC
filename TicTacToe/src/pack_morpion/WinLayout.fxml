@@ -10,7 +10,8 @@
           fx:controller="pack_morpion.WinController"
           stylesheets="@application.css"
           styleClass="Win"
-          prefHeight="400.0" prefWidth="560">
+          prefHeight="400.0" prefWidth="560"
+          fx:id="anchorPane">
           
 	<children>
         <Label fx:id="messageLabel" layoutX="50" layoutY="150" text="Félicitations, vous avez gagné!" styleClass="textFieldWin"/>

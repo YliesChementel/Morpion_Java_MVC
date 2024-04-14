@@ -14,6 +14,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -109,6 +110,8 @@ public class GameController extends Action {
     @FXML
     public Label LabelTurn;
     
+    public Line line;
+    
     @FXML
 	private void initialize() {
     	timelineTimer = new Timeline(new KeyFrame(Duration.seconds(1), e -> updateTimer()));
@@ -191,7 +194,6 @@ public class GameController extends Action {
             }
             
             if (verifierGagnant("X")) {
-            	
             	afficherFenetreVictoire("X");
             } else if (verifierGagnant("O")) {
             	afficherFenetreVictoire("O");
@@ -217,6 +219,7 @@ public class GameController extends Action {
         btn9.setText("");
         
         timelineTimer.play();
+        stackpane.getChildren().remove(this.line);
     }
     
     protected void afficherVersusLayout() {
@@ -254,6 +257,13 @@ public class GameController extends Action {
             KeyValue keyValue2 = new KeyValue(VBoxGame.translateXProperty(),scene.getWidth(), Interpolator.EASE_IN);
             KeyFrame keyFrame2 = new KeyFrame(Duration.seconds(1), keyValue2);
             timeline.getKeyFrames().add(keyFrame2);
+            
+            if(this.line!=null) {
+            	KeyValue keyValue3 = new KeyValue(line.translateXProperty(),scene.getWidth(), Interpolator.EASE_IN);
+            	KeyFrame keyFrame3 = new KeyFrame(Duration.seconds(1), keyValue3);
+            	timeline.getKeyFrames().add(keyFrame3);
+            }
+            
             timeline.setOnFinished(event -> { 
             	if(timelineConfetto !=null) {
                     timelineConfetto.stop();
@@ -390,18 +400,25 @@ public class GameController extends Action {
     private boolean verifierGagnant(String joueur) {
         for (int i = 0; i < 3; i++) {
             if (tableauJeu[i][0] == joueur && tableauJeu[i][1] == joueur && tableauJeu[i][2] == joueur) {
+            	this.DrawLine(0,i);
             	this.updateWin(joueur);
                 return true;
             }
         }
         for (int j = 0; j < 3; j++) {
             if (tableauJeu[0][j] == joueur && tableauJeu[1][j] == joueur && tableauJeu[2][j] == joueur) {
+            	this.DrawLine(1,j);
             	this.updateWin(joueur);
                 return true;
             }
         }
-        if ((tableauJeu[0][0] == joueur && tableauJeu[1][1] == joueur && tableauJeu[2][2] == joueur)
-                || (tableauJeu[0][2] == joueur && tableauJeu[1][1] == joueur && tableauJeu[2][0] == joueur)) {
+        if (tableauJeu[0][0] == joueur && tableauJeu[1][1] == joueur && tableauJeu[2][2] == joueur) {
+        	this.DrawLine(2,0);
+        	this.updateWin(joueur);
+            return true;
+        }
+        if(tableauJeu[0][2] == joueur && tableauJeu[1][1] == joueur && tableauJeu[2][0] == joueur){
+        	this.DrawLine(2,1);
         	this.updateWin(joueur);
             return true;
         }
@@ -417,5 +434,42 @@ public class GameController extends Action {
             }
         }
         return true;
+    }
+    
+    private void DrawLine(int typeCase,int pos) {
+    	if(typeCase==0) {
+    		this.line = new Line(0,0,300,0);
+    		if(pos==0) {
+    			this.line.setStyle("-fx-translate-y: -97;");
+    		}
+    		else if(pos==1) {
+    			this.line.setStyle("-fx-translate-y: 13;");
+    		}
+    		else {
+    			this.line.setStyle("-fx-translate-y: 124;");
+    		}
+    		
+    	}
+    	else if(typeCase==1) {
+    		this.line = new Line(0,-90,0,180);
+    		if(pos==0) {
+    			this.line.setStyle("-fx-translate-x: -111;");
+    		}
+            else if(pos==2) {
+            	this.line.setStyle("-fx-translate-x: 109;");
+            }
+    	}
+    	else {
+    		if(pos==0) {
+    			this.line = new Line(-5,-5,245,245);
+    		}
+    		else {
+    			this.line = new Line(-5,245,245,-5);
+    		}
+    		this.line.setStyle("-fx-translate-x: -15;");
+    		this.line.setStyle("-fx-translate-y: 15;");
+    	}
+    	this.line.setStrokeWidth(5);
+    	stackpane.getChildren().add(this.line); 
     }
 }
