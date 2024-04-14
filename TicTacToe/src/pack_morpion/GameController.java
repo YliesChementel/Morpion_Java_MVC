@@ -16,11 +16,9 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-
 import javafx.util.Duration;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -198,9 +196,9 @@ public class GameController extends Action {
             }
             
             if (verifierGagnant("X")) {
-            	afficherFenetreVictoire("X");
+            	afficherFenetreVictoire(nomJoueurX);
             } else if (verifierGagnant("O")) {
-            	afficherFenetreVictoire("O");
+            	afficherFenetreVictoire(nomJoueurO);
             } else if (partieNulle()) {
             	afficherFenetreNull();
             }

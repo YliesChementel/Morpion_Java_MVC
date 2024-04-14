@@ -8,6 +8,8 @@
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 
 <ToolBar prefHeight="40.0" prefWidth="600.0"
 		 styleClass="ToolBar"
@@ -15,18 +17,24 @@
          xmlns:fx="http://javafx.com/fxml/1" 
          fx:controller="pack_morpion.ToolbarController">
     <items>
-        <!-- MenuBar -->
-        <MenuBar fx:id="menuBar" focusTraversable="false" style="-fx-background-color: #a9e6f9;" styleClass="Menu">
-            <Menu fx:id="menu"  text="Menu ▼">
+        
+        <MenuBar focusTraversable="false" style="-fx-background-color: #a9e6f9;" styleClass="Menu">
+            <Menu text="Menu ▼">
                 <items>
                     <MenuItem fx:id="settingsItem" styleClass="MenuButtons" text="Paramètres" />
-                    <MenuItem fx:id="modelsItem" styleClass="MenuButtons" text="Models" />
+                    <MenuItem fx:id="modelsItem" styleClass="MenuButtons" text="Modèls" />
                 </items>
             </Menu>
         </MenuBar>
         <Region HBox.hgrow="ALWAYS" />
-        <Slider fx:id="volumeSlider" styleClass="volume-slider" min="0.0" max="100.0" value="100.0" visible="false" onMouseDragged="#changeSliderTrackColor"/>
-        <Button fx:id="volumeItem" styleClass="volume-button" text="T" />
+        <Slider fx:id="volumeSlider" styleClass="volume-slider" min="0.0" max="100.0" value="100.0" visible="false" onMouseClicked="#changeSliderTrackColor" onMouseDragged="#changeSliderTrackColor"/>
+        <Button fx:id="volumeItem" styleClass="volume-button" >
+        	<graphic>
+				<ImageView fitWidth="15" fitHeight="15">
+				    <Image url="file:///../rss/images/sound-icon.png"/>
+				</ImageView>
+			</graphic>
+        </Button>
         <Button fx:id="helpItem" styleClass="help-button" text="?" />
     </items>
 </ToolBar>

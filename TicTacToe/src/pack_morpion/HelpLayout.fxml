@@ -14,7 +14,7 @@
             fx:id="rootPane"
             fx:controller="pack_morpion.HelpController"
             prefHeight="400.0" prefWidth="600.0">
-    <StackPane style="-fx-padding: 0 20 0 20;" alignment="CENTER"> <!-- Ajout du padding à gauche et à droite -->
+    <StackPane style="-fx-padding: 0 20 0 20;" alignment="CENTER"> 
         <VBox spacing="20.0" alignment="CENTER">
             <children>
                 <Label styleClass="HelpLabel" text="Bienvenue dans l'aide de ce super Morpion" />

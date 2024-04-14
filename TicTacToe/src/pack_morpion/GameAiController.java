@@ -1,11 +1,8 @@
 package pack_morpion;
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-
 import ai.MultiLayerPerceptron;
-import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
