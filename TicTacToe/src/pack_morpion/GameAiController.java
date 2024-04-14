@@ -138,6 +138,12 @@ public class GameAiController extends Action{
         labelTimer.setText(String.format("%02d:%02d", minutes, secs));
     }
     
+    private void resetTimer() {
+    	labelTimer.setText("00:00");
+        seconds=0;
+    	timelineTimer.stop();
+    }
+    
     private void updateWin(int joueur) {
     	if(joueur == 1) {
     		winX++;
@@ -147,9 +153,7 @@ public class GameAiController extends Action{
     		 winO++;
     	     labelWinO.setText(String.format("%d", winO));
     	}
-    	labelTimer.setText("00:00");
-        seconds=0;
-    	timelineTimer.stop();
+    	this.resetTimer();
     }
     
     
@@ -216,6 +220,7 @@ public class GameAiController extends Action{
     }
 
     private void afficherFenetrePerdu() {
+    	this.resetTimer();
     	try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("LostLayout.fxml"));
             Parent root = loader.load();
@@ -382,6 +387,7 @@ public class GameAiController extends Action{
     }
 
     private void afficherFenetreNull() {
+    	this.resetTimer();
     	try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("NullAiLayout.fxml"));
             Parent root = loader.load();

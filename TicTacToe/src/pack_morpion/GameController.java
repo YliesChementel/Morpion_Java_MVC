@@ -162,6 +162,12 @@ public class GameController extends Action {
         labelTimer.setText(String.format("%02d:%02d", minutes, secs));
     }
     
+    private void resetTimer() {
+    	labelTimer.setText("00:00");
+        seconds=0;
+    	timelineTimer.stop();
+    }
+    
     private void updateWin(String joueur) {
     	if(joueur == "X") {
     		winX++;
@@ -171,9 +177,7 @@ public class GameController extends Action {
     		 winO++;
     	     labelWinO.setText(String.format("%d", winO));
     	}
-    	labelTimer.setText("00:00");
-        seconds=0;
-    	timelineTimer.stop();
+    	this.resetTimer();
     }
     
     @FXML
@@ -277,6 +281,7 @@ public class GameController extends Action {
     
     
     private void afficherFenetreNull() {
+    	this.resetTimer();
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("NullLayout.fxml"));
             Parent root = loader.load();
