@@ -20,7 +20,7 @@
             <Menu fx:id="menu"  text="Menu ▼">
                 <items>
                     <MenuItem fx:id="settingsItem" styleClass="MenuButtons" text="Paramètres" />
-                    <MenuItem fx:id="modelsItem" styleClass="MenuButtons" text="Modèls" />
+                    <MenuItem fx:id="modelsItem" styleClass="MenuButtons" text="Models" />
                 </items>
             </Menu>
         </MenuBar>

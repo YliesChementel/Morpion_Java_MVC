@@ -9,7 +9,6 @@
             stylesheets="@application.css">
 
     <top>
-        
         <fx:include source="Toolbar.fxml" />
     </top>
     

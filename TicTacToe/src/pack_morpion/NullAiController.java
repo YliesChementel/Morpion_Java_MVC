@@ -30,6 +30,9 @@ public class NullAiController extends Action {
     @FXML
     private Button retourButton;
     
+    @FXML
+    private Button choixButton;
+    
     private GameAiController gameAiController; 
     
     public NullAiController() {
@@ -64,42 +67,23 @@ public class NullAiController extends Action {
     
     @FXML
     private void rejouer(ActionEvent event) {
-    	Alert alert = new Alert(AlertType.CONFIRMATION);
-    	
-    	Image icon = new Image("file:rss/images/alerte-icon.jpg");
-        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-        stage.getIcons().add(icon);
+		this.Media("son_stackpane_end.wav");
+        TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), gameAiController.stackPaneView);
+	 	Scene scene = gameAiController.stackPaneView.getScene();
+        translateTransition.setFromY(0);
+        translateTransition.setToY(-scene.getHeight());
         
-	    alert.setTitle("Confirmation");
-	    alert.setHeaderText("Changer la difficulté ?");
-	    alert.setContentText("Voulez-vous changer la difficulté avant de rejouer ?");
-	    ButtonType rejouer = new ButtonType("Rejouer");
-	    ButtonType changerDifficulte = new ButtonType("Changer la difficulté");
-	    alert.getButtonTypes().setAll(changerDifficulte, rejouer);
-	    alert.showAndWait().ifPresent(response -> {
-	    	if (response == changerDifficulte) {
-	    		choisirNouvelleDifficulte();
-	        } else if (response == rejouer) {
-	        	this.Media("son_stackpane_end.wav");
-	            TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), gameAiController.stackPaneView);
-			 	Scene scene = gameAiController.stackPaneView.getScene();
-		        translateTransition.setFromY(0);
-		        translateTransition.setToY(-scene.getHeight());
-		        
-		        translateTransition.setOnFinished(e -> {
-		        	gameAiController.rejouerPartie(null);
-		        	gameAiController.stackPaneView.setVisible(false);
-		        	gameAiController.contentGridPaneAi.setDisable(false);
-		        });
-		        translateTransition.play();
-	        }
-	    });
-	    stage.close();
+        translateTransition.setOnFinished(e -> {
+        	gameAiController.rejouerPartie(null);
+        	gameAiController.stackPaneView.setVisible(false);
+        	gameAiController.contentGridPaneAi.setDisable(false);
+        });
+        translateTransition.play();
     }
     	
  
-    
-    private void choisirNouvelleDifficulte() {
+    @FXML
+    private void choisirNouvelleDifficulte(ActionEvent event) {
     	Alert choixDifficulte = new Alert(AlertType.CONFIRMATION);
         choixDifficulte.setTitle("Choix de la difficulté");
         choixDifficulte.setHeaderText("Choisir la nouvelle difficulté");
