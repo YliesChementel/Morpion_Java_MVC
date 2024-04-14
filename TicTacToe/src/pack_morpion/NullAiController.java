@@ -58,7 +58,7 @@ public class NullAiController extends Action {
 	        translateTransition.setOnFinished(e -> {
 	        	gameAiController.afficherVersusLayout();
 	        	gameAiController.stackPaneView.setVisible(false);
-	        	gameAiController.contentGridPaneAi.setDisable(false);
+	        	gameAiController.contentGridPane.setDisable(false);
 	        });
 	        translateTransition.play();
         }
@@ -75,7 +75,7 @@ public class NullAiController extends Action {
         translateTransition.setOnFinished(e -> {
         	gameAiController.rejouerPartie(null);
         	gameAiController.stackPaneView.setVisible(false);
-        	gameAiController.contentGridPaneAi.setDisable(false);
+        	gameAiController.contentGridPane.setDisable(false);
         });
         translateTransition.play();
     }
@@ -141,7 +141,7 @@ public class NullAiController extends Action {
         	        translateTransition.setOnFinished(e -> {
         	        	gameAiController.rejouerPartie(file);
         	        	gameAiController.stackPaneView.setVisible(false);
-        	        	gameAiController.contentGridPaneAi.setDisable(false);
+        	        	gameAiController.contentGridPane.setDisable(false);
         	        });
         	        translateTransition.play();
                 });
@@ -160,7 +160,7 @@ public class NullAiController extends Action {
 	        translateTransition.setOnFinished(e -> {
 	        	gameAiController.rejouerPartie(file);
 	        	gameAiController.stackPaneView.setVisible(false);
-	        	gameAiController.contentGridPaneAi.setDisable(false);
+	        	gameAiController.contentGridPane.setDisable(false);
 	        });
 	        translateTransition.play();
         }

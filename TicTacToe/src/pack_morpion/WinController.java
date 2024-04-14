@@ -80,7 +80,7 @@ public class WinController extends Action{
 	        translateTransition.setOnFinished(e -> {
 	        	gameAiController.afficherVersusLayout();
 	        	gameAiController.stackPaneView.setVisible(false);
-	        	gameAiController.contentGridPaneAi.setDisable(false);
+	        	gameAiController.contentGridPane.setDisable(false);
 	        });
 	        translateTransition.play();
         }
@@ -125,7 +125,7 @@ public class WinController extends Action{
 	        translateTransition.setOnFinished(e -> {
 	        	gameAiController.timelineConfetto.stop();
 	        	gameAiController.stackPaneView.setVisible(false);
-	        	gameAiController.contentGridPaneAi.setDisable(false);
+	        	gameAiController.contentGridPane.setDisable(false);
 	        });
 	        translateTransition.play();     
 	        gameAiController.rejouerPartie(null);     
@@ -193,7 +193,7 @@ public class WinController extends Action{
         	        	gameAiController.timelineConfetto.stop();
         	        	gameAiController.rejouerPartie(file);
         	        	gameAiController.stackPaneView.setVisible(false);
-        	        	gameAiController.contentGridPaneAi.setDisable(false);
+        	        	gameAiController.contentGridPane.setDisable(false);
         	        });
         	        translateTransition.play();  
                 });
@@ -213,7 +213,7 @@ public class WinController extends Action{
 	        	gameAiController.timelineConfetto.stop();
 	        	gameAiController.rejouerPartie(file);
 	        	gameAiController.stackPaneView.setVisible(false);
-	        	gameAiController.contentGridPaneAi.setDisable(false);
+	        	gameAiController.contentGridPane.setDisable(false);
 	        });
 	        translateTransition.play();  
         }
