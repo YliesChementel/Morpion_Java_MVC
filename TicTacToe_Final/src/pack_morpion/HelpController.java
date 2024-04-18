@@ -13,29 +13,41 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-public class HelpController {
-	Stage stage;
 
+/*
+ * 
+ * Controlleur de la vue Help, afin de gérer la structure du TextField, l'animation et l'action sur le bouton "OK"
+ * 
+ */
+
+public class HelpController {
+	
+	// Paramètres d'interface graphique (FXML)
 	@FXML
 	private TextArea helpTextArea; 
-
 	@FXML
 	private ImageView backgroundImage;
-
 	@FXML
 	private AnchorPane rootPane;
 
-
+	// Paramètres d'animation
 	private boolean windowClosed = false;
 	private final Duration animationDuration = Duration.seconds(5);
 	private final Duration animationDelay = Duration.seconds(0.2);
 	private final int numQuestionMarks = 1;
 
 	private ToolbarController parentController;
+	Stage stage;
 
 	public void setParentController(ToolbarController parentController) {
 		this.parentController = parentController;
 	}
+	
+	/*
+	 * 
+	 * Initialise la vue Help et active l'animation
+	 * 
+	 */
 
 	public void initialize() {
 		String helpContent = "Le morpion se joue sur une grille.\n" +

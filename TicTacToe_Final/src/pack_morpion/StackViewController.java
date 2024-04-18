@@ -21,8 +21,17 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+
+/**
+ * Contrôleur des StackPane afficher quand la partie est fini pour le jeu Morpion.
+ * Gère les actions liées à la transition entre différentes vues du jeu comme le retour ou rejouer.
+ * Gère aussi le choix de difficulté intermédiaire.
+ * Elle hérite de la classe action pour obtenir ces fonctions de média pour le son.
+ * 
+ */
 public class StackViewController extends Action{
 
+	// Paramètres d'interface graphique (FXML)
 	@FXML
 	protected AnchorPane anchorPane;
 	@FXML
@@ -34,24 +43,45 @@ public class StackViewController extends Action{
 	@FXML
 	protected Button choixButton;
 
+	//Contrôleurs de jeu
 	protected GameController gameController;
-
 	protected GameAiController gameAiController; 
-	
+
+	// Instance principale de l'application
 	private static Main MAIN;
-	
+
+	/**
+	 * Définit l'instance principale de l'application.
+	 * 
+	 * @param main L'instance principale de l'application.
+	 */
 	public void setMain(Main main) {
 		this.MAIN=main;
 	}
 
+	/**
+	 * Définit le contrôleur du jeu en mode joueur contre joueur.
+	 * 
+	 * @param gameController Le contrôleur du jeu en mode joueur contre joueur.
+	 */
 	public void setGameController(GameController gameController) {
 		this.gameController = gameController;
 	}
 
+	/**
+	 * Définit le contrôleur du jeu en mode joueur contre ordinateur.
+	 * 
+	 * @param gameAiController Le contrôleur du jeu en mode joueur contre ordinateur.
+	 */
 	public void setGameAiController(GameAiController gameAiController) {
 		this.gameAiController = gameAiController;
 	}
 
+	/**
+	 * Gère l'action de retour à la vue précédente.
+	 * 
+	 * @param event L'événement de clic sur le bouton de retour.
+	 */
 	@FXML
 	private void retour(ActionEvent event) {
 		if (gameController != null) { 
@@ -87,6 +117,11 @@ public class StackViewController extends Action{
 		}
 	}
 
+	/**
+	 *  Gère l'action de relancer une nouvelle partie.
+	 * 
+	 * @param event L'événement de clic sur le bouton de rejouer.
+	 */
 	@FXML
 	private void replay(ActionEvent event) {
 		if (gameController != null) { 
@@ -125,6 +160,11 @@ public class StackViewController extends Action{
 		}
 	}
 
+	/**
+	 * Affiche la fenêtre d'alerte de sélection de la difficulté.
+	 * 
+	 * @param event L'événement de clic sur le bouton de choix de difficulté.
+	 */
 	@FXML
 	private void chooseNewDifficulty(ActionEvent event) {
 		if(gameAiController.timelineConfetto!=null) {
@@ -152,6 +192,11 @@ public class StackViewController extends Action{
 		}
 	}
 
+	/**
+	 * Charge le modèle de l'IA en fonction de la difficulté sélectionnée.
+	 * 
+	 * @param difficulty La difficulté sélectionnée.
+	 */
 	private void loadModel(String difficulty) {
 		ConfigFileLoader configLoad = new ConfigFileLoader();
 		configLoad.loadConfigFile(".\\rss\\config.txt");
@@ -175,7 +220,7 @@ public class StackViewController extends Action{
 				Scene scene = new Scene(root);
 				Stage stage = new Stage();
 				stage.setOnCloseRequest(event -> {
-				    event.consume();
+					event.consume();
 				});
 				stage.setResizable(false);
 				stage.setScene(scene);
@@ -218,11 +263,19 @@ public class StackViewController extends Action{
 		}
 	}
 
+	/**
+	 * Met à jour le message du stackpane de victoire pour y inclure le nom du gagnant.
+	 * 
+	 * @param player Le joueur qui a gagné.
+	 */
 	public void showSceneWin(String player) {
 		messageLabel.setText("Félicitations, joueur " + player + " a gagné !");
 		this.anchorPane.getChildren().remove(choixButton);
 	}
 
+	/**
+	 * Met à jour le message du stackpane de victoire pour correspondre au mode de jeu.
+	 */
 	public void showSceneWinAi() {
 		messageLabel.setText("Félicitations,vous avez gagné !");
 	}

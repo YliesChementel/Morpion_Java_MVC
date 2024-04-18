@@ -15,7 +15,9 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
-
+/*
+ * Controller de la première vue du jeu
+ */
 public class PlayButtonController extends Action {
 
 	@FXML
@@ -24,7 +26,9 @@ public class PlayButtonController extends Action {
 	@FXML
 	private StackPane  stackPane;
 
-
+	/*
+	 * initialise certains effet sur le bouton play lors d'action
+	 */
 	@FXML
 	private void initialize() {
 		playButton.setOnMousePressed(event -> {
@@ -37,7 +41,11 @@ public class PlayButtonController extends Action {
 			playButton.setTranslateY(playButton.getTranslateY() + 10);
 		});
 	}
-
+	
+	
+	/*
+	 * Mise en place de l'action du bouton play, avec son transition + animation
+	 */
 	@FXML
 	private void handlePlayButtonClicked() {
 		try {

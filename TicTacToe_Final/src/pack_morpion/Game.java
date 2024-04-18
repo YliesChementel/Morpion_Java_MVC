@@ -32,7 +32,7 @@ import javafx.util.Duration;
  * Cette classe permet le fonctionnement du jeu et hérite de la classe Action.
  * Elle contient les fonctionnalités spécifiques au jeu, telles que la gestion des boutons, 
  * le décompte du temps, la vérification de la victoire, etc...
- * 
+ * Elle hérite de la classe action pour obtenir ces fonctions de média pour le son.
  *
  */
 public class Game extends Action{

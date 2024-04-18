@@ -17,13 +17,23 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+/*
+ * 
+ * Controller qui sert à gérer les action de la liste des modèls
+ * 
+ */
+
 public class ModelViewController {
 
 	@FXML	
 	private VBox filesContainer;
 	private final File folder = new File(".\\rss\\models\\");
 	Stage stage;
-
+	
+	
+	/*
+	 * Sert à récupérer le premier nombre dans le nom du modèl 
+	 */
 	private int extractNumberFromFileName(String fileName) {
 		Pattern pattern = Pattern.compile("\\d+");
 		Matcher matcher = pattern.matcher(fileName);
@@ -32,7 +42,10 @@ public class ModelViewController {
 		}
 		return -1;
 	}
-
+	
+	/*
+	 * Sert à afficher tout les modèls présent dans le dossier modèls sur ma vue Modèl
+	 */
 	public void initialize() {
 
 		File[] listOfFiles = folder.listFiles();
@@ -52,7 +65,7 @@ public class ModelViewController {
 					else if (number != -1 && number >= 600) {
 						difficulty = "D";
 					}else {
-						difficulty = getDifficultyIndicator(file);
+						difficulty = "?";
 					}
 					CheckBox checkBox = new CheckBox(fileName + " (" + difficulty + ")");
 					checkBox.setTextFill(Color.BLACK);
@@ -67,19 +80,10 @@ public class ModelViewController {
 			filesContainer.getChildren().add(textVide);
 		}
 	}
-
-	private String getDifficultyIndicator(File file) {
-		String fileName = file.getName();
-		if (fileName.contains("F")) {
-			return "F";
-		} else if (fileName.contains("M")) {
-			return "M";
-		} else if (fileName.contains("D")) {
-			return "D";
-		} else {
-			return "?";
-		}
-	}
+	
+	/*
+	 * Sert à supprimer tout les modèls dans la checbox a été cocher
+	 */
 
 	@FXML
 	private void deleteSelectedFiles() {

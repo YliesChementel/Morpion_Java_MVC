@@ -16,43 +16,42 @@ import javafx.stage.Stage;
 import javafx.scene.control.Slider;
 import javafx.scene.control.ToolBar;
 import javafx.scene.shape.Rectangle;
-
+/*
+ * 
+ * Controller de la Toolbar afin d'accèder au différentes vue paramètre et modèls selon se sur quoi l'on clique
+ * 
+ */
 public class ToolbarController {
-	
+	// Paramètres d'interface graphique (FXML)
 	@FXML
 	private ToolBar tool;
 	@FXML
 	private MenuItem settingsItem;
-
 	@FXML
 	private MenuItem modelsItem;
-
 	@FXML
 	private Button helpItem;
-
 	@FXML
 	private Button volumeItem;
-
 	@FXML
 	private Slider volumeSlider;
-
-
-	private SettingController settingController;
-
 	@FXML
 	private Rectangle customTrack;
 
+	//initilisation des différente Stage
+	private SettingController settingController;
 	public Stage settingsStage;
-
 	private Stage modelsStage;
-
 	public Stage helpStage;
-	
 	private static Main MAIN;
 	
 	public void setMain(Main main) {
 		this.MAIN=main;
 	}
+	
+	/*
+	 * intialise les action de chaque items de la Toolbar
+	 */
 
 	@FXML
 	public void initialize() {
@@ -69,6 +68,8 @@ public class ToolbarController {
 			Main.getMainMediaPlayer().setVolume(volume);
 		});
 	}
+	
+	//permet de changer la couler de fond de la Slide Bar celon si le volume est plus ou moins fort
 
 	@FXML
 	private void changeSliderTrackColor() {
@@ -79,6 +80,8 @@ public class ToolbarController {
 		String color = String.format("#%02X%02X%02X", (int) (255 * ratio), (int) (255 * (1 - ratio)), 0); 
 		volumeSlider.lookup(".track").setStyle("-fx-background-color: linear-gradient(to right, " + color + " " + (ratio * 100) + "%, transparent " + (ratio * 100) + "%);");
 	}
+	
+	//permet de rendre visible ou non la Slide Bar
 
 	@FXML
 	private void handleVolumeButtonClick() {
@@ -86,7 +89,7 @@ public class ToolbarController {
 		changeSliderTrackColor();
 	}
 
-
+	//Permet afficher le fenêtre des settings
 	private void handleSettings() {
 		if (settingsStage == null) {
 			try {
@@ -113,7 +116,8 @@ public class ToolbarController {
 			settingsStage.toFront();
 		}
 	}
-
+	
+	//permet d'afficher la fenêtre de la liste des modèls
 	private void handleModels() {
 		if (modelsStage == null) {
 			try {
@@ -140,6 +144,8 @@ public class ToolbarController {
 			modelsStage.toFront();
 		}
 	}
+	
+	//Permet d'afficher la fenêtre Help
 
 	private void handleHelp() {
 		if (helpStage == null) {

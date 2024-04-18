@@ -8,41 +8,42 @@ import ai.ConfigFileLoader;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
+/*
+ * 
+ * Controller des paramètres pour la sauvegarde dans config.txt 
+ *
+ */
 public class SettingController {
+	// Paramètres d'interface graphique (FXML)
 	@FXML
 	private TextField fieldF1;
-
 	@FXML
 	private TextField fieldF2;
-
 	@FXML
 	private TextField fieldF3;
-
 	@FXML
 	private TextField fieldF4;
-
 	@FXML
 	private TextField fieldF5;
-
 	@FXML
 	private TextField fieldF6;
-
 	@FXML
 	private TextField fieldF7;
-
 	@FXML
 	private TextField fieldF8;
-
 	@FXML
 	private TextField fieldF9;
 
+	
+	
 	private ToolbarController parentController;
 
 	public void setParentController(ToolbarController parentController) {
 		this.parentController = parentController;
 	}
-
+	/*
+	 * Sert à afficher les paramètre déjà présent dans config.txt
+	 */
 	public void showSettings() {
 
 		ConfigFileLoader configLoad = new ConfigFileLoader();
@@ -73,7 +74,10 @@ public class SettingController {
 			fieldF9.setText(String.valueOf(configD.numberOfhiddenLayers));
 		}
 	}
-
+	
+	/*
+	 * Sert à sauvegarder les modifications ligne par ligne et fermer la fenêtre
+	 */
 	@FXML
 	private void handleSave() {
 		saveConfigToFile("F", fieldF1.getText(), fieldF2.getText(), fieldF3.getText());
@@ -84,7 +88,7 @@ public class SettingController {
 		stage.close();
 
 	}
-
+	//Pour Sauvegarder et eviter les répétition
 	private void saveConfigToFile(String level, String size, String rate, String layers) {
 		try {
 			BufferedWriter writer = new BufferedWriter(new FileWriter("file:///../rss/config.txt", true));

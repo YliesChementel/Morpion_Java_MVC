@@ -8,20 +8,30 @@ import javafx.scene.layout.GridPane;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 
+/**
+ * Contrôleur pour le mode joueur contre joueur.
+ * Elle hérite de la classe Game, et à des fonctions en plus nécessaires au bon fonctionnement du mode de jeu joueur contre joueur.
+ * 
+ */
 public class GameController extends Game {
 
+	// Paramètres d'interface graphique (FXML)
 	@FXML
 	public Label LabelNameX;
 	@FXML
 	public Label LabelNameO;
 
+	// Noms des joueurs
 	public String playerNameX;
-
 	public String playerNameO;
 
+	//Contrôleur Versus
 	public VersusController versusController;
 
-
+	/**
+	 * Initialise le contrôleur, démarrage du chronomètre et mise à jour du label de tour et initialisation des noms des joueurs.
+	 * 
+	 */
 	@FXML
 	private void initialize() {
 		this.startTimer();
@@ -48,6 +58,9 @@ public class GameController extends Game {
 		this.updateTurn();
 	}
 
+	/**
+	 * Met à jour le label qui annonce le tour d'un joueur.
+	 */
 	private void updateTurn() {
 		if(playerX) {
 			LabelTurn.setText("C'est à "+playerNameX+" de jouer");
@@ -57,6 +70,11 @@ public class GameController extends Game {
 		}
 	}
 
+	/**
+	 * Gère l'événement de clic sur un bouton de la grille de jeu.
+	 * 
+	 * @param event L'événement de clic.
+	 */
 	@FXML
 	private void handleButtonClick(ActionEvent event) {
 		Button boutton= (Button) event.getSource();
@@ -83,6 +101,9 @@ public class GameController extends Game {
 		this.updateTurn();
 	}
 
+	/**
+	 * Relance une nouvelle partie.
+	 */
 	public void rejouerPartie() {
 		this.Replay();
 	}

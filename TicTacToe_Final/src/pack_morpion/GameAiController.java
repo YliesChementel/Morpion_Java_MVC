@@ -12,28 +12,51 @@ import javafx.util.Duration;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 
+/**
+ * Contrôleur pour le jeu contre IA.
+ * Elle hérite de la classe Game, et à des fonctions en plus nécessaires au bon fonctionnement du mode de jeu IA.
+ * 
+ */
 public class GameAiController extends Game{
 
+	// Réseau de neurones
 	private MultiLayerPerceptron net;
 
+	// Matrice
 	private double[] listMatrix = {0, 0, 0, 0, 0, 0, 0, 0, 0};
 
+	// Indicateur
 	private boolean turnAI = false;
 
+	/**
+	 * Initialise le contrôleur, démarrage du chronomètre et mise à jour du label de tour.
+	 */
 	@FXML
 	private void initialize() {
 		this.startTimer();
 		this.updateTurn();
 	}
 
+	/**
+	 * Constructeur de la classe GameAiController.
+	 * Initialise la matrice de jeu.
+	 */
 	public GameAiController() {
 		this.initMatrix(tabGame);
 	}
 
+	/**
+	 * Définit le chemin vers le modèle IA utilisé par l'IA.
+	 * 
+	 * @param modelPath Le chemin vers le modèle IA.
+	 */
 	public void setAiModelPath(String modelPath) {
 		this.net = MultiLayerPerceptron.load(modelPath);
 	}
 
+	/**
+	 * Met à jour le label qui annonce le tour d'un joueur.
+	 */
 	private void updateTurn() {
 		if(turnAI) {
 			LabelTurn.setText("C'est à l'ordi de jouer");
@@ -43,6 +66,11 @@ public class GameAiController extends Game{
 		}
 	}  
 
+	/**
+	 * Réinitialise le jeu pour une nouvelle partie.
+	 * 
+	 * @param modelPath Le chemin vers le modèle AI.
+	 */
 	public void replayGame(String modelPath) {
 		turnAI = false; 
 		listMatrix = new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -52,7 +80,11 @@ public class GameAiController extends Game{
 		this.Replay();
 	}
 
-
+	/**
+	 * Gère l'événement de clic sur un bouton de la grille de jeu.
+	 * 
+	 * @param event L'événement de clic.
+	 */
 	@FXML
 	private void handleButtonClick(ActionEvent event) {
 		Button button = (Button) event.getSource();
@@ -85,6 +117,9 @@ public class GameAiController extends Game{
 		this.updateTurn();
 	}
 
+	/**
+	 * Affiche le stackpane de défaite.
+	 */
 	private void showSceneLost() {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("LostLayout.fxml"));
@@ -100,6 +135,9 @@ public class GameAiController extends Game{
 
 	}
 
+	/**
+	 * Permet de gerer le tour de l'IA, son prochain coup, et l'action du coup.
+	 */
 	private void playAi() {
 		double[] coup = net.forwardPropagation(this.listMatrix);
 		int BestOutcome = findBestOutcome(coup);
@@ -121,6 +159,12 @@ public class GameAiController extends Game{
 		}
 	}
 
+	/**
+	 * Trouve le meilleur coup à jouer selon les prédictions de l'IA.
+	 * 
+	 * @param list La liste des prédictions de l'IA.
+	 * @return L'indice du meilleur coup.
+	 */
 	private int findBestOutcome(double[] list) {
 		int indice = 0;
 		double max = Double.NEGATIVE_INFINITY;
@@ -134,6 +178,11 @@ public class GameAiController extends Game{
 		return indice;
 	}
 
+	/**
+	 * Initialise la matrice de jeu à null.
+	 * 
+	 * @param matrix2 La matrice de jeu à initialiser.
+	 */
 	private void initMatrix(String[][] matrix2) {
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {

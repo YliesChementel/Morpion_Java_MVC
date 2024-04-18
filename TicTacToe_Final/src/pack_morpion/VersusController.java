@@ -30,44 +30,42 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.animation.Interpolator;
 
+/*
+ * 
+ * Controlleur de la vue Versus qui permet de commencer une partie soit contre un humain, soit contre une IA
+ * 
+ */
 
 public class VersusController extends Action {
+	
+	// Paramètres d'interface graphique (FXML)
 	@FXML
 	private StackPane stackpane;
-
 	@FXML
 	private Button homme_Vs_Ai;
-
 	@FXML
 	private Button homme_Vs_Homme;
-
 	@FXML
 	private Button buttonRetour;
-
 	@FXML
 	private GridPane grid;
-
 	@FXML
 	private RadioButton radioF;
-
 	@FXML
 	private RadioButton radioM;
-
 	@FXML
 	private RadioButton radioD;
-
 	@FXML
 	private VBox vBoxNom;
-
 	@FXML
 	private TextField fieldF1;
-
 	@FXML
 	private TextField fieldF2;
-
+	
+	//variable pour changer les noms de X ou O
 	private static String NAME_PLAYERX ="";
-
 	private static String NAME_PLAYERO ="";
+	
 	
 	private static Main MAIN;
 	
@@ -82,10 +80,9 @@ public class VersusController extends Action {
 	public String getNAME_PLAYERO() {
 		return NAME_PLAYERO;
 	}
-
-	public VersusController() {
-	}
-
+	
+	
+	//initialise le contenu de la vue Versus et certaine animation lors d'action
 	@FXML
 	private void initialize() {
 
@@ -135,7 +132,7 @@ public class VersusController extends Action {
 		limitTextFieldLength(fieldF1, 10);
 		limitTextFieldLength(fieldF2, 10);
 	}
-
+	//permet de limiter la taille des noms
 	private void limitTextFieldLength(TextField textField, int maxLength) {
 		textField.textProperty().addListener((observable, oldValue, newValue) -> {
 			if (newValue.length() > maxLength) {
@@ -143,6 +140,8 @@ public class VersusController extends Action {
 			}
 		});
 	}
+	
+	//pour éviter les répétition de transition de gauche à droite.
 
 	private void transition(Scene scene, Parent root) {
 		root.translateXProperty().set(scene.getWidth());
@@ -169,7 +168,7 @@ public class VersusController extends Action {
 		timeline.setOnFinished(event -> stackpane.getChildren().removeAll(grid, buttonRetour));
 		timeline.play();
 	}
-
+	//Permet de retourner sur la vue PlayButton
 	private void handleRetour() {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("PlayButton.fxml"));
@@ -201,6 +200,8 @@ public class VersusController extends Action {
 			e.printStackTrace();
 		}
 	}
+	
+	//Permet de lancer une partie avec l'IA, si modèl de l'IA n'existe pas création du modèl avant de lancer la partie
 
 	private void handleHommeVsAi() {
 		homme_Vs_Ai.setDisable(true);
@@ -314,7 +315,7 @@ public class VersusController extends Action {
 		}
 	}
 
-
+	//Lancement d'une partie contre un autre joueur
 	private void handleHommeVsHomme() {
 		NAME_PLAYERX = fieldF1.getText();
 		NAME_PLAYERO = fieldF2.getText();

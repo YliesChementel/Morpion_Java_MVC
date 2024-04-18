@@ -4,6 +4,12 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import java.io.File;
 
+/*
+ * 
+ * Classe afin de mettre le son principale du jeu pour mieux le manipuler
+ * 
+ */
+
 public class MediaPlayerUtil {
 	private static MediaPlayer mediaPlayer;
 
