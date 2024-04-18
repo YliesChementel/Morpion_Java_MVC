@@ -28,8 +28,16 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 import javafx.util.Duration;
 
+/**
+ * Cette classe permet le fonctionnement du jeu et hérite de la classe Action.
+ * Elle contient les fonctionnalités spécifiques au jeu, telles que la gestion des boutons, 
+ * le décompte du temps, la vérification de la victoire, etc...
+ * 
+ *
+ */
 public class Game extends Action{
 
+	// Paramètres d'interface graphique (FXML)
 	@FXML
 	protected StackPane stackpane;
 	@FXML
@@ -59,38 +67,35 @@ public class Game extends Action{
 	@FXML
 	public Label LabelTurn;
 	@FXML
-	protected  Label labelWinX;
+	protected Label labelWinX;
 	@FXML
-	protected  Label labelWinO;
+	protected Label labelWinO;
 
+	// Variables de jeu
 	protected int winX = 0;
-
 	protected int winO = 0;
-
 	protected String[][] tabGame = new String[3][3];
-
 	protected int buttonCount = 0;
-
 	protected boolean playerX = true;
 
+	// Paramètres d'animation
 	protected final Duration animationDuration = Duration.seconds(5);
-
 	protected final Duration animationDelay = Duration.seconds(0.01);
-
 	protected final int numConfetto = 1;
-
 	protected Timeline timelineConfetto;
 
+	// Paramètres du minuteur
 	@FXML
 	protected Label labelTimer;
-
 	protected int seconds = 0;
-
 	protected Timeline timelineTimer;
 
+	// Élément graphique
 	protected Line line;
 
-
+	/**
+	 * Réinitialise le jeu pour une nouvelle partie.
+	 */
 	protected void Replay() {
 		tabGame = new String[3][3];
 		playerX = true;
@@ -110,12 +115,18 @@ public class Game extends Action{
 		stackpane.getChildren().remove(this.line);
 	}
 
+	/**
+	 * Démarre le chronomètre du jeu.
+	 */
 	protected void startTimer() {
 		timelineTimer = new Timeline(new KeyFrame(Duration.seconds(1), e -> this.updateTimer()));
 		timelineTimer.setCycleCount(Timeline.INDEFINITE);
 		timelineTimer.play();
 	}
 
+	/**
+	 * Met à jour le chronomètre du jeu.
+	 */
 	protected void updateTimer() {
 		seconds++;
 		int minutes = (seconds % 3600) / 60;
@@ -123,12 +134,20 @@ public class Game extends Action{
 		labelTimer.setText(String.format("%02d:%02d", minutes, secs));
 	}
 
+	/**
+	 * Réinitialise le chronomètre du jeu.
+	 */
 	protected void resetTimer() {
 		labelTimer.setText("00:00");
 		seconds=0;
 		timelineTimer.stop();
 	}
 
+	/**
+	 * Met à jour le nombre de victoires pour un joueur donné.
+	 * 
+	 * @param player Le joueur pour lequel mettre à jour le nombre de victoires ("X" ou "O").
+	 */
 	protected void updateWin(String player) {
 		if(player == "X") {
 			winX++;
@@ -142,7 +161,11 @@ public class Game extends Action{
 	}
 
 
-
+	/**
+	 * Affiche des confettis sur l'écran de jeu.
+	 * 
+	 * @param scene La scène sur laquelle afficher les confettis.
+	 */
 	protected void confetto(Scene scene) {
 		List<String> confettoImages = Arrays.asList("file:rss/images/confetto_vert.png", 
 				"file:rss/images/confetto_bleu.png", 
@@ -183,6 +206,9 @@ public class Game extends Action{
 		timeline.play();
 	}
 
+	/**
+	 * Affiche le layout de versus, soit le choix des modes de jeu.
+	 */
 	protected void showVersusLayout() {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("VersusLayout.fxml"));
@@ -235,6 +261,11 @@ public class Game extends Action{
 		}
 	}
 
+	/**
+	 * Affiche le stackpane de victoire avec le nom du joueur gagnant.
+	 * 
+	 * @param player Le nom du joueur qui a remporté la partie.
+	 */
 	protected void showWinScene(String player) {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("WinLayout.fxml"));
@@ -256,6 +287,9 @@ public class Game extends Action{
 		}
 	}
 
+	/**
+	 * Affiche le stackpane de match nul.
+	 */
 	protected void showNullScene() {
 		this.resetTimer();
 		try {
@@ -282,6 +316,16 @@ public class Game extends Action{
 	}
 
 
+	/**
+	 * Effectue la transition vers une nouvelle scène.
+	 * 
+	 * @param root La racine de la nouvelle scène.
+	 * @param maxHeight La hauteur maximale de la nouvelle scène.
+	 * @param maxWidth La largeur maximale de la nouvelle scène.
+	 * @param mediaStart Le média à jouer au début de la transition.
+	 * @param mediaEnd Le média à jouer à la fin de la transition.
+	 * @param victory Indique si la transition est une victoire.
+	 */
 	protected void transition(Parent root,int maxHeight,int maxWidth,String mediaStart,String mediaEnd, boolean victory) {
 		this.resetTimer();
 		stackPaneView.setVisible(true);
@@ -316,6 +360,12 @@ public class Game extends Action{
 		translateTransition.play();
 	}
 
+	/**
+	 * Vérifie si un joueur a remporté la partie.
+	 * 
+	 * @param joueur Le joueur à vérifier ("X" ou "O").
+	 * @return true si le joueur a gagné, sinon false.
+	 */
 	protected boolean victory(String joueur) {
 		for (int i = 0; i < 3; i++) {
 			if (tabGame[i][0] == joueur && tabGame[i][1] == joueur && tabGame[i][2] == joueur) {
@@ -342,6 +392,12 @@ public class Game extends Action{
 		return false;
 	}
 
+	/**
+	 * Dessine une ligne sur la grille pour indiquer la victoire.
+	 * 
+	 * @param typeCase Le type de ligne à dessiner (0: ligne horizontale, 1: ligne verticale, 2: diagonale).
+	 * @param pos La position de la ligne.
+	 */
 	private void DrawLine(int typeCase, int pos) {
 		if (typeCase == 0) {
 			this.line = new Line(0, 0, 300, 0);
