@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.Button?>
+<?import pack_morpion.StackViewController?>
+
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml"
+          fx:controller="pack_morpion.StackViewController"
+          stylesheets="@application.css"
+          styleClass="DrawHuman"
+          prefHeight="300.0" prefWidth="300">
+          
+	<children>
+        <Label layoutX="60" layoutY="150.0" text="Match nul!" styleClass="textFieldDraw" />
+        <Button fx:id="rejouerButton" layoutX="200" layoutY="270.0" mnemonicParsing="false" onAction="#replay" text="Rejouer" styleClass="ButtonsDraw"/>
+        <Button fx:id="retourButton" layoutX="50" layoutY="270.0" mnemonicParsing="false" onAction="#retour" text="Retour" styleClass="ButtonsDraw"/>
+    </children>
+</AnchorPane>
