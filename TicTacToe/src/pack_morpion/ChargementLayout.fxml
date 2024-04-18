@@ -11,7 +11,8 @@
             prefWidth="500" prefHeight="500"
             fx:controller="pack_morpion.ModelController"
             fx:id="borderPane"
-            stylesheets="@application.css">
+            stylesheets="@application.css"
+            styleClass="Load">
 
     <center>
         <VBox alignment="CENTER">

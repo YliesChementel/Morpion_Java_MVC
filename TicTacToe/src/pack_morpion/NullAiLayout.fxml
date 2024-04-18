@@ -13,8 +13,8 @@
           
 	<children>
         <Label layoutX="190" layoutY="150.0" text="Match nul!" styleClass="textFieldDraw" />
-        <Button fx:id="rejouerButton" layoutX="372" layoutY="365" mnemonicParsing="false" onAction="#rejouer" text="Rejouer" styleClass="ButtonsDraw"/>
-        <Button fx:id="choixButton" layoutX="222" layoutY="365" mnemonicParsing="false" onAction="#choisirNouvelleDifficulte" text="Changer la difficulté" styleClass="ButtonsWin" />
+        <Button fx:id="rejouerButton" layoutX="372" layoutY="365" mnemonicParsing="false" onAction="#replay" text="Rejouer" styleClass="ButtonsDraw"/>
+        <Button fx:id="choixButton" layoutX="222" layoutY="365" mnemonicParsing="false" onAction="#chooseNewDifficulty" text="Changer la difficulté" styleClass="ButtonsWin" />
         <Button fx:id="retourButton" layoutX="150.0" layoutY="365" mnemonicParsing="false" onAction="#retour" text="Retour" styleClass="ButtonsDraw"/>
     </children>
 </AnchorPane>

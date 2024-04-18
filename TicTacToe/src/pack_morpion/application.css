@@ -3,6 +3,11 @@
     -fx-background-size: cover; 
 }
 
+.Load {
+	-fx-background-image: url("file:///../rss/images/ocean.jpg");
+    -fx-background-size: cover; 
+}
+
 .ProgressLabel {
     -fx-font-family: 'Comic Sans MS';
     -fx-text-fill: white;
@@ -63,7 +68,7 @@
 }
 
 .Help {
-	-fx-background-image: null;
+	-fx-background-image: url("file:///../rss/images/clouds.jpg");
     -fx-background-size: cover;
     -fx-background-position: center;
     -fx-background-color: #a9e6f9;
@@ -163,7 +168,7 @@
 
 
 .Models {
-    -fx-background-image: url("file:///../rss/images/model_background.png");
+    -fx-background-image: url("file:///../rss/images/desert.jpg");
     -fx-background-size: cover;
 }
 
@@ -172,6 +177,7 @@
 	-fx-background-color: #87cefa;
 	-fx-border-color : black;
 	-fx-font-weight : bold;
+	-fx-font-color : black;
     -fx-spacing: 10;
     -fx-border-radius: 10;
 	-fx-background-radius: 10;
@@ -284,6 +290,11 @@
 	-fx-font-size: 30; 
 	-fx-font-weight: bold; 
 	-fx-text-fill : red;
+	-fx-background-color: white;
+	-fx-background-radius: 20;
+    -fx-border-color: black; 
+    -fx-border-width: 1; 
+    -fx-border-radius: 20;
 }
 
 .ButtonsWin {
@@ -308,6 +319,11 @@
 	-fx-font-size: 30; 
 	-fx-font-weight: bold; 
 	-fx-text-fill : red;
+	-fx-background-color: white;
+	-fx-background-radius: 20;
+    -fx-border-color: black; 
+    -fx-border-width: 1; 
+    -fx-border-radius: 20;
 }
 
 .ButtonsLose {
@@ -341,6 +357,11 @@
 	-fx-font-size: 30; 
 	-fx-font-weight: bold; 
 	-fx-text-fill : blue;
+	-fx-background-color: white;
+	-fx-background-radius: 20;
+    -fx-border-color: black; 
+    -fx-border-width: 1; 
+    -fx-border-radius: 20;
 }
 
 .ButtonsDraw{

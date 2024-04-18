@@ -22,197 +22,202 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class StackViewController extends Action{
-	
+
 	@FXML
 	protected AnchorPane anchorPane;
 	@FXML
 	protected Label messageLabel;
 	@FXML
-    protected Button rejouerButton;
-    @FXML
-    protected Button retourButton;
+	protected Button rejouerButton;
+	@FXML
+	protected Button retourButton;
 	@FXML
 	protected Button choixButton;
-    
-	protected GameController gameController;
-	 
-	protected GameAiController gameAiController; 
-	
-	public void setGameController(GameController gameController) {
-	    this.gameController = gameController;
-	}
-	    
-	public void setGameAiController(GameAiController gameAiController) {
-	    this.gameAiController = gameAiController;
-	}
-	 
-	@FXML
-    private void retour(ActionEvent event) {
-        if (gameController != null) { 
 
-        	this.Media("son_stackpane_end.wav");
-        	
-        	TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), gameController.stackPaneView);
-		 	Scene scene = gameController.stackPaneView.getScene();
-	        translateTransition.setFromY(0);
-	        translateTransition.setToY(-scene.getHeight());
-	        
-	        translateTransition.setOnFinished(e -> {
-	        	gameController.afficherVersusLayout();
-	            gameController.stackPaneView.setVisible(false);
-	            gameController.contentGridPane.setDisable(false);
-	        });
-	        
-	        translateTransition.play();
-        }
-        else if (gameAiController != null) { 
-        	this.Media("son_stackpane_end.wav");
-        	TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), gameAiController.stackPaneView);
-		 	Scene scene = gameAiController.stackPaneView.getScene();
-	        translateTransition.setFromY(0);
-	        translateTransition.setToY(-scene.getHeight());
-	        
-	        translateTransition.setOnFinished(e -> {
-	        	gameAiController.afficherVersusLayout();
-	        	gameAiController.stackPaneView.setVisible(false);
-	        	gameAiController.contentGridPane.setDisable(false);
-	        });
-	        translateTransition.play();
-        }
-    }
-	
+	protected GameController gameController;
+
+	protected GameAiController gameAiController; 
+
+	public void setGameController(GameController gameController) {
+		this.gameController = gameController;
+	}
+
+	public void setGameAiController(GameAiController gameAiController) {
+		this.gameAiController = gameAiController;
+	}
+
 	@FXML
-    private void rejouer(ActionEvent event) {
+	private void retour(ActionEvent event) {
+		if (gameController != null) { 
+
+			this.Media("son_stackpane_end.wav");
+
+			TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), gameController.stackPaneView);
+			Scene scene = gameController.stackPaneView.getScene();
+			translateTransition.setFromY(0);
+			translateTransition.setToY(-scene.getHeight());
+
+			translateTransition.setOnFinished(e -> {
+				gameController.showVersusLayout();
+				gameController.stackPaneView.setVisible(false);
+				gameController.contentGridPane.setDisable(false);
+			});
+
+			translateTransition.play();
+		}
+		else if (gameAiController != null) { 
+			this.Media("son_stackpane_end.wav");
+			TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), gameAiController.stackPaneView);
+			Scene scene = gameAiController.stackPaneView.getScene();
+			translateTransition.setFromY(0);
+			translateTransition.setToY(-scene.getHeight());
+
+			translateTransition.setOnFinished(e -> {
+				gameAiController.showVersusLayout();
+				gameAiController.stackPaneView.setVisible(false);
+				gameAiController.contentGridPane.setDisable(false);
+			});
+			translateTransition.play();
+		}
+	}
+
+	@FXML
+	private void replay(ActionEvent event) {
 		if (gameController != null) { 
 			if(gameController.timelineConfetto!=null) {
-            	gameController.timelineConfetto.stop();
-            }
-	    	this.Media("son_stackpane_end.wav");
-	    	TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), gameController.stackPaneView);
-		 	Scene scene = gameController.stackPaneView.getScene();
-	        translateTransition.setFromY(0);
-	        translateTransition.setToY(-scene.getHeight());
-	        
-	        translateTransition.setOnFinished(e -> {
-	            gameController.rejouerPartie();
-	            gameController.stackPaneView.setVisible(false);
-	            gameController.contentGridPane.setDisable(false);
-	        });
-	        translateTransition.play();
+				gameController.timelineConfetto.stop();
+			}
+			this.Media("son_stackpane_end.wav");
+			TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), gameController.stackPaneView);
+			Scene scene = gameController.stackPaneView.getScene();
+			translateTransition.setFromY(0);
+			translateTransition.setToY(-scene.getHeight());
+
+			translateTransition.setOnFinished(e -> {
+				gameController.rejouerPartie();
+				gameController.stackPaneView.setVisible(false);
+				gameController.contentGridPane.setDisable(false);
+			});
+			translateTransition.play();
 		}
-        else if (gameAiController != null) { 
-        	if(gameAiController.timelineConfetto!=null) {
-        		gameAiController.timelineConfetto.stop();
-            }
-	        this.Media("son_stackpane_end.wav");
-	        TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), gameAiController.stackPaneView);
-		 	Scene scene = gameAiController.stackPaneView.getScene();
-	        translateTransition.setFromY(0);
-	        translateTransition.setToY(-scene.getHeight());
-	        
-	        translateTransition.setOnFinished(e -> {
-	        	gameAiController.rejouerPartie(null);
-	        	gameAiController.stackPaneView.setVisible(false);
-	        	gameAiController.contentGridPane.setDisable(false);
-	        });
-	        translateTransition.play();
-        }
-    }
-	
-	 @FXML
-	    private void choisirNouvelleDifficulte(ActionEvent event) {
-		 	if(gameAiController.timelineConfetto!=null) {
-		 		gameAiController.timelineConfetto.stop();
-		 	}
-	    	Alert choixDifficulte = new Alert(AlertType.CONFIRMATION);
-	        choixDifficulte.setTitle("Choix de la difficulté");
-	        choixDifficulte.setHeaderText("Choisir la nouvelle difficulté");
-	        choixDifficulte.setContentText("Veuillez sélectionner la nouvelle difficulté :");
+		else if (gameAiController != null) { 
+			if(gameAiController.timelineConfetto!=null) {
+				gameAiController.timelineConfetto.stop();
+			}
+			this.Media("son_stackpane_end.wav");
+			TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), gameAiController.stackPaneView);
+			Scene scene = gameAiController.stackPaneView.getScene();
+			translateTransition.setFromY(0);
+			translateTransition.setToY(-scene.getHeight());
 
-	        ButtonType facile = new ButtonType("Facile");
-	        ButtonType moyen = new ButtonType("Moyen");
-	        ButtonType difficile = new ButtonType("Difficile");
+			translateTransition.setOnFinished(e -> {
+				gameAiController.replayGame(null);
+				gameAiController.stackPaneView.setVisible(false);
+				gameAiController.contentGridPane.setDisable(false);
+			});
+			translateTransition.play();
+		}
+	}
 
-	        choixDifficulte.getButtonTypes().setAll(facile, moyen, difficile);
-	        Optional<ButtonType> result = choixDifficulte.showAndWait();
-	        if (result.isPresent()) {
-	            if (result.get() == facile) {
-	                chargerModele("F");
-	            } else if (result.get() == moyen) {
-	                chargerModele("M");
-	            } else if (result.get() == difficile) {
-	                chargerModele("D");
-	            }
-	        }
-	    }
+	@FXML
+	private void chooseNewDifficulty(ActionEvent event) {
+		if(gameAiController.timelineConfetto!=null) {
+			gameAiController.timelineConfetto.stop();
+		}
+		Alert choixDifficulte = new Alert(AlertType.CONFIRMATION);
+		choixDifficulte.setTitle("Choix de la difficulté");
+		choixDifficulte.setHeaderText("Choisir la nouvelle difficulté");
+		choixDifficulte.setContentText("Veuillez sélectionner la nouvelle difficulté :");
 
-	    private void chargerModele(String difficulty) {
-	    	ConfigFileLoader configLoad = new ConfigFileLoader();
-	        configLoad.loadConfigFile(".\\rss\\config.txt");
-	        Config config = configLoad.get(difficulty);
-	        String modelName = "model_" + config.hiddenLayerSize + "_" + config.numberOfhiddenLayers + "_"
-	                + config.learningRate + ".srf";
+		ButtonType facile = new ButtonType("Facile");
+		ButtonType moyen = new ButtonType("Moyen");
+		ButtonType difficile = new ButtonType("Difficile");
 
-	        String repertoire = ".\\rss\\models\\";
+		choixDifficulte.getButtonTypes().setAll(facile, moyen, difficile);
+		Optional<ButtonType> result = choixDifficulte.showAndWait();
+		if (result.isPresent()) {
+			if (result.get() == facile) {
+				loadModel("F");
+			} else if (result.get() == moyen) {
+				loadModel("M");
+			} else if (result.get() == difficile) {
+				loadModel("D");
+			}
+		}
+	}
 
-	        String file = repertoire + modelName;
+	private void loadModel(String difficulty) {
+		ConfigFileLoader configLoad = new ConfigFileLoader();
+		configLoad.loadConfigFile(".\\rss\\config.txt");
+		Config config = configLoad.get(difficulty);
+		String modelName = "model_" + config.hiddenLayerSize + "_" + config.numberOfhiddenLayers + "_"
+				+ config.learningRate + ".srf";
 
-	        File tempFile = new File(file);
-	        boolean exists = tempFile.exists();
-	        if (!exists) {
-	          	try {
-	            	FXMLLoader loader = new FXMLLoader(getClass().getResource("ChargementLayout.fxml"));
-	                Parent root = loader.load();
-	                ModelController controller = loader.getController();
-	                controller.setParameters(config.hiddenLayerSize, config.learningRate, config.numberOfhiddenLayers, file);
-	                controller.initializeModel();
-	                Scene scene = new Scene(root);
-	                Stage stage = new Stage();
-	                stage.setScene(scene);
-	                stage.setTitle("Chargement");
-	                stage.show();
-	                
-	                stage.setOnHidden(event -> {
-	                	this.Media("son_stackpane_end.wav");
-	                	TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), gameAiController.stackPaneView);
-	        		 	Scene scene1 = gameAiController.stackPaneView.getScene();
-	        	        translateTransition.setFromY(0);
-	        	        translateTransition.setToY(-scene1.getHeight());
-	        	        
-	        	        translateTransition.setOnFinished(e -> {
-	        	        	gameAiController.rejouerPartie(file);
-	        	        	gameAiController.stackPaneView.setVisible(false);
-	        	        	gameAiController.contentGridPane.setDisable(false);
-	        	        });
-	        	        translateTransition.play();
-	                });
-	                
-	        	} catch (IOException e) {
-	        		e.printStackTrace();
-	        	}
-	       }
-	        else {
-	        	this.Media("son_stackpane_end.wav");
-	        	TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), gameAiController.stackPaneView);
-			 	Scene scene = gameAiController.stackPaneView.getScene();
-		        translateTransition.setFromY(0);
-		        translateTransition.setToY(-scene.getHeight());
-		        
-		        translateTransition.setOnFinished(e -> {
-		        	gameAiController.rejouerPartie(file);
-		        	gameAiController.stackPaneView.setVisible(false);
-		        	gameAiController.contentGridPane.setDisable(false);
-		        });
-		        translateTransition.play();
-	        }
-	    }
-	
-	    public void afficherVictoire(String joueur) {
-	        messageLabel.setText("Félicitations, joueur " + joueur + " a gagné !");
-	        this.anchorPane.getChildren().remove(choixButton);
-	    }
-	    
-	    public void afficherVictoireAi(String joueur) {
-	        messageLabel.setText("Félicitations, " + joueur + " a gagné !");
-	    }
+		String repertoire = ".\\rss\\models\\";
+
+		String file = repertoire + modelName;
+
+		File tempFile = new File(file);
+		boolean exists = tempFile.exists();
+		if (!exists) {
+			try {
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("ChargementLayout.fxml"));
+				Parent root = loader.load();
+				ModelController controller = loader.getController();
+				controller.setParameters(config.hiddenLayerSize, config.learningRate, config.numberOfhiddenLayers, file);
+				controller.initializeModel();
+				Scene scene = new Scene(root);
+				Stage stage = new Stage();
+				
+				stage.setOnCloseRequest(event -> {
+				    event.consume();
+				});
+				
+				stage.setScene(scene);
+				stage.setTitle("Chargement");
+				stage.show();
+
+				stage.setOnHidden(event -> {
+					this.Media("son_stackpane_end.wav");
+					TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), gameAiController.stackPaneView);
+					Scene scene1 = gameAiController.stackPaneView.getScene();
+					translateTransition.setFromY(0);
+					translateTransition.setToY(-scene1.getHeight());
+
+					translateTransition.setOnFinished(e -> {
+						gameAiController.replayGame(file);
+						gameAiController.stackPaneView.setVisible(false);
+						gameAiController.contentGridPane.setDisable(false);
+					});
+					translateTransition.play();
+				});
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		else {
+			this.Media("son_stackpane_end.wav");
+			TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), gameAiController.stackPaneView);
+			Scene scene = gameAiController.stackPaneView.getScene();
+			translateTransition.setFromY(0);
+			translateTransition.setToY(-scene.getHeight());
+
+			translateTransition.setOnFinished(e -> {
+				gameAiController.replayGame(file);
+				gameAiController.stackPaneView.setVisible(false);
+				gameAiController.contentGridPane.setDisable(false);
+			});
+			translateTransition.play();
+		}
+	}
+
+	public void showSceneWin(String player) {
+		messageLabel.setText("Félicitations, joueur " + player + " a gagné !");
+		this.anchorPane.getChildren().remove(choixButton);
+	}
+
+	public void showSceneWinAi() {
+		messageLabel.setText("Félicitations,vous avez gagné !");
+	}
 }

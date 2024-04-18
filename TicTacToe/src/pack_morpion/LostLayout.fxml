@@ -11,9 +11,9 @@
           styleClass="Lose"
           prefHeight="400.0" prefWidth="560">
 	<children>
-        <Label layoutX="50" layoutY="150" text="Dommage, vous avez perdu!" styleClass="textFieldLose"/>
-        <Button fx:id="rejouerButton" layoutX="372" layoutY="365" mnemonicParsing="false" onAction="#rejouer" text="Rejouer" styleClass="ButtonsLose"/>
-        <Button fx:id="choixButton" layoutX="222" layoutY="365" mnemonicParsing="false" onAction="#choisirNouvelleDifficulte" text="Changer la difficulté" styleClass="ButtonsWin" />
+        <Label layoutX="80" layoutY="200" text="Dommage, vous avez perdu!" styleClass="textFieldLose"/>
+        <Button fx:id="rejouerButton" layoutX="372" layoutY="365" mnemonicParsing="false" onAction="#replay" text="Rejouer" styleClass="ButtonsLose"/>
+        <Button fx:id="choixButton" layoutX="222" layoutY="365" mnemonicParsing="false" onAction="#chooseNewDifficulty" text="Changer la difficulté" styleClass="ButtonsWin" />
         <Button fx:id="retourButton" layoutX="150.0" layoutY="365" mnemonicParsing="false" onAction="#retour" text="Retour" styleClass="ButtonsLose"/>
     </children>
 </AnchorPane>
