@@ -68,6 +68,12 @@ public class VersusController extends Action {
 	private static String NAME_PLAYERX ="";
 
 	private static String NAME_PLAYERO ="";
+	
+	private static Main MAIN;
+	
+	public void setMain(Main main) {
+		this.MAIN=main;
+	}
 
 	public String getNAME_PLAYERX() {
 		return NAME_PLAYERX;
@@ -233,9 +239,14 @@ public class VersusController extends Action {
 					Scene scene = new Scene(root);
 					Stage stage = new Stage();
 					Image icon = new Image("file:rss/images/load-icon.png");
+					stage.setOnCloseRequest(event -> {
+					    event.consume();
+					});
+					stage.setResizable(false);
 					stage.getIcons().add(icon);
 					stage.setScene(scene);
 					stage.setTitle("Loading");
+					MAIN.openStages.add(stage);
 					stage.show();
 
 					stage.setOnHidden(event -> {

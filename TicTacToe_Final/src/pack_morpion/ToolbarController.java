@@ -1,7 +1,10 @@
 package pack_morpion;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,9 +14,13 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.scene.control.Slider;
+import javafx.scene.control.ToolBar;
 import javafx.scene.shape.Rectangle;
 
 public class ToolbarController {
+	
+	@FXML
+	private ToolBar tool;
 	@FXML
 	private MenuItem settingsItem;
 
@@ -40,6 +47,12 @@ public class ToolbarController {
 	private Stage modelsStage;
 
 	public Stage helpStage;
+	
+	private static Main MAIN;
+	
+	public void setMain(Main main) {
+		this.MAIN=main;
+	}
 
 	@FXML
 	public void initialize() {
@@ -55,7 +68,6 @@ public class ToolbarController {
 
 			Main.getMainMediaPlayer().setVolume(volume);
 		});
-
 	}
 
 	@FXML
@@ -84,6 +96,7 @@ public class ToolbarController {
 				Scene scene = new Scene(root);
 				settingsStage = new Stage();
 				settingsStage.setScene(scene);
+				MAIN.openStages.add(settingsStage);
 				Image icon = new Image("file:rss/images/Cog.png");
 				settingsStage.getIcons().add(icon);
 				settingsStage.setResizable(false);
@@ -110,6 +123,7 @@ public class ToolbarController {
 				Scene scene = new Scene(root);
 				modelsStage = new Stage();
 				modelsStage.setScene(scene);
+				MAIN.openStages.add(modelsStage);
 				Image icon = new Image("file:rss/images/Model.jpg");
 				modelsStage.getIcons().add(icon);
 				modelsStage.setResizable(false);
@@ -136,6 +150,7 @@ public class ToolbarController {
 				Scene scene = new Scene(root);
 				helpStage = new Stage(); 
 				helpStage.setScene(scene);
+				MAIN.openStages.add(helpStage);
 				Image icon = new Image("file:rss/images/question-mark.png");
 				helpStage.getIcons().add(icon);
 				helpStage.setResizable(false);

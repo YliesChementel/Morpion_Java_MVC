@@ -37,6 +37,12 @@ public class StackViewController extends Action{
 	protected GameController gameController;
 
 	protected GameAiController gameAiController; 
+	
+	private static Main MAIN;
+	
+	public void setMain(Main main) {
+		this.MAIN=main;
+	}
 
 	public void setGameController(GameController gameController) {
 		this.gameController = gameController;
@@ -168,8 +174,13 @@ public class StackViewController extends Action{
 				controller.initializeModel();
 				Scene scene = new Scene(root);
 				Stage stage = new Stage();
+				stage.setOnCloseRequest(event -> {
+				    event.consume();
+				});
+				stage.setResizable(false);
 				stage.setScene(scene);
 				stage.setTitle("Chargement");
+				MAIN.openStages.add(stage);
 				stage.show();
 
 				stage.setOnHidden(event -> {

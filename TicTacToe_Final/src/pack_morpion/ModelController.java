@@ -65,7 +65,7 @@ public class ModelController {
 
 		HashMap<Integer, Coup> mapTrain = Test.loadCoupsFromFile(".\\rss\\train_dev_test\\train.txt");
 		int size = 9; 
-		double epochs = 10000;
+		double epochs = 1000;
 		int[] layers = new int[l+2];
 		layers[0] = size ;
 		for (int i = 0; i < l; i++) {
